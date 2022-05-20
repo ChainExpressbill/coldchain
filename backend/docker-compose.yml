@@ -1,0 +1,20 @@
+# 참고: https://velog.io/@melangyun/Docker-compose.yml-DB%EC%99%80-%EC%97%B0%EA%B2%B0
+# 도커 컴포즈 파일은 도커 실행 옵션을 적어놓은 문서이다.
+# docker-compose up -d --build: docker-compose 파일을 빌드
+# up명령은 파일의 내용에 따라 이미지를 빌드하고 서비스를 실행하는 것이다.
+# 이와 상반되는 것으로 down옵션이 있다. 컨테이너와 네트워크를 삭제하고, 옵션에 따라 볼륨도 지운다.
+# build을 하면서 이용하려면 --build옵션을 붙이면 된다.(서비스 시작 전 이미지를 새로 만드는 효과가 있다.)
+# -d옵션은 서비스 실행 후 콘솔로 빠져나오는 것이다.
+# docker-compose stop
+# docker-compose start
+version: "3"
+services:
+  db:
+    image: postgres:latest
+    container_name: "${DB_NAME}"
+    restart: always
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"

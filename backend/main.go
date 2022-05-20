@@ -3,14 +3,20 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 	"github.com/qinains/fastergoding"
 )
 
-const port string = ":28342"
-
 func main() {
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	fastergoding.Run() // hot reload
 	app := fiber.New()
 
@@ -18,6 +24,6 @@ func main() {
 		return c.SendString("Hello, World!")
 	})
 
-	fmt.Printf("Listening on http://localhost%s\n", port)
+	port := fmt.Sprintf(":%s", os.Getenv("SERVER_PORT"))
 	log.Fatalln(app.Listen(port))
 }
