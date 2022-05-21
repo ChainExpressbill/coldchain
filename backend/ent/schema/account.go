@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -26,8 +27,8 @@ func (Account) Fields() []ent.Field {
 
 // Edges of the Account.
 func (Account) Edges() []ent.Edge {
-	return nil
-	// return []ent.Edge{
-	// 	ent.To("products",)
-	// }
+	return []ent.Edge{
+		// ent에서는 To를 정의하는 스키마, 즉 여기선 Account 가 참조 관계의 주인이라고 정의합니다.
+		edge.To("orders", Order.Type),
+	}
 }
