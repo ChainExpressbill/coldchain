@@ -37,7 +37,7 @@ func main() {
 
 	app := fiber.New()
 	app.Use(recover.New())
-	middlewares.Cors(app)
+	app.Use(middlewares.Cors())
 
 	app.Post("/login", account.Login)
 	app.Post("/logout", account.Logout)

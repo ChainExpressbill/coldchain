@@ -5,10 +5,10 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
-func Cors(app *fiber.App) {
+func Cors() func(*fiber.Ctx) error {
 	// Or extend your config for customization
-	app.Use(cors.New(cors.Config{
+	return cors.New(cors.Config{
 		AllowOrigins: "*", // domain 정해지면 추가
 		AllowHeaders: "Origin, Content-Type, Accept",
-	}))
+	})
 }
