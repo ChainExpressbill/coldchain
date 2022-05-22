@@ -1,5 +1,5 @@
 {
-  "name": "wordle-clone",
+  "name": "coldchainapp",
   "version": "0.1.0",
   "scripts": {
     "start": "craco start",
