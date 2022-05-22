@@ -19,7 +19,7 @@ func (Account) Fields() []ent.Field {
 		field.String("id").Unique().Comment("계정 id"),
 		field.String("password").NotEmpty().Comment("계정 비밀번호"),
 		field.String("name").NotEmpty().Comment("관리자 이름"),
-		field.String("email_address").NotEmpty().Comment("이메일 주소"),
+		field.String("email_address").NotEmpty().StructTag(`json:"emailAddress,omitempty"`).Comment("이메일 주소"),
 		field.Time("created").Default(time.Now()).Immutable().Comment("생성 시간"),
 		field.Time("updated").Default(time.Now()).Comment("수정 시간"),
 	}

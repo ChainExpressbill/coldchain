@@ -4,6 +4,8 @@ package order
 
 import (
 	"time"
+
+	"github.com/google/uuid"
 )
 
 const (
@@ -11,6 +13,8 @@ const (
 	Label = "order"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldOid holds the string denoting the oid field in the database.
+	FieldOid = "oid"
 	// FieldOrderer holds the string denoting the orderer field in the database.
 	FieldOrderer = "orderer"
 	// FieldReceiver holds the string denoting the receiver field in the database.
@@ -45,6 +49,7 @@ const (
 // Columns holds all SQL columns for order fields.
 var Columns = []string{
 	FieldID,
+	FieldOid,
 	FieldOrderer,
 	FieldReceiver,
 	FieldDrugName,
@@ -78,6 +83,18 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultOid holds the default value on creation for the "oid" field.
+	DefaultOid func() uuid.UUID
+	// OrdererValidator is a validator for the "orderer" field. It is called by the builders before save.
+	OrdererValidator func(string) error
+	// ReceiverValidator is a validator for the "receiver" field. It is called by the builders before save.
+	ReceiverValidator func(string) error
+	// DrugNameValidator is a validator for the "drug_name" field. It is called by the builders before save.
+	DrugNameValidator func(string) error
+	// DrugStandardValidator is a validator for the "drug_standard" field. It is called by the builders before save.
+	DrugStandardValidator func(string) error
+	// StorageConditionValidator is a validator for the "storage_condition" field. It is called by the builders before save.
+	StorageConditionValidator func(string) error
 	// DefaultCreated holds the default value on creation for the "created" field.
 	DefaultCreated time.Time
 	// DefaultUpdated holds the default value on creation for the "updated" field.

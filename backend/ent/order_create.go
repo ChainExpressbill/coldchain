@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
+	"github.com/google/uuid"
 )
 
 // OrderCreate is the builder for creating a Order entity.
@@ -19,6 +20,20 @@ type OrderCreate struct {
 	config
 	mutation *OrderMutation
 	hooks    []Hook
+}
+
+// SetOid sets the "oid" field.
+func (oc *OrderCreate) SetOid(u uuid.UUID) *OrderCreate {
+	oc.mutation.SetOid(u)
+	return oc
+}
+
+// SetNillableOid sets the "oid" field if the given value is not nil.
+func (oc *OrderCreate) SetNillableOid(u *uuid.UUID) *OrderCreate {
+	if u != nil {
+		oc.SetOid(*u)
+	}
+	return oc
 }
 
 // SetOrderer sets the "orderer" field.
@@ -173,6 +188,10 @@ func (oc *OrderCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (oc *OrderCreate) defaults() {
+	if _, ok := oc.mutation.Oid(); !ok {
+		v := order.DefaultOid()
+		oc.mutation.SetOid(v)
+	}
 	if _, ok := oc.mutation.Created(); !ok {
 		v := order.DefaultCreated
 		oc.mutation.SetCreated(v)
@@ -185,17 +204,40 @@ func (oc *OrderCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (oc *OrderCreate) check() error {
+	if _, ok := oc.mutation.Oid(); !ok {
+		return &ValidationError{Name: "oid", err: errors.New(`ent: missing required field "Order.oid"`)}
+	}
 	if _, ok := oc.mutation.Orderer(); !ok {
 		return &ValidationError{Name: "orderer", err: errors.New(`ent: missing required field "Order.orderer"`)}
+	}
+	if v, ok := oc.mutation.Orderer(); ok {
+		if err := order.OrdererValidator(v); err != nil {
+			return &ValidationError{Name: "orderer", err: fmt.Errorf(`ent: validator failed for field "Order.orderer": %w`, err)}
+		}
 	}
 	if _, ok := oc.mutation.Receiver(); !ok {
 		return &ValidationError{Name: "receiver", err: errors.New(`ent: missing required field "Order.receiver"`)}
 	}
+	if v, ok := oc.mutation.Receiver(); ok {
+		if err := order.ReceiverValidator(v); err != nil {
+			return &ValidationError{Name: "receiver", err: fmt.Errorf(`ent: validator failed for field "Order.receiver": %w`, err)}
+		}
+	}
 	if _, ok := oc.mutation.DrugName(); !ok {
 		return &ValidationError{Name: "drug_name", err: errors.New(`ent: missing required field "Order.drug_name"`)}
 	}
+	if v, ok := oc.mutation.DrugName(); ok {
+		if err := order.DrugNameValidator(v); err != nil {
+			return &ValidationError{Name: "drug_name", err: fmt.Errorf(`ent: validator failed for field "Order.drug_name": %w`, err)}
+		}
+	}
 	if _, ok := oc.mutation.DrugStandard(); !ok {
 		return &ValidationError{Name: "drug_standard", err: errors.New(`ent: missing required field "Order.drug_standard"`)}
+	}
+	if v, ok := oc.mutation.DrugStandard(); ok {
+		if err := order.DrugStandardValidator(v); err != nil {
+			return &ValidationError{Name: "drug_standard", err: fmt.Errorf(`ent: validator failed for field "Order.drug_standard": %w`, err)}
+		}
 	}
 	if _, ok := oc.mutation.Quantity(); !ok {
 		return &ValidationError{Name: "quantity", err: errors.New(`ent: missing required field "Order.quantity"`)}
@@ -205,6 +247,11 @@ func (oc *OrderCreate) check() error {
 	}
 	if _, ok := oc.mutation.StorageCondition(); !ok {
 		return &ValidationError{Name: "storage_condition", err: errors.New(`ent: missing required field "Order.storage_condition"`)}
+	}
+	if v, ok := oc.mutation.StorageCondition(); ok {
+		if err := order.StorageConditionValidator(v); err != nil {
+			return &ValidationError{Name: "storage_condition", err: fmt.Errorf(`ent: validator failed for field "Order.storage_condition": %w`, err)}
+		}
 	}
 	if _, ok := oc.mutation.Created(); !ok {
 		return &ValidationError{Name: "created", err: errors.New(`ent: missing required field "Order.created"`)}
@@ -242,6 +289,14 @@ func (oc *OrderCreate) createSpec() (*Order, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := oc.mutation.Oid(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: order.FieldOid,
+		})
+		_node.Oid = value
+	}
 	if value, ok := oc.mutation.Orderer(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,

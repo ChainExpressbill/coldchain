@@ -292,12 +292,12 @@ func (oq *OrderQuery) WithManager(opts ...func(*AccountQuery)) *OrderQuery {
 // Example:
 //
 //	var v []struct {
-//		Orderer string `json:"orderer,omitempty"`
+//		Oid uuid.UUID `json:"oid,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Order.Query().
-//		GroupBy(order.FieldOrderer).
+//		GroupBy(order.FieldOid).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -319,11 +319,11 @@ func (oq *OrderQuery) GroupBy(field string, fields ...string) *OrderGroupBy {
 // Example:
 //
 //	var v []struct {
-//		Orderer string `json:"orderer,omitempty"`
+//		Oid uuid.UUID `json:"oid,omitempty"`
 //	}
 //
 //	client.Order.Query().
-//		Select(order.FieldOrderer).
+//		Select(order.FieldOid).
 //		Scan(ctx, &v)
 //
 func (oq *OrderQuery) Select(fields ...string) *OrderSelect {

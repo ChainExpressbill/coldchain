@@ -8,6 +8,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/ChainExpressbill/coldchain/ent/predicate"
+	"github.com/google/uuid"
 )
 
 // ID filters vertices based on their ID field.
@@ -93,6 +94,13 @@ func IDLTE(id int) predicate.Order {
 	})
 }
 
+// Oid applies equality check predicate on the "oid" field. It's identical to OidEQ.
+func Oid(v uuid.UUID) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldOid), v))
+	})
+}
+
 // Orderer applies equality check predicate on the "orderer" field. It's identical to OrdererEQ.
 func Orderer(v string) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
@@ -153,6 +161,82 @@ func Created(v time.Time) predicate.Order {
 func Updated(v time.Time) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldUpdated), v))
+	})
+}
+
+// OidEQ applies the EQ predicate on the "oid" field.
+func OidEQ(v uuid.UUID) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldOid), v))
+	})
+}
+
+// OidNEQ applies the NEQ predicate on the "oid" field.
+func OidNEQ(v uuid.UUID) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldOid), v))
+	})
+}
+
+// OidIn applies the In predicate on the "oid" field.
+func OidIn(vs ...uuid.UUID) predicate.Order {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Order(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldOid), v...))
+	})
+}
+
+// OidNotIn applies the NotIn predicate on the "oid" field.
+func OidNotIn(vs ...uuid.UUID) predicate.Order {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Order(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldOid), v...))
+	})
+}
+
+// OidGT applies the GT predicate on the "oid" field.
+func OidGT(v uuid.UUID) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldOid), v))
+	})
+}
+
+// OidGTE applies the GTE predicate on the "oid" field.
+func OidGTE(v uuid.UUID) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldOid), v))
+	})
+}
+
+// OidLT applies the LT predicate on the "oid" field.
+func OidLT(v uuid.UUID) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldOid), v))
+	})
+}
+
+// OidLTE applies the LTE predicate on the "oid" field.
+func OidLTE(v uuid.UUID) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldOid), v))
 	})
 }
 

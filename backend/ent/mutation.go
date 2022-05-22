@@ -12,6 +12,7 @@ import (
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
 	"github.com/ChainExpressbill/coldchain/ent/predicate"
+	"github.com/google/uuid"
 
 	"entgo.io/ent"
 )
@@ -661,6 +662,7 @@ type OrderMutation struct {
 	op                Op
 	typ               string
 	id                *int
+	oid               *uuid.UUID
 	orderer           *string
 	receiver          *string
 	drug_name         *string
@@ -775,6 +777,42 @@ func (m *OrderMutation) IDs(ctx context.Context) ([]int, error) {
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
+}
+
+// SetOid sets the "oid" field.
+func (m *OrderMutation) SetOid(u uuid.UUID) {
+	m.oid = &u
+}
+
+// Oid returns the value of the "oid" field in the mutation.
+func (m *OrderMutation) Oid() (r uuid.UUID, exists bool) {
+	v := m.oid
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOid returns the old "oid" field's value of the Order entity.
+// If the Order object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderMutation) OldOid(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOid is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOid requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOid: %w", err)
+	}
+	return oldValue.Oid, nil
+}
+
+// ResetOid resets all changes to the "oid" field.
+func (m *OrderMutation) ResetOid() {
+	m.oid = nil
 }
 
 // SetOrderer sets the "orderer" field.
@@ -1179,7 +1217,10 @@ func (m *OrderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *OrderMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
+	if m.oid != nil {
+		fields = append(fields, order.FieldOid)
+	}
 	if m.orderer != nil {
 		fields = append(fields, order.FieldOrderer)
 	}
@@ -1215,6 +1256,8 @@ func (m *OrderMutation) Fields() []string {
 // schema.
 func (m *OrderMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case order.FieldOid:
+		return m.Oid()
 	case order.FieldOrderer:
 		return m.Orderer()
 	case order.FieldReceiver:
@@ -1242,6 +1285,8 @@ func (m *OrderMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *OrderMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case order.FieldOid:
+		return m.OldOid(ctx)
 	case order.FieldOrderer:
 		return m.OldOrderer(ctx)
 	case order.FieldReceiver:
@@ -1269,6 +1314,13 @@ func (m *OrderMutation) OldField(ctx context.Context, name string) (ent.Value, e
 // type.
 func (m *OrderMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case order.FieldOid:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOid(v)
+		return nil
 	case order.FieldOrderer:
 		v, ok := value.(string)
 		if !ok {
@@ -1396,6 +1448,9 @@ func (m *OrderMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *OrderMutation) ResetField(name string) error {
 	switch name {
+	case order.FieldOid:
+		m.ResetOid()
+		return nil
 	case order.FieldOrderer:
 		m.ResetOrderer()
 		return nil

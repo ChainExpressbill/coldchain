@@ -10,6 +10,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
+	"github.com/google/uuid"
 )
 
 // Order is the model entity for the Order schema.
@@ -17,6 +18,9 @@ type Order struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// Oid holds the value of the "oid" field.
+	// 주문 ID
+	Oid uuid.UUID `json:"oid,omitempty"`
 	// Orderer holds the value of the "orderer" field.
 	// 주문자(제약업체. 위탁배송을 요청한 업체)
 	Orderer string `json:"orderer,omitempty"`
@@ -25,19 +29,19 @@ type Order struct {
 	Receiver string `json:"receiver,omitempty"`
 	// DrugName holds the value of the "drug_name" field.
 	// 약품명
-	DrugName string `json:"drug_name,omitempty"`
+	DrugName string `json:"drugName,omitempty"`
 	// DrugStandard holds the value of the "drug_standard" field.
 	// 규격
-	DrugStandard string `json:"drug_standard,omitempty"`
+	DrugStandard string `json:"drugStandard,omitempty"`
 	// Quantity holds the value of the "quantity" field.
 	// 수량
 	Quantity int `json:"quantity,omitempty"`
 	// RegisterName holds the value of the "register_name" field.
 	// 주문 등록자
-	RegisterName string `json:"register_name,omitempty"`
+	RegisterName string `json:"registerName,omitempty"`
 	// StorageCondition holds the value of the "storage_condition" field.
 	// 보관조건
-	StorageCondition string `json:"storage_condition,omitempty"`
+	StorageCondition string `json:"storageCondition,omitempty"`
 	// Created holds the value of the "created" field.
 	// 생성 시간
 	Created time.Time `json:"created,omitempty"`
@@ -84,6 +88,8 @@ func (*Order) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullString)
 		case order.FieldCreated, order.FieldUpdated:
 			values[i] = new(sql.NullTime)
+		case order.FieldOid:
+			values[i] = new(uuid.UUID)
 		case order.ForeignKeys[0]: // account_orders
 			values[i] = new(sql.NullString)
 		default:
@@ -107,6 +113,12 @@ func (o *Order) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			o.ID = int(value.Int64)
+		case order.FieldOid:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field oid", values[i])
+			} else if value != nil {
+				o.Oid = *value
+			}
 		case order.FieldOrderer:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field orderer", values[i])
@@ -201,6 +213,8 @@ func (o *Order) String() string {
 	var builder strings.Builder
 	builder.WriteString("Order(")
 	builder.WriteString(fmt.Sprintf("id=%v", o.ID))
+	builder.WriteString(", oid=")
+	builder.WriteString(fmt.Sprintf("%v", o.Oid))
 	builder.WriteString(", orderer=")
 	builder.WriteString(o.Orderer)
 	builder.WriteString(", receiver=")

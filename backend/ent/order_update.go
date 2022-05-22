@@ -14,6 +14,7 @@ import (
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
 	"github.com/ChainExpressbill/coldchain/ent/predicate"
+	"github.com/google/uuid"
 )
 
 // OrderUpdate is the builder for updating Order entities.
@@ -26,6 +27,20 @@ type OrderUpdate struct {
 // Where appends a list predicates to the OrderUpdate builder.
 func (ou *OrderUpdate) Where(ps ...predicate.Order) *OrderUpdate {
 	ou.mutation.Where(ps...)
+	return ou
+}
+
+// SetOid sets the "oid" field.
+func (ou *OrderUpdate) SetOid(u uuid.UUID) *OrderUpdate {
+	ou.mutation.SetOid(u)
+	return ou
+}
+
+// SetNillableOid sets the "oid" field if the given value is not nil.
+func (ou *OrderUpdate) SetNillableOid(u *uuid.UUID) *OrderUpdate {
+	if u != nil {
+		ou.SetOid(*u)
+	}
 	return ou
 }
 
@@ -176,6 +191,31 @@ func (ou *OrderUpdate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (ou *OrderUpdate) check() error {
+	if v, ok := ou.mutation.Orderer(); ok {
+		if err := order.OrdererValidator(v); err != nil {
+			return &ValidationError{Name: "orderer", err: fmt.Errorf(`ent: validator failed for field "Order.orderer": %w`, err)}
+		}
+	}
+	if v, ok := ou.mutation.Receiver(); ok {
+		if err := order.ReceiverValidator(v); err != nil {
+			return &ValidationError{Name: "receiver", err: fmt.Errorf(`ent: validator failed for field "Order.receiver": %w`, err)}
+		}
+	}
+	if v, ok := ou.mutation.DrugName(); ok {
+		if err := order.DrugNameValidator(v); err != nil {
+			return &ValidationError{Name: "drug_name", err: fmt.Errorf(`ent: validator failed for field "Order.drug_name": %w`, err)}
+		}
+	}
+	if v, ok := ou.mutation.DrugStandard(); ok {
+		if err := order.DrugStandardValidator(v); err != nil {
+			return &ValidationError{Name: "drug_standard", err: fmt.Errorf(`ent: validator failed for field "Order.drug_standard": %w`, err)}
+		}
+	}
+	if v, ok := ou.mutation.StorageCondition(); ok {
+		if err := order.StorageConditionValidator(v); err != nil {
+			return &ValidationError{Name: "storage_condition", err: fmt.Errorf(`ent: validator failed for field "Order.storage_condition": %w`, err)}
+		}
+	}
 	if _, ok := ou.mutation.ManagerID(); ou.mutation.ManagerCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Order.manager"`)
 	}
@@ -199,6 +239,13 @@ func (ou *OrderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ou.mutation.Oid(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: order.FieldOid,
+		})
 	}
 	if value, ok := ou.mutation.Orderer(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -315,6 +362,20 @@ type OrderUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *OrderMutation
+}
+
+// SetOid sets the "oid" field.
+func (ouo *OrderUpdateOne) SetOid(u uuid.UUID) *OrderUpdateOne {
+	ouo.mutation.SetOid(u)
+	return ouo
+}
+
+// SetNillableOid sets the "oid" field if the given value is not nil.
+func (ouo *OrderUpdateOne) SetNillableOid(u *uuid.UUID) *OrderUpdateOne {
+	if u != nil {
+		ouo.SetOid(*u)
+	}
+	return ouo
 }
 
 // SetOrderer sets the "orderer" field.
@@ -471,6 +532,31 @@ func (ouo *OrderUpdateOne) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (ouo *OrderUpdateOne) check() error {
+	if v, ok := ouo.mutation.Orderer(); ok {
+		if err := order.OrdererValidator(v); err != nil {
+			return &ValidationError{Name: "orderer", err: fmt.Errorf(`ent: validator failed for field "Order.orderer": %w`, err)}
+		}
+	}
+	if v, ok := ouo.mutation.Receiver(); ok {
+		if err := order.ReceiverValidator(v); err != nil {
+			return &ValidationError{Name: "receiver", err: fmt.Errorf(`ent: validator failed for field "Order.receiver": %w`, err)}
+		}
+	}
+	if v, ok := ouo.mutation.DrugName(); ok {
+		if err := order.DrugNameValidator(v); err != nil {
+			return &ValidationError{Name: "drug_name", err: fmt.Errorf(`ent: validator failed for field "Order.drug_name": %w`, err)}
+		}
+	}
+	if v, ok := ouo.mutation.DrugStandard(); ok {
+		if err := order.DrugStandardValidator(v); err != nil {
+			return &ValidationError{Name: "drug_standard", err: fmt.Errorf(`ent: validator failed for field "Order.drug_standard": %w`, err)}
+		}
+	}
+	if v, ok := ouo.mutation.StorageCondition(); ok {
+		if err := order.StorageConditionValidator(v); err != nil {
+			return &ValidationError{Name: "storage_condition", err: fmt.Errorf(`ent: validator failed for field "Order.storage_condition": %w`, err)}
+		}
+	}
 	if _, ok := ouo.mutation.ManagerID(); ouo.mutation.ManagerCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Order.manager"`)
 	}
@@ -511,6 +597,13 @@ func (ouo *OrderUpdateOne) sqlSave(ctx context.Context) (_node *Order, err error
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ouo.mutation.Oid(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: order.FieldOid,
+		})
 	}
 	if value, ok := ouo.mutation.Orderer(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

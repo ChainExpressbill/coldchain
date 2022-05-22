@@ -25,7 +25,7 @@ type Account struct {
 	Name string `json:"name,omitempty"`
 	// EmailAddress holds the value of the "email_address" field.
 	// 이메일 주소
-	EmailAddress string `json:"email_address,omitempty"`
+	EmailAddress string `json:"emailAddress,omitempty"`
 	// Created holds the value of the "created" field.
 	// 생성 시간
 	Created time.Time `json:"created,omitempty"`

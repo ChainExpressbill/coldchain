@@ -8,6 +8,7 @@ import (
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
 	"github.com/ChainExpressbill/coldchain/ent/schema"
+	"github.com/google/uuid"
 )
 
 // The init function reads all schema descriptors with runtime code
@@ -38,12 +39,36 @@ func init() {
 	account.DefaultUpdated = accountDescUpdated.Default.(time.Time)
 	orderFields := schema.Order{}.Fields()
 	_ = orderFields
+	// orderDescOid is the schema descriptor for oid field.
+	orderDescOid := orderFields[0].Descriptor()
+	// order.DefaultOid holds the default value on creation for the oid field.
+	order.DefaultOid = orderDescOid.Default.(func() uuid.UUID)
+	// orderDescOrderer is the schema descriptor for orderer field.
+	orderDescOrderer := orderFields[1].Descriptor()
+	// order.OrdererValidator is a validator for the "orderer" field. It is called by the builders before save.
+	order.OrdererValidator = orderDescOrderer.Validators[0].(func(string) error)
+	// orderDescReceiver is the schema descriptor for receiver field.
+	orderDescReceiver := orderFields[2].Descriptor()
+	// order.ReceiverValidator is a validator for the "receiver" field. It is called by the builders before save.
+	order.ReceiverValidator = orderDescReceiver.Validators[0].(func(string) error)
+	// orderDescDrugName is the schema descriptor for drug_name field.
+	orderDescDrugName := orderFields[3].Descriptor()
+	// order.DrugNameValidator is a validator for the "drug_name" field. It is called by the builders before save.
+	order.DrugNameValidator = orderDescDrugName.Validators[0].(func(string) error)
+	// orderDescDrugStandard is the schema descriptor for drug_standard field.
+	orderDescDrugStandard := orderFields[4].Descriptor()
+	// order.DrugStandardValidator is a validator for the "drug_standard" field. It is called by the builders before save.
+	order.DrugStandardValidator = orderDescDrugStandard.Validators[0].(func(string) error)
+	// orderDescStorageCondition is the schema descriptor for storage_condition field.
+	orderDescStorageCondition := orderFields[7].Descriptor()
+	// order.StorageConditionValidator is a validator for the "storage_condition" field. It is called by the builders before save.
+	order.StorageConditionValidator = orderDescStorageCondition.Validators[0].(func(string) error)
 	// orderDescCreated is the schema descriptor for created field.
-	orderDescCreated := orderFields[7].Descriptor()
+	orderDescCreated := orderFields[8].Descriptor()
 	// order.DefaultCreated holds the default value on creation for the created field.
 	order.DefaultCreated = orderDescCreated.Default.(time.Time)
 	// orderDescUpdated is the schema descriptor for updated field.
-	orderDescUpdated := orderFields[8].Descriptor()
+	orderDescUpdated := orderFields[9].Descriptor()
 	// order.DefaultUpdated holds the default value on creation for the updated field.
 	order.DefaultUpdated = orderDescUpdated.Default.(time.Time)
 }

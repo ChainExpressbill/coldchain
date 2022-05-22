@@ -26,7 +26,8 @@ var (
 	// OrdersColumns holds the columns for the "orders" table.
 	OrdersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "orderer", Type: field.TypeString, Unique: true},
+		{Name: "oid", Type: field.TypeUUID, Unique: true},
+		{Name: "orderer", Type: field.TypeString},
 		{Name: "receiver", Type: field.TypeString},
 		{Name: "drug_name", Type: field.TypeString},
 		{Name: "drug_standard", Type: field.TypeString},
@@ -45,7 +46,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "orders_accounts_orders",
-				Columns:    []*schema.Column{OrdersColumns[10]},
+				Columns:    []*schema.Column{OrdersColumns[11]},
 				RefColumns: []*schema.Column{AccountsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
