@@ -8,8 +8,10 @@ import (
 	"github.com/ChainExpressbill/coldchain/account"
 	"github.com/ChainExpressbill/coldchain/dashboard"
 	"github.com/ChainExpressbill/coldchain/database"
+	"github.com/ChainExpressbill/coldchain/middlewares"
 	"github.com/ChainExpressbill/coldchain/orders"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/joho/godotenv"
 	"github.com/qinains/fastergoding"
 )
@@ -33,19 +35,9 @@ func main() {
 
 	database.MigrationDatabase()
 
-	// client.Account.
-	// 	Create().
-	// 	SetID("admin").
-	// 	SetPassword("1234").
-	// 	SetName("jtpark").
-	// 	SetEmailAddress("vigabhan1231@gmail.com").
-	// 	SaveX(context.TODO())
-
 	app := fiber.New()
-
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	app.Use(recover.New())
+	app.Use(middlewares.Cors())
 
 	app.Post("/login", account.Login)
 	app.Post("/logout", account.Logout)
