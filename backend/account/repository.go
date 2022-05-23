@@ -3,6 +3,7 @@ package account
 import (
 	"context"
 
+	"github.com/ChainExpressbill/coldchain/database"
 	"github.com/ChainExpressbill/coldchain/ent"
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/utils"
@@ -14,14 +15,18 @@ type AccountRepository struct {
 
 var ctx = context.TODO()
 
-func (repo *AccountRepository) FindById(id string) *ent.Account {
-	result := repo.Client.Query().Where(account.ID(id)).OnlyX(ctx)
+func FindById(id string) *ent.Account {
+	result := database.GetInstance().Account.
+		Query().
+		Where(account.ID(id)).
+		OnlyX(ctx)
 
 	return result
 }
 
-func (repo *AccountRepository) FindByIdAndPassword(id, password string) *ent.Account {
-	result := repo.Client.Query().
+func FindByIdAndPassword(id, password string) *ent.Account {
+	result := database.GetInstance().Account.
+		Query().
 		Where(account.ID(id)).
 		Where(account.Password(password)).
 		Select(
@@ -36,8 +41,8 @@ func (repo *AccountRepository) FindByIdAndPassword(id, password string) *ent.Acc
 	return result
 }
 
-func (repo *AccountRepository) CreateAccount(params *JoinParams) {
-	repo.Client.
+func CreateAccount(params *JoinParams) {
+	database.GetInstance().Account.
 		Create().
 		SetID(params.Id).
 		SetPassword(utils.EncryptSHA256(params.Password)).

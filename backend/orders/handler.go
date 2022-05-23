@@ -46,6 +46,7 @@ func OrderCreate(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
+	fmt.Printf("%#v\n", body)
 	OrderCreateService(body)
 	return c.SendStatus(fiber.StatusOK)
 }

@@ -10,6 +10,8 @@ type OrderSearchParams struct {
 }
 
 type OrderRequestBody struct {
+	// jwt 적용 전 임시로 id를 받아서 처리
+	AccountId        string `json:"accountId,omitempty"`
 	Oid              string `json:"oid,omitempty"`
 	Orderer          string `json:"orderer,omitempty"`
 	Receiver         string `json:"receiver,omitempty"`
