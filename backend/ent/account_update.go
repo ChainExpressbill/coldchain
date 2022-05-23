@@ -53,14 +53,6 @@ func (au *AccountUpdate) SetUpdated(t time.Time) *AccountUpdate {
 	return au
 }
 
-// SetNillableUpdated sets the "updated" field if the given value is not nil.
-func (au *AccountUpdate) SetNillableUpdated(t *time.Time) *AccountUpdate {
-	if t != nil {
-		au.SetUpdated(*t)
-	}
-	return au
-}
-
 // AddOrderIDs adds the "orders" edge to the Order entity by IDs.
 func (au *AccountUpdate) AddOrderIDs(ids ...int) *AccountUpdate {
 	au.mutation.AddOrderIDs(ids...)
@@ -108,6 +100,7 @@ func (au *AccountUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	au.defaults()
 	if len(au.hooks) == 0 {
 		if err = au.check(); err != nil {
 			return 0, err
@@ -159,6 +152,14 @@ func (au *AccountUpdate) Exec(ctx context.Context) error {
 func (au *AccountUpdate) ExecX(ctx context.Context) {
 	if err := au.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (au *AccountUpdate) defaults() {
+	if _, ok := au.mutation.Updated(); !ok {
+		v := account.UpdateDefaultUpdated()
+		au.mutation.SetUpdated(v)
 	}
 }
 
@@ -325,14 +326,6 @@ func (auo *AccountUpdateOne) SetUpdated(t time.Time) *AccountUpdateOne {
 	return auo
 }
 
-// SetNillableUpdated sets the "updated" field if the given value is not nil.
-func (auo *AccountUpdateOne) SetNillableUpdated(t *time.Time) *AccountUpdateOne {
-	if t != nil {
-		auo.SetUpdated(*t)
-	}
-	return auo
-}
-
 // AddOrderIDs adds the "orders" edge to the Order entity by IDs.
 func (auo *AccountUpdateOne) AddOrderIDs(ids ...int) *AccountUpdateOne {
 	auo.mutation.AddOrderIDs(ids...)
@@ -387,6 +380,7 @@ func (auo *AccountUpdateOne) Save(ctx context.Context) (*Account, error) {
 		err  error
 		node *Account
 	)
+	auo.defaults()
 	if len(auo.hooks) == 0 {
 		if err = auo.check(); err != nil {
 			return nil, err
@@ -438,6 +432,14 @@ func (auo *AccountUpdateOne) Exec(ctx context.Context) error {
 func (auo *AccountUpdateOne) ExecX(ctx context.Context) {
 	if err := auo.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (auo *AccountUpdateOne) defaults() {
+	if _, ok := auo.mutation.Updated(); !ok {
+		v := account.UpdateDefaultUpdated()
+		auo.mutation.SetUpdated(v)
 	}
 }
 

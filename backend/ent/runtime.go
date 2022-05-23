@@ -32,11 +32,13 @@ func init() {
 	// accountDescCreated is the schema descriptor for created field.
 	accountDescCreated := accountFields[4].Descriptor()
 	// account.DefaultCreated holds the default value on creation for the created field.
-	account.DefaultCreated = accountDescCreated.Default.(time.Time)
+	account.DefaultCreated = accountDescCreated.Default.(func() time.Time)
 	// accountDescUpdated is the schema descriptor for updated field.
 	accountDescUpdated := accountFields[5].Descriptor()
 	// account.DefaultUpdated holds the default value on creation for the updated field.
-	account.DefaultUpdated = accountDescUpdated.Default.(time.Time)
+	account.DefaultUpdated = accountDescUpdated.Default.(func() time.Time)
+	// account.UpdateDefaultUpdated holds the default value on update for the updated field.
+	account.UpdateDefaultUpdated = accountDescUpdated.UpdateDefault.(func() time.Time)
 	orderFields := schema.Order{}.Fields()
 	_ = orderFields
 	// orderDescOid is the schema descriptor for oid field.
@@ -66,9 +68,11 @@ func init() {
 	// orderDescCreated is the schema descriptor for created field.
 	orderDescCreated := orderFields[8].Descriptor()
 	// order.DefaultCreated holds the default value on creation for the created field.
-	order.DefaultCreated = orderDescCreated.Default.(time.Time)
+	order.DefaultCreated = orderDescCreated.Default.(func() time.Time)
 	// orderDescUpdated is the schema descriptor for updated field.
 	orderDescUpdated := orderFields[9].Descriptor()
 	// order.DefaultUpdated holds the default value on creation for the updated field.
-	order.DefaultUpdated = orderDescUpdated.Default.(time.Time)
+	order.DefaultUpdated = orderDescUpdated.Default.(func() time.Time)
+	// order.UpdateDefaultUpdated holds the default value on update for the updated field.
+	order.UpdateDefaultUpdated = orderDescUpdated.UpdateDefault.(func() time.Time)
 }

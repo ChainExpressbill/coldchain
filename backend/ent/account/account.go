@@ -62,7 +62,9 @@ var (
 	// EmailAddressValidator is a validator for the "email_address" field. It is called by the builders before save.
 	EmailAddressValidator func(string) error
 	// DefaultCreated holds the default value on creation for the "created" field.
-	DefaultCreated time.Time
+	DefaultCreated func() time.Time
 	// DefaultUpdated holds the default value on creation for the "updated" field.
-	DefaultUpdated time.Time
+	DefaultUpdated func() time.Time
+	// UpdateDefaultUpdated holds the default value on update for the "updated" field.
+	UpdateDefaultUpdated func() time.Time
 )

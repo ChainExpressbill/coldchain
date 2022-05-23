@@ -1,22 +1,33 @@
 package orders
 
 import (
+	"math"
+
 	"github.com/ChainExpressbill/coldchain/ent"
-	"github.com/google/uuid"
 )
 
-func OrdersService(params *OrderSearchParams) []*ent.Order {
-	return FindAll(params)
+func OrdersService(params *OrderSearchParams) GetOrdersResponse {
+	totalCount := OrderCountByOrdererAndReceiver(params)
+	orderList := FindAllByOrdererAndReceiver(params)
+	orders := GetOrdersResponse{
+		OrderList:  orderList,
+		Page:       params.Page,
+		Size:       params.Size,
+		TotalPage:  int(math.Ceil(float64(totalCount) / float64(params.Size))),
+		TotalCount: totalCount,
+	}
+
+	return orders
 }
 
-func OrderDetailService(id uuid.UUID) *ent.Order {
+func OrderDetailService(id int) *ent.Order {
 	return FindById(id)
 }
 
 func OrderCreateService(body *OrderRequestBody) {
-	CreateAccount(body)
+	CreateOrder(body)
 }
 
-func OrderUpdateService(id uuid.UUID) {
-
+func OrderUpdateService(body *OrderRequestBody) {
+	UpdateOrder(body)
 }

@@ -2,9 +2,9 @@ package orders
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
 func Orders(c *fiber.Ctx) error {
@@ -20,15 +20,14 @@ func Orders(c *fiber.Ctx) error {
 }
 
 func OrderDetail(c *fiber.Ctx) error {
-	oid := c.Params("id")
+	param := c.Params("id")
 
-	if oid == "" {
+	if param == "" {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	fmt.Printf("Oid: %s", oid)
-
-	id, err := uuid.ParseBytes([]byte(oid))
+	// 입력 문자열이 정수 형식이 아닌 경우 함수는 0을 반환합니다.
+	id, err := strconv.Atoi(param)
 
 	if err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
@@ -36,7 +35,7 @@ func OrderDetail(c *fiber.Ctx) error {
 
 	order := OrderDetailService(id)
 	fmt.Printf("%#v\n", order)
-	return c.SendString("OrderDetail")
+	return c.Status(fiber.StatusOK).JSON(order)
 }
 
 func OrderCreate(c *fiber.Ctx) error {
@@ -58,5 +57,7 @@ func OrderUpdate(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	return c.SendString("OrderUpdate")
+	fmt.Printf("%#v\n", body)
+	OrderUpdateService(body)
+	return c.SendStatus(fiber.StatusOK)
 }

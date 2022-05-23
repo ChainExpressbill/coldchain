@@ -6,32 +6,66 @@ import (
 	"github.com/ChainExpressbill/coldchain/database"
 	"github.com/ChainExpressbill/coldchain/ent"
 	"github.com/ChainExpressbill/coldchain/ent/order"
-	"github.com/google/uuid"
 )
 
 var ctx = context.TODO()
 
-func FindAll(params *OrderSearchParams) []*ent.Order {
+func OrderCountByOrdererAndReceiver(params *OrderSearchParams) int {
 	result := database.GetInstance().Order.
 		Query().
-		WithManager().
+		Where(order.OrdererContains(params.Orderer)).
+		Where(order.ReceiverContains(params.Receiver)).
+		Where(order.CreatedGT(params.StartDate)).
+		Where(order.CreatedLT(params.EndDate)).
+		CountX(ctx)
+
+	return result
+}
+
+func FindAllByOrdererAndReceiver(params *OrderSearchParams) []*ent.Order {
+	/**
+	** @see https://entgo.io/docs/crud#field-selection
+	**/
+	result := database.GetInstance().Order.
+		Query().
+		Offset(params.Page - 1).
+		Limit(params.Size).
+		Order(ent.Desc(order.FieldCreated)).
+		Where(order.OrdererContains(params.Orderer)).
+		Where(order.ReceiverContains(params.Receiver)).
+		Where(order.CreatedGT(params.StartDate)).
+		Where(order.CreatedLT(params.EndDate)).
 		AllX(ctx)
 
 	return result
 }
 
-func FindById(id uuid.UUID) *ent.Order {
+func FindById(id int) *ent.Order {
 	result := database.GetInstance().Order.
 		Query().
-		Where(order.Oid(id)).
+		Where(order.ID(id)).
 		OnlyX(ctx)
 
 	return result
 }
 
-func CreateAccount(body *OrderRequestBody) {
+func CreateOrder(body *OrderRequestBody) {
 	database.GetInstance().Order.
 		Create().
+		SetOrderer(body.Orderer).
+		SetReceiver(body.Receiver).
+		SetDrugName(body.DrugName).
+		SetDrugStandard(body.DrugStandard).
+		SetQuantity(body.Quantity).
+		SetRegisterName(body.RegisterName).
+		SetStorageCondition(body.StorageCondition).
+		SetManagerID(body.AccountId).
+		SaveX(ctx)
+}
+
+func UpdateOrder(body *OrderRequestBody) {
+	database.GetInstance().Order.
+		UpdateOneID(body.Id).
 		SetOrderer(body.Orderer).
 		SetReceiver(body.Receiver).
 		SetDrugName(body.DrugName).

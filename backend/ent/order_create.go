@@ -193,11 +193,11 @@ func (oc *OrderCreate) defaults() {
 		oc.mutation.SetOid(v)
 	}
 	if _, ok := oc.mutation.Created(); !ok {
-		v := order.DefaultCreated
+		v := order.DefaultCreated()
 		oc.mutation.SetCreated(v)
 	}
 	if _, ok := oc.mutation.Updated(); !ok {
-		v := order.DefaultUpdated
+		v := order.DefaultUpdated()
 		oc.mutation.SetUpdated(v)
 	}
 }

@@ -99,14 +99,6 @@ func (ou *OrderUpdate) SetUpdated(t time.Time) *OrderUpdate {
 	return ou
 }
 
-// SetNillableUpdated sets the "updated" field if the given value is not nil.
-func (ou *OrderUpdate) SetNillableUpdated(t *time.Time) *OrderUpdate {
-	if t != nil {
-		ou.SetUpdated(*t)
-	}
-	return ou
-}
-
 // SetManagerID sets the "manager" edge to the Account entity by ID.
 func (ou *OrderUpdate) SetManagerID(id string) *OrderUpdate {
 	ou.mutation.SetManagerID(id)
@@ -135,6 +127,7 @@ func (ou *OrderUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	ou.defaults()
 	if len(ou.hooks) == 0 {
 		if err = ou.check(); err != nil {
 			return 0, err
@@ -186,6 +179,14 @@ func (ou *OrderUpdate) Exec(ctx context.Context) error {
 func (ou *OrderUpdate) ExecX(ctx context.Context) {
 	if err := ou.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (ou *OrderUpdate) defaults() {
+	if _, ok := ou.mutation.Updated(); !ok {
+		v := order.UpdateDefaultUpdated()
+		ou.mutation.SetUpdated(v)
 	}
 }
 
@@ -433,14 +434,6 @@ func (ouo *OrderUpdateOne) SetUpdated(t time.Time) *OrderUpdateOne {
 	return ouo
 }
 
-// SetNillableUpdated sets the "updated" field if the given value is not nil.
-func (ouo *OrderUpdateOne) SetNillableUpdated(t *time.Time) *OrderUpdateOne {
-	if t != nil {
-		ouo.SetUpdated(*t)
-	}
-	return ouo
-}
-
 // SetManagerID sets the "manager" edge to the Account entity by ID.
 func (ouo *OrderUpdateOne) SetManagerID(id string) *OrderUpdateOne {
 	ouo.mutation.SetManagerID(id)
@@ -476,6 +469,7 @@ func (ouo *OrderUpdateOne) Save(ctx context.Context) (*Order, error) {
 		err  error
 		node *Order
 	)
+	ouo.defaults()
 	if len(ouo.hooks) == 0 {
 		if err = ouo.check(); err != nil {
 			return nil, err
@@ -527,6 +521,14 @@ func (ouo *OrderUpdateOne) Exec(ctx context.Context) error {
 func (ouo *OrderUpdateOne) ExecX(ctx context.Context) {
 	if err := ouo.Exec(ctx); err != nil {
 		panic(err)
+	}
+}
+
+// defaults sets the default values of the builder before save.
+func (ouo *OrderUpdateOne) defaults() {
+	if _, ok := ouo.mutation.Updated(); !ok {
+		v := order.UpdateDefaultUpdated()
+		ouo.mutation.SetUpdated(v)
 	}
 }
 

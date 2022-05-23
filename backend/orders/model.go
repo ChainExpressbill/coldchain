@@ -1,17 +1,32 @@
 package orders
 
+import (
+	"time"
+
+	"github.com/ChainExpressbill/coldchain/ent"
+)
+
 type OrderSearchParams struct {
-	Orderer   string `json:"orderer,omitempty"`
-	Receiver  string `json:"receiver,omitempty"`
-	StartDate string `json:"startDate,omitempty"`
-	EndDate   string `json:"endDate,omitempty"`
-	Page      string `json:"page,omitempty"`
-	Size      string `json:"size,omitempty"`
+	Orderer   string    `json:"orderer,omitempty"`
+	Receiver  string    `json:"receiver,omitempty"`
+	StartDate time.Time `json:"startDate,omitempty"`
+	EndDate   time.Time `json:"endDate,omitempty"`
+	Page      int       `json:"page,omitempty"`
+	Size      int       `json:"size,omitempty"`
+}
+
+type GetOrdersResponse struct {
+	OrderList  []*ent.Order `json:"orderList"`
+	Page       int          `json:"page"`
+	Size       int          `json:"size"`
+	TotalPage  int          `json:"totalSize"`
+	TotalCount int          `json:"totalCount"`
 }
 
 type OrderRequestBody struct {
 	// jwt 적용 전 임시로 id를 받아서 처리
 	AccountId        string `json:"accountId,omitempty"`
+	Id               int    `json:"id,omitempty"`
 	Oid              string `json:"oid,omitempty"`
 	Orderer          string `json:"orderer,omitempty"`
 	Receiver         string `json:"receiver,omitempty"`

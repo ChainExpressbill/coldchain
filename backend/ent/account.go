@@ -19,7 +19,7 @@ type Account struct {
 	ID string `json:"id,omitempty"`
 	// Password holds the value of the "password" field.
 	// 계정 비밀번호
-	Password string `json:"password,omitempty"`
+	Password string `json:"-"`
 	// Name holds the value of the "name" field.
 	// 관리자 이름
 	Name string `json:"name,omitempty"`
@@ -148,8 +148,7 @@ func (a *Account) String() string {
 	var builder strings.Builder
 	builder.WriteString("Account(")
 	builder.WriteString(fmt.Sprintf("id=%v", a.ID))
-	builder.WriteString(", password=")
-	builder.WriteString(a.Password)
+	builder.WriteString(", password=<sensitive>")
 	builder.WriteString(", name=")
 	builder.WriteString(a.Name)
 	builder.WriteString(", email_address=")
