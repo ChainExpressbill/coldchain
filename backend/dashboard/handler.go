@@ -1,6 +1,7 @@
 package dashboard
 
 import (
+	"github.com/ChainExpressbill/coldchain/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -17,17 +18,19 @@ func Today(c *fiber.Ctx) error {
 }
 
 // 최근 30일 간 데이터
-// enum type {
-// 	orderers    // 주문 업체 수
-// 	orders    // 주문 건수
-// 	successes    // 배송 완료 수
-// 	failures    // 배송 실패 수
-// }
-// 200 {
-// 	timestamp    string    // yyyy-mm-dd
-// 	count    number
-// }
 func Charts(c *fiber.Ctx) error {
-	ChartsByTypeService()
-	return c.SendString("Charts")
+	var chartTypes = []string{"orderers", "orders", "successes", "failures"}
+
+	param := c.Params("type")
+	if param == "" {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	isValidChartType := utils.ContainsInSlice(chartTypes, param)
+	if !isValidChartType {
+		return c.SendStatus(fiber.StatusBadRequest)
+	}
+
+	chartsResponse := ChartsByTypeService()
+	return c.Status(fiber.StatusOK).JSON(chartsResponse)
 }

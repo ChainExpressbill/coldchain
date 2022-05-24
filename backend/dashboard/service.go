@@ -34,6 +34,6 @@ func TodayService() SummaryCountResponse {
 	}
 }
 
-func ChartsByTypeService() {
-
+func ChartsByTypeService() ChartsResponse {
+	return ChartsResponse{}
 }
