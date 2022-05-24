@@ -13,10 +13,12 @@ var ctx = context.TODO()
 func OrderCountByOrdererAndReceiver(params *OrderSearchParams) int {
 	result := database.GetInstance().Order.
 		Query().
-		Where(order.OrdererContains(params.Orderer)).
-		Where(order.ReceiverContains(params.Receiver)).
-		Where(order.CreatedGT(params.StartDate)).
-		Where(order.CreatedLT(params.EndDate)).
+		Where(
+			order.OrdererContains(params.Orderer),
+			order.ReceiverContains(params.Receiver),
+			order.CreatedGTE(params.StartDate),
+			order.CreatedLTE(params.EndDate),
+		).
 		CountX(ctx)
 
 	return result
@@ -28,13 +30,15 @@ func FindAllByOrdererAndReceiver(params *OrderSearchParams) []*ent.Order {
 	**/
 	result := database.GetInstance().Order.
 		Query().
-		Offset(params.Page - 1).
+		Offset(params.Page-1).
 		Limit(params.Size).
 		Order(ent.Desc(order.FieldCreated)).
-		Where(order.OrdererContains(params.Orderer)).
-		Where(order.ReceiverContains(params.Receiver)).
-		Where(order.CreatedGT(params.StartDate)).
-		Where(order.CreatedLT(params.EndDate)).
+		Where(
+			order.OrdererContains(params.Orderer),
+			order.ReceiverContains(params.Receiver),
+			order.CreatedGTE(params.StartDate),
+			order.CreatedLTE(params.EndDate),
+		).
 		AllX(ctx)
 
 	return result
