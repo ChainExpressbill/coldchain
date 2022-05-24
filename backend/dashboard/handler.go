@@ -1,21 +1,19 @@
 package dashboard
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
-// ordererCount    number // 주문 요청 업체 수
-// orderCount    number    // 주문 건수
 // 지난 달 주문 요약
 func LastMonth(c *fiber.Ctx) error {
-	LastMonthService()
-	return c.SendString("LastMonth")
+	lastMonthSummaryCountResponse := LastMonthService()
+	return c.Status(fiber.StatusOK).JSON(lastMonthSummaryCountResponse)
 }
 
-// ordererCount    number // 주문 요청 업체 수
-// orderCount    number    // 주문 건수
 // 금일 주문 현황
 func Today(c *fiber.Ctx) error {
-	TodayService()
-	return c.SendString("Today")
+	todaySummaryCountResponse := TodayService()
+	return c.Status(fiber.StatusOK).JSON(todaySummaryCountResponse)
 }
 
 // 최근 30일 간 데이터
