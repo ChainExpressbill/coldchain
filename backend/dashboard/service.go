@@ -34,6 +34,16 @@ func TodayService() SummaryCountResponse {
 	}
 }
 
-func ChartsByTypeService() ChartsResponse {
-	return ChartsResponse{}
+func ChartsByTypeService(param string) ChartsResponse {
+	now := time.Now()
+	start := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local).AddDate(0, 0, -30)
+	end := time.Date(now.Year(), now.Month(), now.Day(), 23, 59, 59, 0, time.Local)
+
+	chartsResponse := ChartsResponse{}
+	if param == "orders" {
+		chartsResponse.OrderCountGroupByCreated(start, end)
+	} else if param == "orderers" {
+		chartsResponse.OrdererCountGroupByCreated(start, end)
+	}
+	return chartsResponse
 }

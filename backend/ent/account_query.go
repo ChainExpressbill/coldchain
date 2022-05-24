@@ -28,6 +28,7 @@ type AccountQuery struct {
 	predicates []predicate.Account
 	// eager-loading edges.
 	withOrders *OrderQuery
+	modifiers  []func(s *sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -368,6 +369,9 @@ func (aq *AccountQuery) sqlAll(ctx context.Context) ([]*Account, error) {
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
+	if len(aq.modifiers) > 0 {
+		_spec.Modifiers = aq.modifiers
+	}
 	if err := sqlgraph.QueryNodes(ctx, aq.driver, _spec); err != nil {
 		return nil, err
 	}
@@ -409,6 +413,9 @@ func (aq *AccountQuery) sqlAll(ctx context.Context) ([]*Account, error) {
 
 func (aq *AccountQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := aq.querySpec()
+	if len(aq.modifiers) > 0 {
+		_spec.Modifiers = aq.modifiers
+	}
 	_spec.Node.Columns = aq.fields
 	if len(aq.fields) > 0 {
 		_spec.Unique = aq.unique != nil && *aq.unique
@@ -487,6 +494,9 @@ func (aq *AccountQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if aq.unique != nil && *aq.unique {
 		selector.Distinct()
 	}
+	for _, m := range aq.modifiers {
+		m(selector)
+	}
 	for _, p := range aq.predicates {
 		p(selector)
 	}
@@ -502,6 +512,12 @@ func (aq *AccountQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector.Limit(*limit)
 	}
 	return selector
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (aq *AccountQuery) Modify(modifiers ...func(s *sql.Selector)) *AccountSelect {
+	aq.modifiers = append(aq.modifiers, modifiers...)
+	return aq.Select()
 }
 
 // AccountGroupBy is the group-by builder for Account entities.
@@ -990,4 +1006,10 @@ func (as *AccountSelect) sqlScan(ctx context.Context, v interface{}) error {
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
+}
+
+// Modify adds a query modifier for attaching custom logic to queries.
+func (as *AccountSelect) Modify(modifiers ...func(s *sql.Selector)) *AccountSelect {
+	as.modifiers = append(as.modifiers, modifiers...)
+	return as
 }

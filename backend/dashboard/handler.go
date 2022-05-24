@@ -31,6 +31,6 @@ func Charts(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	chartsResponse := ChartsByTypeService()
+	chartsResponse := ChartsByTypeService(param)
 	return c.Status(fiber.StatusOK).JSON(chartsResponse)
 }
