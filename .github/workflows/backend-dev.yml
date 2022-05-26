@@ -1,0 +1,65 @@
+name: Backend Dev
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-dev.yml"
+
+env:
+  AWS_DEFAULT_REGION: ap-northeast-2
+  AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+  APP_NAME: coldchain-dev-service
+  ENV_NAME: Coldchaindevservice-env
+  APP_S3_BUCKET_NAME: elasticbeanstalk-ap-northeast-2-248385315901
+  DEPLOY_PKG_NAME: backend_dev_${{ github.sha }}.zip
+
+concurrency: backend-dev
+
+defaults:
+  run:
+    working-directory: backend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up GO 1.16.1
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.16.1"
+
+      - name: Export env from aws ssm
+        id: backend-chamber
+        uses: nolmungshemung/chamber-action@main
+        with:
+          args: export --format dotenv --output-file ./backend/.env dev/coldchain-backend
+
+      - name: Build go application
+        run: go build -o ./backend
+        shell: bash
+
+      - name: Generate deployment package & Upload package to S3 bucket
+        run: |
+          mkdir -p deploy
+          cp backend deploy/application
+          cp Procfile deploy/Procfile
+          cp -r .ebextensions deploy/.ebextensions
+          cd deploy && zip -r ${{ env.DEPLOY_PKG_NAME }} .
+          aws s3 cp ${{ env.DEPLOY_PKG_NAME }} s3://${{ env.APP_S3_BUCKET_NAME }}/
+
+      - name: Create new App Version
+        run: |
+          aws elasticbeanstalk create-application-version \
+          --application-name ${{ env.APP_NAME }} \
+          --source-bundle S3Bucket="${{ env.APP_S3_BUCKET_NAME }}",S3Key="${{ env.DEPLOY_PKG_NAME }}" \
+          --version-label "Ver-${{ github.sha }}" \
+          --description "SHA-${{ github.sha }}"
+
+      - name: Deploy new App Version
+        run: aws elasticbeanstalk update-environment --environment-name ${{ env.ENV_NAME }} --version-label "Ver-${{ github.sha }}"
