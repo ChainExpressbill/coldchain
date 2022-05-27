@@ -25,10 +25,17 @@ func loadEnvironments() {
 	}
 }
 
-func main() {
-	fastergoding.Run() // hot reload
+func useHotReloading() {
+	STAGE := os.Getenv("STAGE")
 
+	if STAGE != "prod" {
+		fastergoding.Run() // hot reload
+	}
+}
+
+func main() {
 	loadEnvironments()
+	useHotReloading()
 
 	client := database.GetInstance()
 	defer client.Close()
