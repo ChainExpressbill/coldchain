@@ -16,8 +16,8 @@ func OrderCountByOrdererAndReceiver(params *OrderSearchParams) int {
 		Where(
 			order.OrdererContains(params.Orderer),
 			order.ReceiverContains(params.Receiver),
-			order.CreatedGTE(params.StartDate),
-			order.CreatedLTE(params.EndDate),
+			order.CreatedAtGTE(params.StartDate),
+			order.CreatedAtLTE(params.EndDate),
 		).
 		CountX(ctx)
 
@@ -32,12 +32,12 @@ func FindAllByOrdererAndReceiver(params *OrderSearchParams) []*ent.Order {
 		Query().
 		Offset(params.Page-1).
 		Limit(params.Size).
-		Order(ent.Desc(order.FieldCreated)).
+		Order(ent.Desc(order.FieldCreatedAt)).
 		Where(
 			order.OrdererContains(params.Orderer),
 			order.ReceiverContains(params.Receiver),
-			order.CreatedGTE(params.StartDate),
-			order.CreatedLTE(params.EndDate),
+			order.CreatedAtGTE(params.StartDate),
+			order.CreatedAtLTE(params.EndDate),
 		).
 		AllX(ctx)
 

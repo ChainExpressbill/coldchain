@@ -34,11 +34,11 @@ func (Order) Fields() []ent.Field {
 			StructTag(`json:"registerName,omitempty"`).Comment("주문 등록자"),
 		field.String("storage_condition").NotEmpty().
 			StructTag(`json:"storageCondition,omitempty"`).Comment("보관조건"),
-		field.Time("created").
+		field.Time("createdAt").
 			Default(time.Now).
 			Immutable().
 			Comment("생성 시간"),
-		field.Time("updated").
+		field.Time("updatedAt").
 			Default(time.Now).
 			UpdateDefault(time.Now).
 			Comment("수정 시간"),

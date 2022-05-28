@@ -39,8 +39,8 @@ type AccountMutation struct {
 	password      *string
 	name          *string
 	email_address *string
-	created       *time.Time
-	updated       *time.Time
+	createdAt     *time.Time
+	updatedAt     *time.Time
 	clearedFields map[string]struct{}
 	orders        map[int]struct{}
 	removedorders map[int]struct{}
@@ -262,76 +262,76 @@ func (m *AccountMutation) ResetEmailAddress() {
 	m.email_address = nil
 }
 
-// SetCreated sets the "created" field.
-func (m *AccountMutation) SetCreated(t time.Time) {
-	m.created = &t
+// SetCreatedAt sets the "createdAt" field.
+func (m *AccountMutation) SetCreatedAt(t time.Time) {
+	m.createdAt = &t
 }
 
-// Created returns the value of the "created" field in the mutation.
-func (m *AccountMutation) Created() (r time.Time, exists bool) {
-	v := m.created
+// CreatedAt returns the value of the "createdAt" field in the mutation.
+func (m *AccountMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.createdAt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreated returns the old "created" field's value of the Account entity.
+// OldCreatedAt returns the old "createdAt" field's value of the Account entity.
 // If the Account object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AccountMutation) OldCreated(ctx context.Context) (v time.Time, err error) {
+func (m *AccountMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreated is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreated requires an ID field in the mutation")
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreated: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
 	}
-	return oldValue.Created, nil
+	return oldValue.CreatedAt, nil
 }
 
-// ResetCreated resets all changes to the "created" field.
-func (m *AccountMutation) ResetCreated() {
-	m.created = nil
+// ResetCreatedAt resets all changes to the "createdAt" field.
+func (m *AccountMutation) ResetCreatedAt() {
+	m.createdAt = nil
 }
 
-// SetUpdated sets the "updated" field.
-func (m *AccountMutation) SetUpdated(t time.Time) {
-	m.updated = &t
+// SetUpdatedAt sets the "updatedAt" field.
+func (m *AccountMutation) SetUpdatedAt(t time.Time) {
+	m.updatedAt = &t
 }
 
-// Updated returns the value of the "updated" field in the mutation.
-func (m *AccountMutation) Updated() (r time.Time, exists bool) {
-	v := m.updated
+// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+func (m *AccountMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updatedAt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdated returns the old "updated" field's value of the Account entity.
+// OldUpdatedAt returns the old "updatedAt" field's value of the Account entity.
 // If the Account object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AccountMutation) OldUpdated(ctx context.Context) (v time.Time, err error) {
+func (m *AccountMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdated is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdated requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdated: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
 	}
-	return oldValue.Updated, nil
+	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdated resets all changes to the "updated" field.
-func (m *AccountMutation) ResetUpdated() {
-	m.updated = nil
+// ResetUpdatedAt resets all changes to the "updatedAt" field.
+func (m *AccountMutation) ResetUpdatedAt() {
+	m.updatedAt = nil
 }
 
 // AddOrderIDs adds the "orders" edge to the Order entity by ids.
@@ -417,11 +417,11 @@ func (m *AccountMutation) Fields() []string {
 	if m.email_address != nil {
 		fields = append(fields, account.FieldEmailAddress)
 	}
-	if m.created != nil {
-		fields = append(fields, account.FieldCreated)
+	if m.createdAt != nil {
+		fields = append(fields, account.FieldCreatedAt)
 	}
-	if m.updated != nil {
-		fields = append(fields, account.FieldUpdated)
+	if m.updatedAt != nil {
+		fields = append(fields, account.FieldUpdatedAt)
 	}
 	return fields
 }
@@ -437,10 +437,10 @@ func (m *AccountMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case account.FieldEmailAddress:
 		return m.EmailAddress()
-	case account.FieldCreated:
-		return m.Created()
-	case account.FieldUpdated:
-		return m.Updated()
+	case account.FieldCreatedAt:
+		return m.CreatedAt()
+	case account.FieldUpdatedAt:
+		return m.UpdatedAt()
 	}
 	return nil, false
 }
@@ -456,10 +456,10 @@ func (m *AccountMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldName(ctx)
 	case account.FieldEmailAddress:
 		return m.OldEmailAddress(ctx)
-	case account.FieldCreated:
-		return m.OldCreated(ctx)
-	case account.FieldUpdated:
-		return m.OldUpdated(ctx)
+	case account.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case account.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
 	}
 	return nil, fmt.Errorf("unknown Account field %s", name)
 }
@@ -490,19 +490,19 @@ func (m *AccountMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetEmailAddress(v)
 		return nil
-	case account.FieldCreated:
+	case account.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreated(v)
+		m.SetCreatedAt(v)
 		return nil
-	case account.FieldUpdated:
+	case account.FieldUpdatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdated(v)
+		m.SetUpdatedAt(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Account field %s", name)
@@ -562,11 +562,11 @@ func (m *AccountMutation) ResetField(name string) error {
 	case account.FieldEmailAddress:
 		m.ResetEmailAddress()
 		return nil
-	case account.FieldCreated:
-		m.ResetCreated()
+	case account.FieldCreatedAt:
+		m.ResetCreatedAt()
 		return nil
-	case account.FieldUpdated:
-		m.ResetUpdated()
+	case account.FieldUpdatedAt:
+		m.ResetUpdatedAt()
 		return nil
 	}
 	return fmt.Errorf("unknown Account field %s", name)
@@ -671,8 +671,8 @@ type OrderMutation struct {
 	addquantity       *int
 	register_name     *string
 	storage_condition *string
-	created           *time.Time
-	updated           *time.Time
+	createdAt         *time.Time
+	updatedAt         *time.Time
 	clearedFields     map[string]struct{}
 	manager           *string
 	clearedmanager    bool
@@ -1087,76 +1087,76 @@ func (m *OrderMutation) ResetStorageCondition() {
 	m.storage_condition = nil
 }
 
-// SetCreated sets the "created" field.
-func (m *OrderMutation) SetCreated(t time.Time) {
-	m.created = &t
+// SetCreatedAt sets the "createdAt" field.
+func (m *OrderMutation) SetCreatedAt(t time.Time) {
+	m.createdAt = &t
 }
 
-// Created returns the value of the "created" field in the mutation.
-func (m *OrderMutation) Created() (r time.Time, exists bool) {
-	v := m.created
+// CreatedAt returns the value of the "createdAt" field in the mutation.
+func (m *OrderMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.createdAt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreated returns the old "created" field's value of the Order entity.
+// OldCreatedAt returns the old "createdAt" field's value of the Order entity.
 // If the Order object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderMutation) OldCreated(ctx context.Context) (v time.Time, err error) {
+func (m *OrderMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreated is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreated requires an ID field in the mutation")
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreated: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
 	}
-	return oldValue.Created, nil
+	return oldValue.CreatedAt, nil
 }
 
-// ResetCreated resets all changes to the "created" field.
-func (m *OrderMutation) ResetCreated() {
-	m.created = nil
+// ResetCreatedAt resets all changes to the "createdAt" field.
+func (m *OrderMutation) ResetCreatedAt() {
+	m.createdAt = nil
 }
 
-// SetUpdated sets the "updated" field.
-func (m *OrderMutation) SetUpdated(t time.Time) {
-	m.updated = &t
+// SetUpdatedAt sets the "updatedAt" field.
+func (m *OrderMutation) SetUpdatedAt(t time.Time) {
+	m.updatedAt = &t
 }
 
-// Updated returns the value of the "updated" field in the mutation.
-func (m *OrderMutation) Updated() (r time.Time, exists bool) {
-	v := m.updated
+// UpdatedAt returns the value of the "updatedAt" field in the mutation.
+func (m *OrderMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updatedAt
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdated returns the old "updated" field's value of the Order entity.
+// OldUpdatedAt returns the old "updatedAt" field's value of the Order entity.
 // If the Order object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderMutation) OldUpdated(ctx context.Context) (v time.Time, err error) {
+func (m *OrderMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdated is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdated requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdated: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
 	}
-	return oldValue.Updated, nil
+	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdated resets all changes to the "updated" field.
-func (m *OrderMutation) ResetUpdated() {
-	m.updated = nil
+// ResetUpdatedAt resets all changes to the "updatedAt" field.
+func (m *OrderMutation) ResetUpdatedAt() {
+	m.updatedAt = nil
 }
 
 // SetManagerID sets the "manager" edge to the Account entity by id.
@@ -1242,11 +1242,11 @@ func (m *OrderMutation) Fields() []string {
 	if m.storage_condition != nil {
 		fields = append(fields, order.FieldStorageCondition)
 	}
-	if m.created != nil {
-		fields = append(fields, order.FieldCreated)
+	if m.createdAt != nil {
+		fields = append(fields, order.FieldCreatedAt)
 	}
-	if m.updated != nil {
-		fields = append(fields, order.FieldUpdated)
+	if m.updatedAt != nil {
+		fields = append(fields, order.FieldUpdatedAt)
 	}
 	return fields
 }
@@ -1272,10 +1272,10 @@ func (m *OrderMutation) Field(name string) (ent.Value, bool) {
 		return m.RegisterName()
 	case order.FieldStorageCondition:
 		return m.StorageCondition()
-	case order.FieldCreated:
-		return m.Created()
-	case order.FieldUpdated:
-		return m.Updated()
+	case order.FieldCreatedAt:
+		return m.CreatedAt()
+	case order.FieldUpdatedAt:
+		return m.UpdatedAt()
 	}
 	return nil, false
 }
@@ -1301,10 +1301,10 @@ func (m *OrderMutation) OldField(ctx context.Context, name string) (ent.Value, e
 		return m.OldRegisterName(ctx)
 	case order.FieldStorageCondition:
 		return m.OldStorageCondition(ctx)
-	case order.FieldCreated:
-		return m.OldCreated(ctx)
-	case order.FieldUpdated:
-		return m.OldUpdated(ctx)
+	case order.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case order.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
 	}
 	return nil, fmt.Errorf("unknown Order field %s", name)
 }
@@ -1370,19 +1370,19 @@ func (m *OrderMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetStorageCondition(v)
 		return nil
-	case order.FieldCreated:
+	case order.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreated(v)
+		m.SetCreatedAt(v)
 		return nil
-	case order.FieldUpdated:
+	case order.FieldUpdatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdated(v)
+		m.SetUpdatedAt(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Order field %s", name)
@@ -1472,11 +1472,11 @@ func (m *OrderMutation) ResetField(name string) error {
 	case order.FieldStorageCondition:
 		m.ResetStorageCondition()
 		return nil
-	case order.FieldCreated:
-		m.ResetCreated()
+	case order.FieldCreatedAt:
+		m.ResetCreatedAt()
 		return nil
-	case order.FieldUpdated:
-		m.ResetUpdated()
+	case order.FieldUpdatedAt:
+		m.ResetUpdatedAt()
 		return nil
 	}
 	return fmt.Errorf("unknown Order field %s", name)

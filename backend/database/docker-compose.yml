@@ -1,4 +1,5 @@
 # 참고: https://velog.io/@melangyun/Docker-compose.yml-DB%EC%99%80-%EC%97%B0%EA%B2%B0
+# Local DB 전용
 # 도커 컴포즈 파일은 도커 실행 옵션을 적어놓은 문서이다.
 # docker-compose up -d --build: docker-compose 파일을 빌드
 # up명령은 파일의 내용에 따라 이미지를 빌드하고 서비스를 실행하는 것이다.

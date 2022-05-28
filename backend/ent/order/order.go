@@ -29,10 +29,10 @@ const (
 	FieldRegisterName = "register_name"
 	// FieldStorageCondition holds the string denoting the storage_condition field in the database.
 	FieldStorageCondition = "storage_condition"
-	// FieldCreated holds the string denoting the created field in the database.
-	FieldCreated = "created"
-	// FieldUpdated holds the string denoting the updated field in the database.
-	FieldUpdated = "updated"
+	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	FieldCreatedAt = "created_at"
+	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	FieldUpdatedAt = "updated_at"
 	// EdgeManager holds the string denoting the manager edge name in mutations.
 	EdgeManager = "manager"
 	// Table holds the table name of the order in the database.
@@ -57,8 +57,8 @@ var Columns = []string{
 	FieldQuantity,
 	FieldRegisterName,
 	FieldStorageCondition,
-	FieldCreated,
-	FieldUpdated,
+	FieldCreatedAt,
+	FieldUpdatedAt,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "orders"
@@ -95,10 +95,10 @@ var (
 	DrugStandardValidator func(string) error
 	// StorageConditionValidator is a validator for the "storage_condition" field. It is called by the builders before save.
 	StorageConditionValidator func(string) error
-	// DefaultCreated holds the default value on creation for the "created" field.
-	DefaultCreated func() time.Time
-	// DefaultUpdated holds the default value on creation for the "updated" field.
-	DefaultUpdated func() time.Time
-	// UpdateDefaultUpdated holds the default value on update for the "updated" field.
-	UpdateDefaultUpdated func() time.Time
+	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	UpdateDefaultUpdatedAt func() time.Time
 )

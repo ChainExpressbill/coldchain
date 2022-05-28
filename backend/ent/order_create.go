@@ -78,30 +78,30 @@ func (oc *OrderCreate) SetStorageCondition(s string) *OrderCreate {
 	return oc
 }
 
-// SetCreated sets the "created" field.
-func (oc *OrderCreate) SetCreated(t time.Time) *OrderCreate {
-	oc.mutation.SetCreated(t)
+// SetCreatedAt sets the "createdAt" field.
+func (oc *OrderCreate) SetCreatedAt(t time.Time) *OrderCreate {
+	oc.mutation.SetCreatedAt(t)
 	return oc
 }
 
-// SetNillableCreated sets the "created" field if the given value is not nil.
-func (oc *OrderCreate) SetNillableCreated(t *time.Time) *OrderCreate {
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (oc *OrderCreate) SetNillableCreatedAt(t *time.Time) *OrderCreate {
 	if t != nil {
-		oc.SetCreated(*t)
+		oc.SetCreatedAt(*t)
 	}
 	return oc
 }
 
-// SetUpdated sets the "updated" field.
-func (oc *OrderCreate) SetUpdated(t time.Time) *OrderCreate {
-	oc.mutation.SetUpdated(t)
+// SetUpdatedAt sets the "updatedAt" field.
+func (oc *OrderCreate) SetUpdatedAt(t time.Time) *OrderCreate {
+	oc.mutation.SetUpdatedAt(t)
 	return oc
 }
 
-// SetNillableUpdated sets the "updated" field if the given value is not nil.
-func (oc *OrderCreate) SetNillableUpdated(t *time.Time) *OrderCreate {
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (oc *OrderCreate) SetNillableUpdatedAt(t *time.Time) *OrderCreate {
 	if t != nil {
-		oc.SetUpdated(*t)
+		oc.SetUpdatedAt(*t)
 	}
 	return oc
 }
@@ -192,13 +192,13 @@ func (oc *OrderCreate) defaults() {
 		v := order.DefaultOid()
 		oc.mutation.SetOid(v)
 	}
-	if _, ok := oc.mutation.Created(); !ok {
-		v := order.DefaultCreated()
-		oc.mutation.SetCreated(v)
+	if _, ok := oc.mutation.CreatedAt(); !ok {
+		v := order.DefaultCreatedAt()
+		oc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := oc.mutation.Updated(); !ok {
-		v := order.DefaultUpdated()
-		oc.mutation.SetUpdated(v)
+	if _, ok := oc.mutation.UpdatedAt(); !ok {
+		v := order.DefaultUpdatedAt()
+		oc.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -253,11 +253,11 @@ func (oc *OrderCreate) check() error {
 			return &ValidationError{Name: "storage_condition", err: fmt.Errorf(`ent: validator failed for field "Order.storage_condition": %w`, err)}
 		}
 	}
-	if _, ok := oc.mutation.Created(); !ok {
-		return &ValidationError{Name: "created", err: errors.New(`ent: missing required field "Order.created"`)}
+	if _, ok := oc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "Order.createdAt"`)}
 	}
-	if _, ok := oc.mutation.Updated(); !ok {
-		return &ValidationError{Name: "updated", err: errors.New(`ent: missing required field "Order.updated"`)}
+	if _, ok := oc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "Order.updatedAt"`)}
 	}
 	if _, ok := oc.mutation.ManagerID(); !ok {
 		return &ValidationError{Name: "manager", err: errors.New(`ent: missing required edge "Order.manager"`)}
@@ -353,21 +353,21 @@ func (oc *OrderCreate) createSpec() (*Order, *sqlgraph.CreateSpec) {
 		})
 		_node.StorageCondition = value
 	}
-	if value, ok := oc.mutation.Created(); ok {
+	if value, ok := oc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: order.FieldCreated,
+			Column: order.FieldCreatedAt,
 		})
-		_node.Created = value
+		_node.CreatedAt = value
 	}
-	if value, ok := oc.mutation.Updated(); ok {
+	if value, ok := oc.mutation.UpdatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: order.FieldUpdated,
+			Column: order.FieldUpdatedAt,
 		})
-		_node.Updated = value
+		_node.UpdatedAt = value
 	}
 	if nodes := oc.mutation.ManagerIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

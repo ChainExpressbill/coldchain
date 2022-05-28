@@ -14,8 +14,8 @@ var (
 		{Name: "password", Type: field.TypeString},
 		{Name: "name", Type: field.TypeString},
 		{Name: "email_address", Type: field.TypeString},
-		{Name: "created", Type: field.TypeTime},
-		{Name: "updated", Type: field.TypeTime},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
 	}
 	// AccountsTable holds the schema information for the "accounts" table.
 	AccountsTable = &schema.Table{
@@ -34,8 +34,8 @@ var (
 		{Name: "quantity", Type: field.TypeInt},
 		{Name: "register_name", Type: field.TypeString},
 		{Name: "storage_condition", Type: field.TypeString},
-		{Name: "created", Type: field.TypeTime},
-		{Name: "updated", Type: field.TypeTime},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "account_orders", Type: field.TypeString},
 	}
 	// OrdersTable holds the schema information for the "orders" table.

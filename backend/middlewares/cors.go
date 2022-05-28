@@ -6,7 +6,6 @@ import (
 )
 
 func Cors() func(*fiber.Ctx) error {
-	// Or extend your config for customization
 	return cors.New(cors.Config{
 		AllowOrigins: "*", // domain 정해지면 추가
 		AllowHeaders: "Origin, Content-Type, Accept",

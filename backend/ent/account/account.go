@@ -17,10 +17,10 @@ const (
 	FieldName = "name"
 	// FieldEmailAddress holds the string denoting the email_address field in the database.
 	FieldEmailAddress = "email_address"
-	// FieldCreated holds the string denoting the created field in the database.
-	FieldCreated = "created"
-	// FieldUpdated holds the string denoting the updated field in the database.
-	FieldUpdated = "updated"
+	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	FieldCreatedAt = "created_at"
+	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	FieldUpdatedAt = "updated_at"
 	// EdgeOrders holds the string denoting the orders edge name in mutations.
 	EdgeOrders = "orders"
 	// Table holds the table name of the account in the database.
@@ -40,8 +40,8 @@ var Columns = []string{
 	FieldPassword,
 	FieldName,
 	FieldEmailAddress,
-	FieldCreated,
-	FieldUpdated,
+	FieldCreatedAt,
+	FieldUpdatedAt,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -61,10 +61,10 @@ var (
 	NameValidator func(string) error
 	// EmailAddressValidator is a validator for the "email_address" field. It is called by the builders before save.
 	EmailAddressValidator func(string) error
-	// DefaultCreated holds the default value on creation for the "created" field.
-	DefaultCreated func() time.Time
-	// DefaultUpdated holds the default value on creation for the "updated" field.
-	DefaultUpdated func() time.Time
-	// UpdateDefaultUpdated holds the default value on update for the "updated" field.
-	UpdateDefaultUpdated func() time.Time
+	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	UpdateDefaultUpdatedAt func() time.Time
 )
