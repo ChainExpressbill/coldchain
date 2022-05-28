@@ -33,8 +33,8 @@ func FindByIdAndPassword(id, password string) *ent.Account {
 			account.FieldID,
 			account.FieldName,
 			account.FieldEmailAddress,
-			account.FieldCreated,
-			account.FieldUpdated,
+			account.FieldCreatedAt,
+			account.FieldUpdatedAt,
 		).
 		OnlyX(ctx)
 

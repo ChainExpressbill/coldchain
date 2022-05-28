@@ -23,11 +23,11 @@ func (Account) Fields() []ent.Field {
 			NotEmpty().
 			StructTag(`json:"emailAddress,omitempty"`).
 			Comment("이메일 주소"),
-		field.Time("created").
+		field.Time("createdAt").
 			Default(time.Now).
 			Immutable().
 			Comment("생성 시간"),
-		field.Time("updated").
+		field.Time("updatedAt").
 			Default(time.Now).
 			UpdateDefault(time.Now).
 			Comment("수정 시간"),

@@ -42,12 +42,12 @@ type Order struct {
 	// StorageCondition holds the value of the "storage_condition" field.
 	// 보관조건
 	StorageCondition string `json:"storageCondition,omitempty"`
-	// Created holds the value of the "created" field.
+	// CreatedAt holds the value of the "createdAt" field.
 	// 생성 시간
-	Created time.Time `json:"created,omitempty"`
-	// Updated holds the value of the "updated" field.
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	// UpdatedAt holds the value of the "updatedAt" field.
 	// 수정 시간
-	Updated time.Time `json:"updated,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the OrderQuery when eager-loading is set.
 	Edges          OrderEdges `json:"edges"`
@@ -86,7 +86,7 @@ func (*Order) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case order.FieldOrderer, order.FieldReceiver, order.FieldDrugName, order.FieldDrugStandard, order.FieldRegisterName, order.FieldStorageCondition:
 			values[i] = new(sql.NullString)
-		case order.FieldCreated, order.FieldUpdated:
+		case order.FieldCreatedAt, order.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		case order.FieldOid:
 			values[i] = new(uuid.UUID)
@@ -161,17 +161,17 @@ func (o *Order) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				o.StorageCondition = value.String
 			}
-		case order.FieldCreated:
+		case order.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field created", values[i])
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
 			} else if value.Valid {
-				o.Created = value.Time
+				o.CreatedAt = value.Time
 			}
-		case order.FieldUpdated:
+		case order.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated", values[i])
+				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
 			} else if value.Valid {
-				o.Updated = value.Time
+				o.UpdatedAt = value.Time
 			}
 		case order.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -229,10 +229,10 @@ func (o *Order) String() string {
 	builder.WriteString(o.RegisterName)
 	builder.WriteString(", storage_condition=")
 	builder.WriteString(o.StorageCondition)
-	builder.WriteString(", created=")
-	builder.WriteString(o.Created.Format(time.ANSIC))
-	builder.WriteString(", updated=")
-	builder.WriteString(o.Updated.Format(time.ANSIC))
+	builder.WriteString(", createdAt=")
+	builder.WriteString(o.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", updatedAt=")
+	builder.WriteString(o.UpdatedAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

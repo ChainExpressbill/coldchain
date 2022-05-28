@@ -39,30 +39,30 @@ func (ac *AccountCreate) SetEmailAddress(s string) *AccountCreate {
 	return ac
 }
 
-// SetCreated sets the "created" field.
-func (ac *AccountCreate) SetCreated(t time.Time) *AccountCreate {
-	ac.mutation.SetCreated(t)
+// SetCreatedAt sets the "createdAt" field.
+func (ac *AccountCreate) SetCreatedAt(t time.Time) *AccountCreate {
+	ac.mutation.SetCreatedAt(t)
 	return ac
 }
 
-// SetNillableCreated sets the "created" field if the given value is not nil.
-func (ac *AccountCreate) SetNillableCreated(t *time.Time) *AccountCreate {
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (ac *AccountCreate) SetNillableCreatedAt(t *time.Time) *AccountCreate {
 	if t != nil {
-		ac.SetCreated(*t)
+		ac.SetCreatedAt(*t)
 	}
 	return ac
 }
 
-// SetUpdated sets the "updated" field.
-func (ac *AccountCreate) SetUpdated(t time.Time) *AccountCreate {
-	ac.mutation.SetUpdated(t)
+// SetUpdatedAt sets the "updatedAt" field.
+func (ac *AccountCreate) SetUpdatedAt(t time.Time) *AccountCreate {
+	ac.mutation.SetUpdatedAt(t)
 	return ac
 }
 
-// SetNillableUpdated sets the "updated" field if the given value is not nil.
-func (ac *AccountCreate) SetNillableUpdated(t *time.Time) *AccountCreate {
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (ac *AccountCreate) SetNillableUpdatedAt(t *time.Time) *AccountCreate {
 	if t != nil {
-		ac.SetUpdated(*t)
+		ac.SetUpdatedAt(*t)
 	}
 	return ac
 }
@@ -159,13 +159,13 @@ func (ac *AccountCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (ac *AccountCreate) defaults() {
-	if _, ok := ac.mutation.Created(); !ok {
-		v := account.DefaultCreated()
-		ac.mutation.SetCreated(v)
+	if _, ok := ac.mutation.CreatedAt(); !ok {
+		v := account.DefaultCreatedAt()
+		ac.mutation.SetCreatedAt(v)
 	}
-	if _, ok := ac.mutation.Updated(); !ok {
-		v := account.DefaultUpdated()
-		ac.mutation.SetUpdated(v)
+	if _, ok := ac.mutation.UpdatedAt(); !ok {
+		v := account.DefaultUpdatedAt()
+		ac.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -195,11 +195,11 @@ func (ac *AccountCreate) check() error {
 			return &ValidationError{Name: "email_address", err: fmt.Errorf(`ent: validator failed for field "Account.email_address": %w`, err)}
 		}
 	}
-	if _, ok := ac.mutation.Created(); !ok {
-		return &ValidationError{Name: "created", err: errors.New(`ent: missing required field "Account.created"`)}
+	if _, ok := ac.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "Account.createdAt"`)}
 	}
-	if _, ok := ac.mutation.Updated(); !ok {
-		return &ValidationError{Name: "updated", err: errors.New(`ent: missing required field "Account.updated"`)}
+	if _, ok := ac.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "Account.updatedAt"`)}
 	}
 	return nil
 }
@@ -261,21 +261,21 @@ func (ac *AccountCreate) createSpec() (*Account, *sqlgraph.CreateSpec) {
 		})
 		_node.EmailAddress = value
 	}
-	if value, ok := ac.mutation.Created(); ok {
+	if value, ok := ac.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: account.FieldCreated,
+			Column: account.FieldCreatedAt,
 		})
-		_node.Created = value
+		_node.CreatedAt = value
 	}
-	if value, ok := ac.mutation.Updated(); ok {
+	if value, ok := ac.mutation.UpdatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: account.FieldUpdated,
+			Column: account.FieldUpdatedAt,
 		})
-		_node.Updated = value
+		_node.UpdatedAt = value
 	}
 	if nodes := ac.mutation.OrdersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

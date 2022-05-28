@@ -26,12 +26,12 @@ type Account struct {
 	// EmailAddress holds the value of the "email_address" field.
 	// 이메일 주소
 	EmailAddress string `json:"emailAddress,omitempty"`
-	// Created holds the value of the "created" field.
+	// CreatedAt holds the value of the "createdAt" field.
 	// 생성 시간
-	Created time.Time `json:"created,omitempty"`
-	// Updated holds the value of the "updated" field.
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	// UpdatedAt holds the value of the "updatedAt" field.
 	// 수정 시간
-	Updated time.Time `json:"updated,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the AccountQuery when eager-loading is set.
 	Edges AccountEdges `json:"edges"`
@@ -62,7 +62,7 @@ func (*Account) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case account.FieldID, account.FieldPassword, account.FieldName, account.FieldEmailAddress:
 			values[i] = new(sql.NullString)
-		case account.FieldCreated, account.FieldUpdated:
+		case account.FieldCreatedAt, account.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Account", columns[i])
@@ -103,17 +103,17 @@ func (a *Account) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				a.EmailAddress = value.String
 			}
-		case account.FieldCreated:
+		case account.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field created", values[i])
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
 			} else if value.Valid {
-				a.Created = value.Time
+				a.CreatedAt = value.Time
 			}
-		case account.FieldUpdated:
+		case account.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated", values[i])
+				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
 			} else if value.Valid {
-				a.Updated = value.Time
+				a.UpdatedAt = value.Time
 			}
 		}
 	}
@@ -153,10 +153,10 @@ func (a *Account) String() string {
 	builder.WriteString(a.Name)
 	builder.WriteString(", email_address=")
 	builder.WriteString(a.EmailAddress)
-	builder.WriteString(", created=")
-	builder.WriteString(a.Created.Format(time.ANSIC))
-	builder.WriteString(", updated=")
-	builder.WriteString(a.Updated.Format(time.ANSIC))
+	builder.WriteString(", createdAt=")
+	builder.WriteString(a.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", updatedAt=")
+	builder.WriteString(a.UpdatedAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -47,9 +47,9 @@ func (au *AccountUpdate) SetEmailAddress(s string) *AccountUpdate {
 	return au
 }
 
-// SetUpdated sets the "updated" field.
-func (au *AccountUpdate) SetUpdated(t time.Time) *AccountUpdate {
-	au.mutation.SetUpdated(t)
+// SetUpdatedAt sets the "updatedAt" field.
+func (au *AccountUpdate) SetUpdatedAt(t time.Time) *AccountUpdate {
+	au.mutation.SetUpdatedAt(t)
 	return au
 }
 
@@ -157,9 +157,9 @@ func (au *AccountUpdate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (au *AccountUpdate) defaults() {
-	if _, ok := au.mutation.Updated(); !ok {
-		v := account.UpdateDefaultUpdated()
-		au.mutation.SetUpdated(v)
+	if _, ok := au.mutation.UpdatedAt(); !ok {
+		v := account.UpdateDefaultUpdatedAt()
+		au.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -222,11 +222,11 @@ func (au *AccountUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: account.FieldEmailAddress,
 		})
 	}
-	if value, ok := au.mutation.Updated(); ok {
+	if value, ok := au.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: account.FieldUpdated,
+			Column: account.FieldUpdatedAt,
 		})
 	}
 	if au.mutation.OrdersCleared() {
@@ -320,9 +320,9 @@ func (auo *AccountUpdateOne) SetEmailAddress(s string) *AccountUpdateOne {
 	return auo
 }
 
-// SetUpdated sets the "updated" field.
-func (auo *AccountUpdateOne) SetUpdated(t time.Time) *AccountUpdateOne {
-	auo.mutation.SetUpdated(t)
+// SetUpdatedAt sets the "updatedAt" field.
+func (auo *AccountUpdateOne) SetUpdatedAt(t time.Time) *AccountUpdateOne {
+	auo.mutation.SetUpdatedAt(t)
 	return auo
 }
 
@@ -437,9 +437,9 @@ func (auo *AccountUpdateOne) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (auo *AccountUpdateOne) defaults() {
-	if _, ok := auo.mutation.Updated(); !ok {
-		v := account.UpdateDefaultUpdated()
-		auo.mutation.SetUpdated(v)
+	if _, ok := auo.mutation.UpdatedAt(); !ok {
+		v := account.UpdateDefaultUpdatedAt()
+		auo.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -519,11 +519,11 @@ func (auo *AccountUpdateOne) sqlSave(ctx context.Context) (_node *Account, err e
 			Column: account.FieldEmailAddress,
 		})
 	}
-	if value, ok := auo.mutation.Updated(); ok {
+	if value, ok := auo.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: account.FieldUpdated,
+			Column: account.FieldUpdatedAt,
 		})
 	}
 	if auo.mutation.OrdersCleared() {

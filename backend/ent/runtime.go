@@ -29,16 +29,16 @@ func init() {
 	accountDescEmailAddress := accountFields[3].Descriptor()
 	// account.EmailAddressValidator is a validator for the "email_address" field. It is called by the builders before save.
 	account.EmailAddressValidator = accountDescEmailAddress.Validators[0].(func(string) error)
-	// accountDescCreated is the schema descriptor for created field.
-	accountDescCreated := accountFields[4].Descriptor()
-	// account.DefaultCreated holds the default value on creation for the created field.
-	account.DefaultCreated = accountDescCreated.Default.(func() time.Time)
-	// accountDescUpdated is the schema descriptor for updated field.
-	accountDescUpdated := accountFields[5].Descriptor()
-	// account.DefaultUpdated holds the default value on creation for the updated field.
-	account.DefaultUpdated = accountDescUpdated.Default.(func() time.Time)
-	// account.UpdateDefaultUpdated holds the default value on update for the updated field.
-	account.UpdateDefaultUpdated = accountDescUpdated.UpdateDefault.(func() time.Time)
+	// accountDescCreatedAt is the schema descriptor for createdAt field.
+	accountDescCreatedAt := accountFields[4].Descriptor()
+	// account.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	account.DefaultCreatedAt = accountDescCreatedAt.Default.(func() time.Time)
+	// accountDescUpdatedAt is the schema descriptor for updatedAt field.
+	accountDescUpdatedAt := accountFields[5].Descriptor()
+	// account.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	account.DefaultUpdatedAt = accountDescUpdatedAt.Default.(func() time.Time)
+	// account.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	account.UpdateDefaultUpdatedAt = accountDescUpdatedAt.UpdateDefault.(func() time.Time)
 	orderFields := schema.Order{}.Fields()
 	_ = orderFields
 	// orderDescOid is the schema descriptor for oid field.
@@ -65,14 +65,14 @@ func init() {
 	orderDescStorageCondition := orderFields[7].Descriptor()
 	// order.StorageConditionValidator is a validator for the "storage_condition" field. It is called by the builders before save.
 	order.StorageConditionValidator = orderDescStorageCondition.Validators[0].(func(string) error)
-	// orderDescCreated is the schema descriptor for created field.
-	orderDescCreated := orderFields[8].Descriptor()
-	// order.DefaultCreated holds the default value on creation for the created field.
-	order.DefaultCreated = orderDescCreated.Default.(func() time.Time)
-	// orderDescUpdated is the schema descriptor for updated field.
-	orderDescUpdated := orderFields[9].Descriptor()
-	// order.DefaultUpdated holds the default value on creation for the updated field.
-	order.DefaultUpdated = orderDescUpdated.Default.(func() time.Time)
-	// order.UpdateDefaultUpdated holds the default value on update for the updated field.
-	order.UpdateDefaultUpdated = orderDescUpdated.UpdateDefault.(func() time.Time)
+	// orderDescCreatedAt is the schema descriptor for createdAt field.
+	orderDescCreatedAt := orderFields[8].Descriptor()
+	// order.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	order.DefaultCreatedAt = orderDescCreatedAt.Default.(func() time.Time)
+	// orderDescUpdatedAt is the schema descriptor for updatedAt field.
+	orderDescUpdatedAt := orderFields[9].Descriptor()
+	// order.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	order.DefaultUpdatedAt = orderDescUpdatedAt.Default.(func() time.Time)
+	// order.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	order.UpdateDefaultUpdatedAt = orderDescUpdatedAt.UpdateDefault.(func() time.Time)
 }

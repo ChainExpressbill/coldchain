@@ -93,9 +93,9 @@ func (ou *OrderUpdate) SetStorageCondition(s string) *OrderUpdate {
 	return ou
 }
 
-// SetUpdated sets the "updated" field.
-func (ou *OrderUpdate) SetUpdated(t time.Time) *OrderUpdate {
-	ou.mutation.SetUpdated(t)
+// SetUpdatedAt sets the "updatedAt" field.
+func (ou *OrderUpdate) SetUpdatedAt(t time.Time) *OrderUpdate {
+	ou.mutation.SetUpdatedAt(t)
 	return ou
 }
 
@@ -184,9 +184,9 @@ func (ou *OrderUpdate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (ou *OrderUpdate) defaults() {
-	if _, ok := ou.mutation.Updated(); !ok {
-		v := order.UpdateDefaultUpdated()
-		ou.mutation.SetUpdated(v)
+	if _, ok := ou.mutation.UpdatedAt(); !ok {
+		v := order.UpdateDefaultUpdatedAt()
+		ou.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -304,11 +304,11 @@ func (ou *OrderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: order.FieldStorageCondition,
 		})
 	}
-	if value, ok := ou.mutation.Updated(); ok {
+	if value, ok := ou.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: order.FieldUpdated,
+			Column: order.FieldUpdatedAt,
 		})
 	}
 	if ou.mutation.ManagerCleared() {
@@ -428,9 +428,9 @@ func (ouo *OrderUpdateOne) SetStorageCondition(s string) *OrderUpdateOne {
 	return ouo
 }
 
-// SetUpdated sets the "updated" field.
-func (ouo *OrderUpdateOne) SetUpdated(t time.Time) *OrderUpdateOne {
-	ouo.mutation.SetUpdated(t)
+// SetUpdatedAt sets the "updatedAt" field.
+func (ouo *OrderUpdateOne) SetUpdatedAt(t time.Time) *OrderUpdateOne {
+	ouo.mutation.SetUpdatedAt(t)
 	return ouo
 }
 
@@ -526,9 +526,9 @@ func (ouo *OrderUpdateOne) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (ouo *OrderUpdateOne) defaults() {
-	if _, ok := ouo.mutation.Updated(); !ok {
-		v := order.UpdateDefaultUpdated()
-		ouo.mutation.SetUpdated(v)
+	if _, ok := ouo.mutation.UpdatedAt(); !ok {
+		v := order.UpdateDefaultUpdatedAt()
+		ouo.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -663,11 +663,11 @@ func (ouo *OrderUpdateOne) sqlSave(ctx context.Context) (_node *Order, err error
 			Column: order.FieldStorageCondition,
 		})
 	}
-	if value, ok := ouo.mutation.Updated(); ok {
+	if value, ok := ouo.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: order.FieldUpdated,
+			Column: order.FieldUpdatedAt,
 		})
 	}
 	if ouo.mutation.ManagerCleared() {

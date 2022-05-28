@@ -17,8 +17,8 @@ func OrderCountByCreated(startDate, endDate time.Time) int {
 	result := database.GetInstance().Order.
 		Query().
 		Where(
-			order.CreatedGTE(startDate),
-			order.CreatedLTE(endDate),
+			order.CreatedAtGTE(startDate),
+			order.CreatedAtLTE(endDate),
 		).
 		CountX(ctx)
 
@@ -29,8 +29,8 @@ func CountGroupByOrdererAndCreated(startDate, endDate time.Time) []string {
 	result := database.GetInstance().Order.
 		Query().
 		Where(
-			order.CreatedGTE(startDate),
-			order.CreatedLTE(endDate),
+			order.CreatedAtGTE(startDate),
+			order.CreatedAtLTE(endDate),
 		).
 		GroupBy(order.FieldOrderer).
 		StringsX(ctx)
@@ -42,8 +42,8 @@ func (cr *ChartsResponse) OrderCountGroupByCreated(startDate, endDate time.Time)
 	database.GetInstance().Order.
 		Query().
 		Where(
-			order.CreatedGTE(startDate),
-			order.CreatedLTE(endDate),
+			order.CreatedAtGTE(startDate),
+			order.CreatedAtLTE(endDate),
 		).
 		Modify(func(s *sql.Selector) {
 			s.Select(
@@ -60,8 +60,8 @@ func (cr *ChartsResponse) OrdererCountGroupByCreated(startDate, endDate time.Tim
 	database.GetInstance().Order.
 		Query().
 		Where(
-			order.CreatedGTE(startDate),
-			order.CreatedLTE(endDate),
+			order.CreatedAtGTE(startDate),
+			order.CreatedAtLTE(endDate),
 		).
 		Modify(func(s *sql.Selector) {
 			s.Select(
