@@ -1,0 +1,98 @@
+name: Coldchain ui dev
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-dev.yml"
+
+env:
+  AWS_DEFAULT_REGION: us-east-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+  NODE_OPTIONS: --max_old_space_size=4096
+  CF_DISTRIBUTION_ID: ${{ secrets.DEV_CF_DISTRIBUTION_ID }}
+
+concurrency: coldchain-ui-dev
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  lint:
+    if: contains(github.event.head_commit.message, 'skip ci') == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Lint
+        run: yarn lint
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Export env from aws ssm
+        uses: nolmungshemung/chamber-action@main
+        with:
+          args: export --format dotenv --output-file ./frontend/.env dev/coldchain-frontend
+
+      - name: Build
+        run: yarn build
+
+      - name: Check serverless resouces' changes
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            serverless:
+              - frontend/serverless.yml
+
+      - name: Fast deploy
+        if: steps.changes.outputs.serverless == 'false'
+        run: |
+          yarn sls s3sync --stage dev
+
+      # run only if some file in 'frontend/serverless.yml' folder was changed
+      - name: Full deploy
+        if: steps.changes.outputs.serverless == 'true'
+        run: yarn deploy:dev
+
+  purge-cdn:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Purge CDN cache
+        run: |
+          set -ex
+          if [[ ! -z "$CF_DISTRIBUTION_ID" ]]; then
+            aws cloudfront create-invalidation \
+              --distribution-id $CF_DISTRIBUTION_ID \
+              --paths /index.html \
+                /asset-manifest.json \
+                /favicon.ico \
+                /manifest.json \
+                /service-worker.js
+          fi

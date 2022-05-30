@@ -6,8 +6,8 @@ export async function login(loginData: LoginForm) {
   return data;
 }
 
-export async function logout(id: string) {
-  const { data } = await axios.post('/logout', { id });
+export async function logout(payload: { id: string }) {
+  const { data } = await axios.post('/logout', payload);
   return data;
 }
 
