@@ -1,0 +1,53 @@
+name: Backend Prod
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-prod.yml"
+
+env:
+  AWS_DEFAULT_REGION: ap-northeast-2
+  AWS_ACCESS_KEY_ID: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+  APP_NAME: coldchain-prod-service
+  ENV_NAME: Coldchainprodservice-env
+  APP_S3_BUCKET_NAME: elasticbeanstalk-ap-northeast-2-248385315901
+  DEPLOY_PKG_NAME: backend_prod_${{ github.sha }}.zip
+
+concurrency: backend-prod
+
+defaults:
+  run:
+    working-directory: backend
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Export env from aws ssm
+        id: backend-chamber
+        uses: nolmungshemung/chamber-action@main
+        with:
+          args: export --format dotenv --output-file ./backend/.env prod/coldchain-backend
+
+      - name: Make zip pkg
+        run: zip -r ${{ env.DEPLOY_PKG_NAME }} ./ -x *.git*
+
+      - name: Upload package to S3 bucket
+        run: aws s3 cp ${{ env.DEPLOY_PKG_NAME }} s3://${{ env.APP_S3_BUCKET_NAME }}/
+
+      - name: Create new App Version
+        run: |
+          aws elasticbeanstalk create-application-version \
+          --application-name ${{ env.APP_NAME }} \
+          --source-bundle S3Bucket="${{ env.APP_S3_BUCKET_NAME }}",S3Key="${{ env.DEPLOY_PKG_NAME }}" \
+          --version-label "Ver-${{ github.sha }}" \
+          --description "SHA-${{ github.sha }}"
+
+      - name: Deploy new App Version
+        run: aws elasticbeanstalk update-environment --environment-name ${{ env.ENV_NAME }} --version-label "Ver-${{ github.sha }}"
