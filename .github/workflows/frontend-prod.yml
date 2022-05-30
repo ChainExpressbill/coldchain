@@ -21,23 +21,9 @@ defaults:
     working-directory: frontend
 
 jobs:
-  install-dependencies:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: Install dependencies
-        run: yarn install --immutable --immutable-cache
-
   lint:
+    if: contains(github.event.head_commit.message, 'skip ci') == false
     runs-on: ubuntu-latest
-    needs: [install-dependencies]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -46,40 +32,13 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14"
-
-      - name: Install dependencies
-        run: yarn install --immutable --immutable-cache
 
       - name: Lint
         run: yarn lint
 
-  unit-testing:
-    runs-on: ubuntu-latest
-    needs: [install-dependencies]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: Install dependencies
-        run: yarn install --immutable --immutable-cache
-
-      - name: Unit testing
-        run: |
-          yarn test \
-            --ci \
-            --runInBand \
-            --coverage \
-            --watchAll=false \
-            --passWithNoTests
-
   deploy:
     runs-on: ubuntu-latest
-    needs: [lint, unit-testing]
+    needs: [lint]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -90,7 +49,7 @@ jobs:
           node-version: "14"
 
       - name: Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: Export env from aws ssm
         uses: nolmungshemung/chamber-action@main
