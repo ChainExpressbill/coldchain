@@ -1,7 +1,13 @@
 import React from 'react';
 import { Header, Footer } from 'components/layout';
 import { APP_STAGE } from 'constants/environment';
-import { SignIn, SignUp, DashBoard, ManageOrder, ViewOrder } from 'pages';
+import {
+  LoginPage,
+  JoinPage,
+  DashBoardPage,
+  OrderPage,
+  OrderListPage,
+} from 'pages';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 if (APP_STAGE === 'local') {
@@ -15,11 +21,11 @@ function App() {
       <main className="mt-24 h-full">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={<DashBoard />} />
-            <Route path="/manageorder" element={<ManageOrder />} />
-            <Route path="/vieworder" element={<ViewOrder />} />
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/join" element={<JoinPage />} />
+            <Route path="/dashboard" element={<DashBoardPage />} />
+            <Route path="/order/:id?" element={<OrderPage />} />
+            <Route path="/orders" element={<OrderListPage />} />
           </Routes>
         </BrowserRouter>
       </main>
