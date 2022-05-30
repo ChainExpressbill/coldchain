@@ -1,5 +1,5 @@
-export { default as SignIn } from './signin';
-export { default as SignUp } from './signup';
-export { default as DashBoard } from './dashboard';
-export { default as ManageOrder } from './manageorder';
-export { default as ViewOrder } from './vieworder';
+export { default as LoginPage } from './LoginPage';
+export { default as JoinPage } from './JoinPage';
+export { default as DashBoardPage } from './DashBoardPage';
+export { default as OrderListPage } from './OrderListPage';
+export { default as OrderPage } from './OrderPage';
