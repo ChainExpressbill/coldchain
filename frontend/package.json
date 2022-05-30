@@ -13,7 +13,7 @@
     "prettier": "prettier --write --config ./.prettierrc \"./src/**/*.{ts,tsx,js,jsx}\" || true",
     "deploy:dev": "sls deploy",
     "deploy:prod": "sls deploy --stage prod",
-    "postinstall": "husky install",
+    "postinstall": "cd .. && husky install frontend/.husky",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable"
   },
