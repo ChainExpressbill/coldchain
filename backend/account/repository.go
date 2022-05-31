@@ -24,8 +24,8 @@ func FindById(id string) *ent.Account {
 	return result
 }
 
-func FindByIdAndPassword(id, password string) *ent.Account {
-	result := database.GetInstance().Account.
+func FindByIdAndPassword(id, password string) (*ent.Account, error) {
+	result, err := database.GetInstance().Account.
 		Query().
 		Where(account.ID(id)).
 		Where(account.Password(password)).
@@ -36,9 +36,9 @@ func FindByIdAndPassword(id, password string) *ent.Account {
 			account.FieldCreatedAt,
 			account.FieldUpdatedAt,
 		).
-		OnlyX(ctx)
+		Only(ctx)
 
-	return result
+	return result, err
 }
 
 func CreateAccount(params *JoinParams) {

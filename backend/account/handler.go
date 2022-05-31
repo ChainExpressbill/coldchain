@@ -13,8 +13,11 @@ func Login(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	user := LoginService(params.Id, params.Password)
-	fmt.Println(user)
+	user, err2 := LoginService(params.Id, params.Password, c)
+	if err2 != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(map[string]string{"code": "500", "message": "login failed"})
+	}
+
 	return c.Status(fiber.StatusOK).JSON(user)
 }
 
