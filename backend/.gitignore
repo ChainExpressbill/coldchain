@@ -2,3 +2,4 @@
 bin/*
 backend
 session.db
+*.log

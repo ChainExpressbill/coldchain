@@ -11,6 +11,7 @@ import (
 	"github.com/ChainExpressbill/coldchain/middlewares"
 	"github.com/ChainExpressbill/coldchain/orders"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/joho/godotenv"
 	"github.com/qinains/fastergoding"
@@ -43,8 +44,11 @@ func main() {
 	database.MigrationDatabase()
 
 	app := fiber.New()
-	app.Use(recover.New())
-	app.Use(middlewares.Cors())
+
+	file, loggerConfig := middlewares.LoggerConfig()
+	defer file.Close()
+
+	app.Use(recover.New(), middlewares.CorsMiddleware(), logger.New(loggerConfig))
 
 	app.Post("/login", account.Login)
 	app.Post("/logout", account.Logout)
