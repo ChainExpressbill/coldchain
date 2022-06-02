@@ -1,4 +1,22 @@
 definitions:
+  account.JoinParams:
+    properties:
+      emailAddress:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  account.LoginParams:
+    properties:
+      id:
+        type: string
+      password:
+        type: string
+    type: object
   ent.Account:
     properties:
       createdAt:
@@ -119,32 +137,106 @@ info:
   title: Coldchain API
   version: "1.0"
 paths:
+  /join:
+    post:
+      consumes:
+      - application/json;charset=UTF-8
+      description: Chain expressbill 관리자 회원가입
+      parameters:
+      - description: id, password, name, emailAddress
+        in: body
+        name: JoinParams
+        required: true
+        schema:
+          $ref: '#/definitions/account.JoinParams'
+      produces:
+      - application/json;charset=UTF-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Chain expressbill 관리자 회원가입
+      tags:
+      - Account
   /login:
     post:
       consumes:
-      - application/json
-      description: Login an admin user
+      - application/json;charset=UTF-8
+      description: Chain expressbill 관리자 로그인
       parameters:
-      - description: Id
+      - description: id, password
         in: body
-        name: id
+        name: loginParams
         required: true
         schema:
-          type: string
-      - description: Password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/account.LoginParams'
       produces:
-      - application/json
+      - application/json;charset=UTF-8
       responses:
         "200":
           description: OK
           schema:
             $ref: '#/definitions/ent.Account'
-      summary: login
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Chain expressbill 관리자 로그인
+      tags:
+      - Account
+  /logout:
+    post:
+      consumes:
+      - application/json;charset=UTF-8
+      description: Chain expressbill 관리자 로그아웃
+      parameters:
+      - description: id
+        in: body
+        name: logoutParam
+        required: true
+        schema:
+          $ref: '#/definitions/account.LoginParams'
+      produces:
+      - application/json;charset=UTF-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: boolean
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Chain expressbill 관리자 로그아웃
       tags:
       - Account
 swagger: "2.0"
