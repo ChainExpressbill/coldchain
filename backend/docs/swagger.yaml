@@ -1,0 +1,150 @@
+definitions:
+  ent.Account:
+    properties:
+      createdAt:
+        description: |-
+          CreatedAt holds the value of the "createdAt" field.
+          생성 시간
+        type: string
+      edges:
+        $ref: '#/definitions/ent.AccountEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the AccountQuery when eager-loading is set.
+      emailAddress:
+        description: |-
+          EmailAddress holds the value of the "email_address" field.
+          이메일 주소
+        type: string
+      id:
+        description: |-
+          ID of the ent.
+          계정 id
+        type: string
+      name:
+        description: |-
+          Name holds the value of the "name" field.
+          관리자 이름
+        type: string
+      updatedAt:
+        description: |-
+          UpdatedAt holds the value of the "updatedAt" field.
+          수정 시간
+        type: string
+    type: object
+  ent.AccountEdges:
+    properties:
+      orders:
+        description: Orders holds the value of the orders edge.
+        items:
+          $ref: '#/definitions/ent.Order'
+        type: array
+    type: object
+  ent.Order:
+    properties:
+      createdAt:
+        description: |-
+          CreatedAt holds the value of the "createdAt" field.
+          생성 시간
+        type: string
+      drugName:
+        description: |-
+          DrugName holds the value of the "drug_name" field.
+          약품명
+        type: string
+      drugStandard:
+        description: |-
+          DrugStandard holds the value of the "drug_standard" field.
+          규격
+        type: string
+      edges:
+        $ref: '#/definitions/ent.OrderEdges'
+        description: |-
+          Edges holds the relations/edges for other nodes in the graph.
+          The values are being populated by the OrderQuery when eager-loading is set.
+      id:
+        description: ID of the ent.
+        type: integer
+      oid:
+        description: |-
+          Oid holds the value of the "oid" field.
+          주문 ID
+        type: string
+      orderer:
+        description: |-
+          Orderer holds the value of the "orderer" field.
+          주문자(제약업체. 위탁배송을 요청한 업체)
+        type: string
+      quantity:
+        description: |-
+          Quantity holds the value of the "quantity" field.
+          수량
+        type: integer
+      receiver:
+        description: |-
+          Receiver holds the value of the "receiver" field.
+          수령자 (주문 요청 업체(약국, 병원 등))
+        type: string
+      registerName:
+        description: |-
+          RegisterName holds the value of the "register_name" field.
+          주문 등록자
+        type: string
+      storageCondition:
+        description: |-
+          StorageCondition holds the value of the "storage_condition" field.
+          보관조건
+        type: string
+      updatedAt:
+        description: |-
+          UpdatedAt holds the value of the "updatedAt" field.
+          수정 시간
+        type: string
+    type: object
+  ent.OrderEdges:
+    properties:
+      manager:
+        $ref: '#/definitions/ent.Account'
+        description: Manager holds the value of the manager edge.
+    type: object
+info:
+  contact:
+    email: fiber@swagger.io
+    name: API Support
+  description: This is coldchain app by chain-expressbill
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Coldchain API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login an admin user
+      parameters:
+      - description: Id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Account'
+      summary: login
+      tags:
+      - Account
+swagger: "2.0"
