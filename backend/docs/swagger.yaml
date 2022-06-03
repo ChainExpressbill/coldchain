@@ -132,6 +132,45 @@ definitions:
         $ref: '#/definitions/ent.Account'
         description: Manager holds the value of the manager edge.
     type: object
+  orders.GetOrdersResponse:
+    properties:
+      orderList:
+        items:
+          $ref: '#/definitions/ent.Order'
+        type: array
+      page:
+        type: integer
+      size:
+        type: integer
+      totalCount:
+        type: integer
+      totalSize:
+        type: integer
+    type: object
+  orders.OrderRequestBody:
+    properties:
+      accountId:
+        description: jwt 적용 전 임시로 id를 받아서 처리
+        type: string
+      drugName:
+        type: string
+      drugStandard:
+        type: string
+      id:
+        type: integer
+      oid:
+        type: string
+      orderer:
+        type: string
+      quantity:
+        type: integer
+      receiver:
+        type: string
+      registerName:
+        type: string
+      storageCondition:
+        type: string
+    type: object
 info:
   contact:
     email: fiber@swagger.io
@@ -151,6 +190,11 @@ paths:
       description: 최근 30일 간 데이터
       parameters:
       - description: Chart Type
+        enum:
+        - orderers
+        - orders
+        - successes
+        - failures
         in: path
         name: type
         required: true
@@ -342,4 +386,149 @@ paths:
       summary: Chain expressbill 관리자 로그아웃
       tags:
       - Account
+  /orders:
+    get:
+      consumes:
+      - application/json;charset=UTF-8
+      description: 주문 조회 ( page, size, startDate, endDate 필수** )
+      parameters:
+      - in: query
+        name: endDate
+        type: string
+      - in: query
+        name: orderer
+        type: string
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: receiver
+        type: string
+      - in: query
+        name: size
+        type: integer
+      - in: query
+        name: startDate
+        type: string
+      produces:
+      - application/json;charset=UTF-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orders.GetOrdersResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 주문 조회
+      tags:
+      - Order
+    post:
+      consumes:
+      - application/json;charset=UTF-8
+      description: 주문 등록
+      parameters:
+      - description: 주문 수정에 대한 form 데이터. id, oid 필요 없음
+        in: body
+        name: OrderRequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/orders.OrderRequestBody'
+      produces:
+      - application/json;charset=UTF-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 주문 등록
+      tags:
+      - Order
+    put:
+      consumes:
+      - application/json;charset=UTF-8
+      description: 주문 수정
+      parameters:
+      - description: 주문 수정에 대한 form 데이터. accountId, oid 필요 없음
+        in: body
+        name: OrderRequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/orders.OrderRequestBody'
+      produces:
+      - application/json;charset=UTF-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 주문 수정
+      tags:
+      - Order
+  /orders/{id}:
+    get:
+      consumes:
+      - application/json;charset=UTF-8
+      description: 주문 상세 조회
+      parameters:
+      - description: order id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json;charset=UTF-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ent.Order'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 주문 상세 조회
+      tags:
+      - Order
 swagger: "2.0"
