@@ -35,7 +35,7 @@ func Login(c *fiber.Ctx) error {
 // @Accept 		application/json;charset=UTF-8
 // @Produce 	application/json;charset=UTF-8
 // @Param 		logoutParam body LoginParams true "id"
-// @Success 	200 {object} boolean
+// @Success 	200 {object} string
 // @Failure 	400 {object} map[string]string
 // @Failure 	500 {object} map[string]string
 // @Router 		/logout [post]
@@ -56,7 +56,7 @@ func Logout(c *fiber.Ctx) error {
 // @Accept 		application/json;charset=UTF-8
 // @Produce 	application/json;charset=UTF-8
 // @Param 		JoinParams body JoinParams true "id, password, name, emailAddress"
-// @Success 	200 {object} boolean
+// @Success 	200 {object} string
 // @Failure 	400 {object} map[string]string
 // @Failure 	500 {object} map[string]string
 // @Router 		/join [post]
