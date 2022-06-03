@@ -28,8 +28,10 @@ func loadEnvironments() {
 	}
 }
 
+var STAGE string
+
 func useHotReloading() {
-	STAGE := os.Getenv("STAGE")
+	STAGE = os.Getenv("STAGE")
 
 	if STAGE != "prod" {
 		fastergoding.Run() // hot reload
@@ -60,7 +62,9 @@ func main() {
 
 	app.Use(recover.New(), middlewares.CorsMiddleware(), logger.New(loggerConfig))
 
-	app.Get("/swagger/*", swagger.HandlerDefault) // default
+	if STAGE != "prod" {
+		app.Get("/swagger/*", swagger.HandlerDefault)
+	}
 
 	app.Post("/login", account.Login)
 	app.Post("/logout", account.Logout)
