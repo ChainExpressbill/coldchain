@@ -5,8 +5,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// @Description 지난 달 주문 요약
 // @Summary 		지난 달 주문 요약
+// @Description 지난 달 주문 요약
 // @Tags 				Dashboard
 // @Accept 			application/json;charset=UTF-8
 // @Produce 		application/json;charset=UTF-8
@@ -19,8 +19,8 @@ func LastMonth(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(lastMonthSummaryCountResponse)
 }
 
-// @Description 금일 주문 현황
 // @Summary 		금일 주문 현황
+// @Description 금일 주문 현황
 // @Tags 				Dashboard
 // @Accept 			application/json;charset=UTF-8
 // @Produce 		application/json;charset=UTF-8
@@ -33,13 +33,12 @@ func Today(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(todaySummaryCountResponse)
 }
 
-// param name,param type,data type,is mandatory?,comment attribute(optional)
-// @Description 최근 30일 간 데이터
 // @Summary 		최근 30일 간 데이터
+// @Description 최근 30일 간 데이터
 // @Tags 				Dashboard
 // @Accept 			application/json;charset=UTF-8
 // @Produce 		application/json;charset=UTF-8
-// @Param 			type path string true "Chart Type"
+// @Param 			type path string true "Chart Type" Enums(orderers, orders, successes, failures)
 // @Success 		200 {object} ChartsResponse
 // @Failure 		400 {object} map[string]string
 // @Failure 		500 {object} map[string]string

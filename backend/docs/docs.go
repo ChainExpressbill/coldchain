@@ -39,6 +39,12 @@ const docTemplate = `{
                 "summary": "최근 30일 간 데이터",
                 "parameters": [
                     {
+                        "enum": [
+                            "orderers",
+                            "orders",
+                            "successes",
+                            "failures"
+                        ],
                         "type": "string",
                         "description": "Chart Type",
                         "name": "type",
@@ -325,6 +331,229 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/orders": {
+            "get": {
+                "description": "주문 조회 ( page, size, startDate, endDate 필수** )",
+                "consumes": [
+                    "application/json;charset=UTF-8"
+                ],
+                "produces": [
+                    "application/json;charset=UTF-8"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "주문 조회",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "endDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "orderer",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "receiver",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "startDate",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/orders.GetOrdersResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "주문 수정",
+                "consumes": [
+                    "application/json;charset=UTF-8"
+                ],
+                "produces": [
+                    "application/json;charset=UTF-8"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "주문 수정",
+                "parameters": [
+                    {
+                        "description": "주문 수정에 대한 form 데이터. accountId, oid 필요 없음",
+                        "name": "OrderRequestBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/orders.OrderRequestBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "주문 등록",
+                "consumes": [
+                    "application/json;charset=UTF-8"
+                ],
+                "produces": [
+                    "application/json;charset=UTF-8"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "주문 등록",
+                "parameters": [
+                    {
+                        "description": "주문 수정에 대한 form 데이터. id, oid 필요 없음",
+                        "name": "OrderRequestBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/orders.OrderRequestBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{id}": {
+            "get": {
+                "description": "주문 상세 조회",
+                "consumes": [
+                    "application/json;charset=UTF-8"
+                ],
+                "produces": [
+                    "application/json;charset=UTF-8"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "주문 상세 조회",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "order id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ent.Order"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -467,6 +696,65 @@ const docTemplate = `{
                 "manager": {
                     "description": "Manager holds the value of the manager edge.",
                     "$ref": "#/definitions/ent.Account"
+                }
+            }
+        },
+        "orders.GetOrdersResponse": {
+            "type": "object",
+            "properties": {
+                "orderList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ent.Order"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "totalCount": {
+                    "type": "integer"
+                },
+                "totalSize": {
+                    "type": "integer"
+                }
+            }
+        },
+        "orders.OrderRequestBody": {
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "description": "jwt 적용 전 임시로 id를 받아서 처리",
+                    "type": "string"
+                },
+                "drugName": {
+                    "type": "string"
+                },
+                "drugStandard": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "oid": {
+                    "type": "string"
+                },
+                "orderer": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "receiver": {
+                    "type": "string"
+                },
+                "registerName": {
+                    "type": "string"
+                },
+                "storageCondition": {
+                    "type": "string"
                 }
             }
         }
