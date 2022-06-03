@@ -4,8 +4,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// @Description Chain expressbill 관리자 로그인
 // @Summary 	Chain expressbill 관리자 로그인
+// @Description Chain expressbill 관리자 로그인
 // @Tags 			Account
 // @Accept 		application/json;charset=UTF-8
 // @Produce 	application/json;charset=UTF-8
@@ -29,8 +29,8 @@ func Login(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(user)
 }
 
-// @Description Chain expressbill 관리자 로그아웃
 // @Summary 	Chain expressbill 관리자 로그아웃
+// @Description Chain expressbill 관리자 로그아웃
 // @Tags 			Account
 // @Accept 		application/json;charset=UTF-8
 // @Produce 	application/json;charset=UTF-8
@@ -50,8 +50,8 @@ func Logout(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
-// @Description Chain expressbill 관리자 회원가입
 // @Summary 	Chain expressbill 관리자 회원가입
+// @Description Chain expressbill 관리자 회원가입
 // @Tags 			Account
 // @Accept 		application/json;charset=UTF-8
 // @Produce 	application/json;charset=UTF-8

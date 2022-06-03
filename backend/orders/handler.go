@@ -7,6 +7,16 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// @Summary 		주문 조회
+// @Description 주문 조회 ( page, size, startDate, endDate 필수** )
+// @Tags 				Order
+// @Accept 			application/json;charset=UTF-8
+// @Produce 		application/json;charset=UTF-8
+// @Param 			OrderSearchParams query OrderSearchParams true "주문 조회 조건"
+// @Success 		200 {object} GetOrdersResponse
+// @Failure 		400 {object} map[string]string
+// @Failure 		500 {object} map[string]string
+// @Router 			/orders [get]
 func Orders(c *fiber.Ctx) error {
 	params := new(OrderSearchParams)
 
@@ -19,6 +29,16 @@ func Orders(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(orders)
 }
 
+// @Summary 		주문 상세 조회
+// @Description 주문 상세 조회
+// @Tags 				Order
+// @Accept 			application/json;charset=UTF-8
+// @Produce 		application/json;charset=UTF-8
+// @Param 			id 	path string true "order id"
+// @Success 		200 {object} ent.Order
+// @Failure 		400 {object} map[string]string
+// @Failure 		500 {object} map[string]string
+// @Router 			/orders/{id} [get]
 func OrderDetail(c *fiber.Ctx) error {
 	param := c.Params("id")
 
@@ -38,6 +58,16 @@ func OrderDetail(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(order)
 }
 
+// @Summary 		주문 등록
+// @Description 주문 등록
+// @Tags 				Order
+// @Accept 			application/json;charset=UTF-8
+// @Produce 		application/json;charset=UTF-8
+// @Param 			OrderRequestBody body OrderRequestBody true "주문 수정에 대한 form 데이터. id, oid 필요 없음"
+// @Success 		200 {object} string
+// @Failure 		400 {object} map[string]string
+// @Failure 		500 {object} map[string]string
+// @Router 			/orders [post]
 func OrderCreate(c *fiber.Ctx) error {
 	body := new(OrderRequestBody)
 
@@ -50,6 +80,16 @@ func OrderCreate(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
+// @Summary 		주문 수정
+// @Description 주문 수정
+// @Tags 				Order
+// @Accept 			application/json;charset=UTF-8
+// @Produce 		application/json;charset=UTF-8
+// @Param 			OrderRequestBody body OrderRequestBody true "주문 수정에 대한 form 데이터. accountId, oid 필요 없음"
+// @Success 		200 {object} string
+// @Failure 		400 {object} map[string]string
+// @Failure 		500 {object} map[string]string
+// @Router 			/orders [put]
 func OrderUpdate(c *fiber.Ctx) error {
 	body := new(OrderRequestBody)
 

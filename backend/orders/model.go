@@ -9,10 +9,10 @@ import (
 type OrderSearchParams struct {
 	Orderer   string    `json:"orderer,omitempty"`
 	Receiver  string    `json:"receiver,omitempty"`
-	StartDate time.Time `json:"startDate,omitempty"`
-	EndDate   time.Time `json:"endDate,omitempty"`
-	Page      int       `json:"page,omitempty"`
-	Size      int       `json:"size,omitempty"`
+	StartDate time.Time `json:"startDate"`
+	EndDate   time.Time `json:"endDate"`
+	Page      int       `json:"page"`
+	Size      int       `json:"size"`
 }
 
 type GetOrdersResponse struct {
