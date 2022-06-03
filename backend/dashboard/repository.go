@@ -11,9 +11,9 @@ import (
 
 var ctx = context.TODO()
 
-const TIMESTAMP_COLUMN = "TO_TIMESTAMP(TO_CHAR(created, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+const TIMESTAMP_COLUMN = "TO_TIMESTAMP(TO_CHAR(created_at, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
 
-func OrderCountByCreated(startDate, endDate time.Time) int {
+func OrderCountByCreatedAt(startDate, endDate time.Time) int {
 	result := database.GetInstance().Order.
 		Query().
 		Where(
@@ -25,7 +25,7 @@ func OrderCountByCreated(startDate, endDate time.Time) int {
 	return result
 }
 
-func CountGroupByOrdererAndCreated(startDate, endDate time.Time) []string {
+func CountGroupByOrdererAndCreatedAt(startDate, endDate time.Time) []string {
 	result := database.GetInstance().Order.
 		Query().
 		Where(
@@ -38,7 +38,7 @@ func CountGroupByOrdererAndCreated(startDate, endDate time.Time) []string {
 	return result
 }
 
-func (cr *ChartsResponse) OrderCountGroupByCreated(startDate, endDate time.Time) {
+func (cr *ChartsResponse) OrderCountGroupByCreatedAt(startDate, endDate time.Time) {
 	database.GetInstance().Order.
 		Query().
 		Where(
@@ -56,7 +56,7 @@ func (cr *ChartsResponse) OrderCountGroupByCreated(startDate, endDate time.Time)
 		ScanX(ctx, cr)
 }
 
-func (cr *ChartsResponse) OrdererCountGroupByCreated(startDate, endDate time.Time) {
+func (cr *ChartsResponse) OrdererCountGroupByCreatedAt(startDate, endDate time.Time) {
 	database.GetInstance().Order.
 		Query().
 		Where(

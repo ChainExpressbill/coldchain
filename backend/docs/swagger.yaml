@@ -17,6 +17,13 @@ definitions:
       password:
         type: string
     type: object
+  dashboard.SummaryCountResponse:
+    properties:
+      orderCount:
+        type: integer
+      ordererCount:
+        type: integer
+    type: object
   ent.Account:
     properties:
       createdAt:
@@ -137,6 +144,102 @@ info:
   title: Coldchain API
   version: "1.0"
 paths:
+  /dashboard/summary/charts/{type}:
+    get:
+      consumes:
+      - application/json;charset=UTF-8
+      description: 최근 30일 간 데이터
+      parameters:
+      - description: Chart Type
+        in: path
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json;charset=UTF-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              properties:
+                count:
+                  type: integer
+                orderer:
+                  type: string
+                timestamp:
+                  type: string
+              type: object
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 최근 30일 간 데이터
+      tags:
+      - Dashboard
+  /dashboard/summary/last-month:
+    get:
+      consumes:
+      - application/json;charset=UTF-8
+      description: 지난 달 주문 요약
+      produces:
+      - application/json;charset=UTF-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dashboard.SummaryCountResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 지난 달 주문 요약
+      tags:
+      - Dashboard
+  /dashboard/summary/today:
+    get:
+      consumes:
+      - application/json;charset=UTF-8
+      description: 금일 주문 현황
+      produces:
+      - application/json;charset=UTF-8
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dashboard.SummaryCountResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 금일 주문 현황
+      tags:
+      - Dashboard
   /join:
     post:
       consumes:
@@ -155,7 +258,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: boolean
+            type: string
         "400":
           description: Bad Request
           schema:
@@ -223,7 +326,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: boolean
+            type: string
         "400":
           description: Bad Request
           schema:
