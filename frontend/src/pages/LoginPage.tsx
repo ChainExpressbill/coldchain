@@ -1,20 +1,30 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-
-interface LoginFormValue {
-  id: string;
-  password: string;
-}
+import { useLogin } from 'data/account/account.hooks';
+import { LoginForm } from 'data/account/account.model';
 
 function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValue>();
+  } = useForm<LoginForm>();
   const navigator = useNavigate();
-  const onSubmit = (data: LoginFormValue) => console.log(data);
+
+  // TODO: 성공 및 실패 처리
+  const { mutate } = useLogin({
+    onSuccess(data) {
+      console.log('success', data);
+    },
+    onError(err) {
+      console.log('error', err);
+    },
+  });
+
+  const onSubmit = (data: LoginForm) => {
+    mutate(data);
+  };
 
   return (
     <div className="text-black h-full flex flex-col align-items-center justify-center gap-12">
@@ -64,7 +74,7 @@ function Login() {
           로그인
         </button>
       </form>
-      <div className="w-96 mr-auto ml-auto text-right">
+      <div className="w-96 h-11 mr-auto ml-auto text-right">
         <button
           className="w-24 p-2 border border-gray"
           onClick={() => navigator('/join')}
