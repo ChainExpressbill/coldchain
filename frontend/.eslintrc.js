@@ -36,11 +36,11 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    'linebreak-style': 0,
-    // 'linebreak-style': [
-    //   'error',
-    //   require('os').EOL === '\r\n' ? 'windows' : 'unix',
-    // ],
+    // 'linebreak-style': 0,
+    'linebreak-style': [
+      'error',
+      require('os').EOL === '\r\n' ? 'windows' : 'unix',
+    ],
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
     '@typescript-eslint/naming-convention': 'off',
     'no-debugger': 'off',
