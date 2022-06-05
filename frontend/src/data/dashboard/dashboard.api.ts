@@ -20,7 +20,7 @@ export async function getToday() {
 }
 
 export async function getCharts(chartType: ChartType) {
-  const { data } = await axios.get<ChartsResponse>(
+  const { data } = await axios.get<ChartsResponse[]>(
     `/dashboard/summary/charts/${chartType}`,
   );
   return data;
