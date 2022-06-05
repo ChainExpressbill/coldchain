@@ -29,9 +29,6 @@ function Join() {
 
   return (
     <div className="text-black h-full flex flex-col align-items-center justify-center gap-12">
-      <figure className="w-80 ml-auto mr-auto">
-        <img src="logo_square_white.jpg" />
-      </figure>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-96 ml-auto mr-auto grid grid-cols-1 gap-8"
@@ -44,6 +41,29 @@ function Join() {
           />
           {errors.id && (
             <span className="text-red-600 text-sm">아이디를 확인해주세요.</span>
+          )}
+        </div>
+        <div className="h-20">
+          <input
+            className="border border-gray w-full h-14 p-2"
+            placeholder="이름을 입력해주세요."
+            {...register('name', { required: true })}
+          />
+          {errors.name && (
+            <span className="text-red-600 text-sm">이름을 확인해주세요.</span>
+          )}
+        </div>
+        <div className="h-20">
+          <input
+            className="border border-gray w-full h-14 p-2"
+            placeholder="이메일 주소를 입력해주세요."
+            type="email"
+            {...register('emailAddress', { required: true })}
+          />
+          {errors.emailAddress && (
+            <span className="text-red-600 text-sm">
+              이메일 주소를 확인해주세요.
+            </span>
           )}
         </div>
         <div className="h-20">
@@ -75,7 +95,6 @@ function Join() {
           회원가입
         </button>
       </form>
-      <div className="w-96 h-11"></div>
     </div>
   );
 }
