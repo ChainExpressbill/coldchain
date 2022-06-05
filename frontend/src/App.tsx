@@ -39,18 +39,21 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/join" element={<JoinPage />} />
-          <Route element={<TwoColumnLayout />}>
-            <Route
-              path="/dashboard"
-              element={
-                <RequireAuth>
-                  <DashBoardPage />
-                </RequireAuth>
-              }
-            />
-            <Route path="/order/:id?" element={<OrderPage />} />
-            <Route path="/orders" element={<OrderListPage />} />
+          <Route
+            element={
+              <RequireAuth>
+                <TwoColumnLayout />
+              </RequireAuth>
+            }
+          >
+            <Route path="/dashboard" element={<DashBoardPage />} />
+            <Route path="/orders">
+              <Route index element={<OrderListPage />} />
+              <Route path="new" element={<OrderPage />} />
+              <Route path=":id" element={<OrderPage />} />
+            </Route>
           </Route>
+          <Route path="*" element={<div>Not Found</div>} />
         </Routes>
       </BrowserRouter>
     </div>
