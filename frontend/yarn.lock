@@ -5354,6 +5354,7 @@ __metadata:
     react-dom: 18.0.0-rc.2
     react-hook-form: ^7.31.3
     react-icons: ^4.4.0
+    react-loading-skeleton: ^3.1.0
     react-query: ^3.34.16
     react-router-dom: ^6.3.0
     react-scripts: 5.0.0
@@ -13519,6 +13520,15 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
+  languageName: node
+  linkType: hard
+
+"react-loading-skeleton@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "react-loading-skeleton@npm:3.1.0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 53d257c88e442e979fb9148ae826fc998a5a54c08a01e894395cf1ebb1e1c83e426f9c4884800e5564ba3308cf33e32d3abc75e07589ae0b48e4a2ed544fda2a
   languageName: node
   linkType: hard
 
