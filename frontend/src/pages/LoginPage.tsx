@@ -3,46 +3,63 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useLogin } from 'data/account/account.hooks';
 import { LoginForm } from 'data/account/account.model';
+import useModal from 'hooks/useModal';
+import { ModalPortal } from 'components/modal';
+import AlertModal from 'components/modal/AlertModal';
+import { AxiosError } from 'axios';
 
 function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<LoginForm>();
+    formState: { errors: formErrors, isValid: isFormValid },
+  } = useForm<LoginForm>({ mode: 'onChange' });
   const navigator = useNavigate();
+  const { isOpen, setIsOpen, modalMsg, setModalMsg, modalType, setModalType } =
+    useModal();
 
-  // TODO: 성공 및 실패 처리
   const { mutate } = useLogin({
-    onSuccess(data) {
-      console.log('success', data);
+    onSuccess() {
+      navigator('/dashboard');
     },
-    onError(err) {
-      console.log('error', err);
+    onError(loginError: AxiosError) {
+      if (loginError.response !== undefined) {
+        const code: string = loginError.response.data.code;
+        switch (code) {
+          case '500':
+            setModalMsg(() => '아이디 또는 비밀번호를 잘못 입력했습니다.');
+            break;
+        }
+      }
+      setModalType(() => 'error');
+      setIsOpen(() => true);
     },
   });
 
-  const onSubmit = (data: LoginForm) => {
-    mutate(data);
-  };
+  const onSubmit = (data: LoginForm) => mutate(data);
 
   return (
     <div className="text-black h-full flex flex-col align-items-center justify-center gap-12">
-      <figure className="w-80 ml-auto mr-auto">
-        <img src="logo_square_white.jpg" />
-      </figure>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-96 ml-auto mr-auto grid grid-cols-1 gap-8"
       >
+        <figure className="w-60 ml-auto mr-auto">
+          <img src="logo_square_white.jpg" />
+        </figure>
         <div className="h-20">
           <input
             className="border border-gray w-full h-14 p-2"
             placeholder="아이디를 입력해주세요."
-            {...register('id', { required: true })}
+            {...register('id', {
+              required: { value: true, message: '아이디를 확인해주세요.' },
+            })}
           />
-          {errors.id && (
-            <span className="text-red-600 text-sm">아이디를 입력해주세요.</span>
+          {formErrors.id && (
+            <span className="text-red-600 text-sm">
+              {' '}
+              {formErrors.id.message}
+            </span>
           )}
         </div>
         <div className="h-20">
@@ -52,24 +69,26 @@ function Login() {
             type="password"
             {...register('password', {
               required: true,
-              minLength: 8,
-              maxLength: 15,
+              minLength: {
+                value: 8,
+                message: '비밀번호는 최소 8글자 이상이여야 합니다.',
+              },
+              maxLength: {
+                value: 15,
+                message: '비밀번호는 15글자를 초과할 수 없습니다.',
+              },
             })}
           />
-          {errors.password && errors.password.type === 'minLength' && (
+          {formErrors.password && (
             <span className="text-red-600 text-sm">
-              비밀번호는 최소 8글자 이상이여야 합니다.
-            </span>
-          )}
-          {errors.password && errors.password.type === 'maxLength' && (
-            <span className="text-red-600 text-sm">
-              비밀번호는 15글자를 초과할 수 없습니다.
+              {formErrors.password.message}
             </span>
           )}
         </div>
         <button
-          className="mr-auto ml-auto w-24 p-2 border border-gray"
+          className="mr-auto ml-auto w-24 p-2 border border-gray disabled:text-white disabled:bg-red-500 disabled:cursor-not-allowed"
           type="submit"
+          disabled={!isFormValid}
         >
           로그인
         </button>
@@ -82,6 +101,17 @@ function Login() {
           회원가입
         </button>
       </div>
+      <ModalPortal>
+        {isOpen && (
+          <AlertModal
+            msg={modalMsg}
+            type={modalType}
+            closeModal={() => {
+              setIsOpen(() => false);
+            }}
+          />
+        )}
+      </ModalPortal>
     </div>
   );
 }
