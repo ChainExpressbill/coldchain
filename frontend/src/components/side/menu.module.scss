@@ -1,0 +1,15 @@
+.lnb {
+  width: 100%;
+
+  .Menu__List {
+    @apply bg-main h-full px-6 py-4;
+
+    .Menu__Title {
+      @apply h-14 flex items-center border-b-[1px] border-white;
+
+      a {
+        @apply flex items-center w-full text-2xl text-white;
+      }
+    }
+  }
+}
