@@ -5,7 +5,7 @@ import { ChartType } from 'data/dashboard/dashboard.model';
 function DashBoard() {
   return (
     <div className="dashboard h-full grid grid__Two__Row">
-      <div className="Summary__Board flex flex-row justify-evenly">
+      <div className="Summary__Board flex flex-row justify-evenly items-center">
         <SummaryBoard boardType="lastMonth" />
         <SummaryBoard boardType="today" />
       </div>

@@ -7,21 +7,33 @@ interface SummaryBoardProps {
   boardType: BoardType;
 }
 
+function BoardBox({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col w-[250px] h-[200px] justify-center px-4 border-2 border-main rounded-lg shadow-basic">
+      {children}
+    </div>
+  );
+}
+
 function SummaryBoard({ boardType }: SummaryBoardProps) {
   const isLastMonth = boardType === 'lastMonth';
   const { data, isLoading } = isLastMonth ? useGetLastMonth() : useGetToday();
   const title = isLastMonth ? '지난 달 주문 요약' : '금일 주문 현황';
 
   if (isLoading) {
-    return <Skeleton count={3} />;
+    return (
+      <BoardBox>
+        <Skeleton count={3} />
+      </BoardBox>
+    );
   }
 
   return (
-    <div>
-      <div>{title}</div>
-      <div>주문 요청 업체 수: {data?.ordererCount}</div>
-      <div>주문 건수: {data?.orderCount}</div>
-    </div>
+    <BoardBox>
+      <div className="text-3xl pb-4">{title}</div>
+      <div className="text-lg">주문 요청 업체 수: {data?.ordererCount}</div>
+      <div className="text-lg">주문 건수: {data?.orderCount}</div>
+    </BoardBox>
   );
 }
 
