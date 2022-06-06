@@ -9,6 +9,10 @@
 
       a {
         @apply flex items-center w-full text-2xl text-white;
+
+        &.active {
+          @apply text-rose-400;
+        }
       }
     }
   }
