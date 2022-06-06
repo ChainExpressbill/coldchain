@@ -14,7 +14,7 @@ export interface Order {
   receiver: string;
   drugName: string;
   drugStandard: string;
-  quantity: string;
+  quantity: number;
   registerName: string;
   storageCondition: string;
   createdAt: string; // UTC string => new Date().toISOString()
