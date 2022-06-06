@@ -2,14 +2,12 @@ import React from 'react';
 import { OrderSearchFilter } from 'components/filter';
 
 function OrderListPage() {
-  // optional: orderer, receiver
-  // required: page, size, startDate, endDate
   return (
-    <div className="Order__List h-full grid grid__Two__Row">
-      <div>
+    <div className="Order__List h-full grid grid__Two__Column__Filter__Layout">
+      <div className="Rounded__Shadow__Border p-4">
         <OrderSearchFilter />
       </div>
-      <div>data table</div>
+      <div className="Rounded__Shadow__Border p-4 ml-6">data table</div>
     </div>
   );
 }

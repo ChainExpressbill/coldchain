@@ -55,6 +55,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["classnames", "npm:2.3.1"],\
             ["craco-swc", "virtual:f195894a5c92fccf601c562a772e16e92715a4cf82aa750b605958e4da99127f2412ab4471339298abb0a409ea0c69474d38909ccc2211f4835a21b31cf4d221#npm:0.2.0"],\
             ["cssnano", "virtual:f195894a5c92fccf601c562a772e16e92715a4cf82aa750b605958e4da99127f2412ab4471339298abb0a409ea0c69474d38909ccc2211f4835a21b31cf4d221#npm:5.1.4"],\
+            ["date-fns", "npm:2.28.0"],\
             ["eslint", "npm:8.11.0"],\
             ["eslint-config-airbnb-typescript", "virtual:f195894a5c92fccf601c562a772e16e92715a4cf82aa750b605958e4da99127f2412ab4471339298abb0a409ea0c69474d38909ccc2211f4835a21b31cf4d221#npm:16.1.3"],\
             ["eslint-config-prettier", "virtual:f195894a5c92fccf601c562a772e16e92715a4cf82aa750b605958e4da99127f2412ab4471339298abb0a409ea0c69474d38909ccc2211f4835a21b31cf4d221#npm:8.5.0"],\
@@ -7643,6 +7644,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["classnames", "npm:2.3.1"],\
             ["craco-swc", "virtual:f195894a5c92fccf601c562a772e16e92715a4cf82aa750b605958e4da99127f2412ab4471339298abb0a409ea0c69474d38909ccc2211f4835a21b31cf4d221#npm:0.2.0"],\
             ["cssnano", "virtual:f195894a5c92fccf601c562a772e16e92715a4cf82aa750b605958e4da99127f2412ab4471339298abb0a409ea0c69474d38909ccc2211f4835a21b31cf4d221#npm:5.1.4"],\
+            ["date-fns", "npm:2.28.0"],\
             ["eslint", "npm:8.11.0"],\
             ["eslint-config-airbnb-typescript", "virtual:f195894a5c92fccf601c562a772e16e92715a4cf82aa750b605958e4da99127f2412ab4471339298abb0a409ea0c69474d38909ccc2211f4835a21b31cf4d221#npm:16.1.3"],\
             ["eslint-config-prettier", "virtual:f195894a5c92fccf601c562a772e16e92715a4cf82aa750b605958e4da99127f2412ab4471339298abb0a409ea0c69474d38909ccc2211f4835a21b31cf4d221#npm:8.5.0"],\
