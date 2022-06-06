@@ -6,3 +6,11 @@
 body {
   font-family: BaeminJUA, Arial, Helvetica, sans-serif;
 }
+
+.Rounded__Shadow__Border {
+  @apply border-2 border-main rounded-lg shadow-basic;
+}
+
+.Form__Input__Border__Box {
+  @apply border border-gray-300 w-full h-12 p-2;
+}

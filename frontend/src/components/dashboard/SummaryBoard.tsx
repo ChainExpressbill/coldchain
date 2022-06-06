@@ -9,7 +9,7 @@ interface SummaryBoardProps {
 
 function BoardBox({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col w-[250px] h-[200px] justify-center px-4 border-2 border-main rounded-lg shadow-basic mr-5">
+    <div className="flex flex-col w-[250px] h-[200px] justify-center px-4 Rounded__Shadow__Border mr-5">
       {children}
     </div>
   );

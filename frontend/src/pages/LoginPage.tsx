@@ -42,14 +42,14 @@ function Login() {
     <div className="text-black h-full flex flex-col align-items-center justify-center gap-12">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-96 ml-auto mr-auto grid grid-cols-1 gap-8"
+        className="w-96 ml-auto mr-auto grid grid-cols-1 gap-6 Rounded__Shadow__Border p-6"
       >
         <figure className="w-60 ml-auto mr-auto">
           <img src="logo_square_white.jpg" />
         </figure>
-        <div className="h-20">
+        <div>
           <input
-            className="border border-gray w-full h-14 p-2"
+            className="Form__Input__Border__Box"
             placeholder="아이디를 입력해주세요."
             {...register('id', {
               required: { value: true, message: '아이디를 확인해주세요.' },
@@ -62,9 +62,9 @@ function Login() {
             </span>
           )}
         </div>
-        <div className="h-20">
+        <div>
           <input
-            className="border border-gray w-full h-14 p-2"
+            className="Form__Input__Border__Box"
             placeholder="비밀번호를 입력해주세요."
             type="password"
             {...register('password', {
@@ -86,7 +86,7 @@ function Login() {
           )}
         </div>
         <button
-          className="mr-auto ml-auto w-24 p-2 border border-gray disabled:text-white disabled:bg-red-500 disabled:cursor-not-allowed"
+          className="mr-auto ml-auto w-full p-2 border border-gray-300 disabled:text-white disabled:bg-red-500 disabled:cursor-not-allowed"
           type="submit"
           disabled={!isFormValid}
         >
@@ -95,7 +95,7 @@ function Login() {
       </form>
       <div className="w-96 h-11 mr-auto ml-auto text-right">
         <button
-          className="w-24 p-2 border border-gray"
+          className="w-24 p-2 border border-gray-300"
           onClick={() => navigator('/join')}
         >
           회원가입
