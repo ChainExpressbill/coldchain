@@ -1,18 +1,16 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import classnames from 'classnames';
-import styles from './layout.module.scss';
 import SideMenu from 'components/side';
 import Header from '../Header';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function TwoColumnLayout() {
-  const cls = classnames('h-full grid', styles.grid__Two__Column);
   return (
-    <section className={cls}>
+    <section className="h-full grid grid__Two__Column__Layout">
       <SideMenu />
       <article>
         <Header />
-        <div className="p-6">
+        <div className="p-6 h-[calc(100%_-_3rem)]">
           <Outlet />
         </div>
       </article>
