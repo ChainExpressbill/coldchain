@@ -44,7 +44,7 @@ export function useGetCharts(
     | undefined = {},
 ) {
   return useQuery<ChartsResponse[], AxiosError, ChartsResponse[]>(
-    ['/dashboard/summary/charts'],
+    ['/dashboard/summary/charts', chartType],
     () => getCharts(chartType),
     {
       retry: 2,

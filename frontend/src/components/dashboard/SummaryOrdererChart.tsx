@@ -1,14 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { useGetCharts } from 'data/dashboard/dashboard.hooks';
 import { ChartType } from 'data/dashboard/dashboard.model';
 import Chart from 'react-apexcharts';
 
-// interface ChartData {
-//   categories: string[];
-//   seriesData: number[];
-// }
+interface SeriesData {
+  x: string; // yyyy-MM-dd
+  y: number;
+}
+interface Series {
+  name: string;
+  data: SeriesData[];
+}
 
-const initialState = {
+const initialState: {
+  options: any;
+  series: Series[];
+} = {
   options: {
     chart: {
       id: 'orderer-multi-axis-line-chart',
@@ -19,106 +27,64 @@ const initialState = {
     title: {
       text: '한 달간 주문 업체 수',
     },
-    xaxis: {
-      categories: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
-    },
-    yaxis: [
-      {
-        axisTicks: {
-          show: true,
-        },
-        axisBorder: {
-          show: true,
-          color: '#FF1654',
-        },
-        labels: {
-          style: {
-            colors: '#FF1654',
-          },
-        },
-        title: {
-          text: 'Series A',
-          style: {
-            color: '#FF1654',
-          },
-        },
-      },
-      {
-        opposite: true,
-        axisTicks: {
-          show: true,
-        },
-        axisBorder: {
-          show: true,
-          color: '#247BA0',
-        },
-        labels: {
-          style: {
-            colors: '#247BA0',
-          },
-        },
-        title: {
-          text: 'Series B',
-          style: {
-            color: '#247BA0',
-          },
-        },
-      },
-    ],
   },
-  series: [
-    {
-      name: 'Series A',
-      data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6],
-    },
-    {
-      name: 'Series B',
-      data: [20, 29, 37, 36, 44, 45, 50, 58],
-    },
-  ],
+  series: [],
 };
 
 function SummaryOrderChart() {
   const { data } = useGetCharts(ChartType.ORDERERS);
-  const [chartState] = React.useState(initialState);
-  // const [chartState, setChartState] = React.useState(initialState);
+  const [chartState, setChartState] = React.useState(initialState);
 
   React.useEffect(() => {
-    console.log(data);
-    // if (data) {
-    //   const { categories, seriesData } = data?.reduce(
-    //     (xy: ChartData, point) => {
-    //       const { timestamp, count } = point;
-    //       const yyyyMMdd = timestamp.split('T')[0];
-    //       xy.categories.push(yyyyMMdd);
-    //       xy.seriesData.push(count);
-    //       return xy;
-    //     },
-    //     {
-    //       categories: [],
-    //       seriesData: [],
-    //     },
-    //   ) as any;
+    if (data) {
+      const initialSeries = data?.reduce(
+        (seriesData: Series[], { orderer }) => {
+          const seriesIndex = seriesData.findIndex(
+            (s: Series) => s.name === orderer,
+          );
 
-    //   const series = {
-    //     name: '주문 업체 수',
-    //     data: seriesData,
-    //   };
+          if (seriesIndex < 0) {
+            seriesData.push({
+              name: orderer ?? '',
+              data: [],
+            });
+          }
+          return seriesData;
+        },
+        [],
+      );
 
-    //   setChartState((prev) => {
-    //     return {
-    //       ...prev,
-    //       options: {
-    //         ...prev.options,
-    //         xaxis: {
-    //           ...prev.options.xaxis,
-    //           categories,
-    //         },
-    //       },
-    //       series: [series],
-    //     };
-    //   });
-    // }
+      const series = initialSeries.reduce(
+        (seriesData: Series[], current, index) => {
+          for (const { orderer, timestamp, count } of data) {
+            const yyyyMMdd = timestamp.split('T')[0];
+
+            const duplicatedTimestampIndex = seriesData[index].data.findIndex(
+              (xy) => xy.x === yyyyMMdd,
+            );
+
+            const y = current.name === orderer ? count : 0;
+            if (duplicatedTimestampIndex >= 0) {
+              seriesData[index].data[duplicatedTimestampIndex].y += y;
+            } else {
+              seriesData[index].data.push({
+                x: yyyyMMdd,
+                y,
+              });
+            }
+          }
+          return seriesData;
+        },
+        initialSeries,
+      );
+
+      setChartState((prev) => {
+        return {
+          ...prev,
+          series,
+        };
+      });
+    }
   }, [data]);
 
   return (
