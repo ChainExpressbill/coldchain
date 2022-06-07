@@ -25,7 +25,7 @@ export function useGetOrders(
     | undefined = {},
 ) {
   return useQuery<GetOrdersResponse, AxiosError, GetOrdersResponse>(
-    ['/orders'],
+    ['/orders', params],
     () => getOrders(params),
     {
       retry: 2,
