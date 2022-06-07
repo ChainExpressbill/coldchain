@@ -1,21 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { DEFAULT_DATATABLE_VIEW } from 'constants/pagination';
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
-
-export interface HeaderStore {
-  currentTime: number;
-  timerId: number;
-  setCurrentTime: () => void;
-  setTimerId: (id: number) => void;
-  resetCurrentTime: () => void;
-  clearTimer: () => void;
-}
 
 export interface OrderStoreState {
   startDate: Date;
   endDate: Date;
   orderer: string;
   receiver: string;
+  page: number;
+  size: number;
 }
 
 export interface OrderStore extends OrderStoreState {
@@ -31,6 +24,8 @@ const initialState: OrderStoreState = {
   endDate: new Date(),
   orderer: '',
   receiver: '',
+  page: 1,
+  size: DEFAULT_DATATABLE_VIEW,
 };
 
 export const useOrderStore = create<OrderStore>(
@@ -47,6 +42,12 @@ export const useOrderStore = create<OrderStore>(
     },
     setReceiver: (receiver: string) => {
       set(() => ({ receiver }));
+    },
+    setPage: (page: number) => {
+      set(() => ({ page }));
+    },
+    setSize: (size: number) => {
+      set(() => ({ size }));
     },
     clearFilter: () => {
       set(() => ({ ...initialState }));

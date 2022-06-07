@@ -3,19 +3,47 @@ import classNames from 'classnames';
 import { FilterDatePicker } from './FilterDatePicker';
 import { useOrderStore } from 'store';
 import shallow from 'zustand/shallow';
+import { useGetOrders } from 'data/order/order.hooks';
 
 function OrderSearchFilter() {
-  const { clearFilter, orderer, setOrderer, receiver, setReceiver } =
-    useOrderStore(
-      (state) => ({
-        orderer: state.orderer,
-        receiver: state.receiver,
-        setOrderer: state.setOrderer,
-        setReceiver: state.setReceiver,
-        clearFilter: state.clearFilter,
-      }),
-      shallow,
-    );
+  const {
+    startDate,
+    endDate,
+    orderer,
+    setOrderer,
+    receiver,
+    setReceiver,
+    clearFilter,
+    page,
+    size,
+  } = useOrderStore(
+    (state) => ({
+      startDate: state.startDate,
+      endDate: state.endDate,
+      orderer: state.orderer,
+      receiver: state.receiver,
+      setOrderer: state.setOrderer,
+      setReceiver: state.setReceiver,
+      clearFilter: state.clearFilter,
+      page: state.page,
+      size: state.size,
+    }),
+    shallow,
+  );
+
+  const { refetch } = useGetOrders(
+    {
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      orderer,
+      receiver,
+      page,
+      size,
+    },
+    {
+      enabled: false,
+    },
+  );
 
   const btnBaseClassnames = classNames('w-16 rounded-lg shadow-basic p-2');
   const resetBtnClassnames = classNames(btnBaseClassnames, 'border-main mr-2');
@@ -66,7 +94,11 @@ function OrderSearchFilter() {
         >
           초기화
         </button>
-        <button type="button" className={searchBtnClassnames}>
+        <button
+          type="button"
+          className={searchBtnClassnames}
+          onClick={() => refetch()}
+        >
           조회
         </button>
       </div>

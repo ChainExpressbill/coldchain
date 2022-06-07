@@ -1,0 +1,1 @@
+export const DEFAULT_DATATABLE_VIEW = 10;
