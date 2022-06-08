@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { useGetCharts } from 'data/dashboard/dashboard.hooks';
 import { ChartType } from 'data/dashboard/dashboard.model';

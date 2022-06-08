@@ -1,10 +1,10 @@
 import React from 'react';
 import { useGetLastMonth, useGetToday } from 'data/dashboard/dashboard.hooks';
 import Skeleton from 'react-loading-skeleton';
+import { DATE_TYPE } from 'constants/date';
 
-type BoardType = 'lastMonth' | 'today';
 interface SummaryBoardProps {
-  boardType: BoardType;
+  boardType: DATE_TYPE.LAST_MONTH | DATE_TYPE.TODAY;
 }
 
 function BoardBox({ children }: { children: React.ReactNode }) {
@@ -16,7 +16,7 @@ function BoardBox({ children }: { children: React.ReactNode }) {
 }
 
 function SummaryBoard({ boardType }: SummaryBoardProps) {
-  const isLastMonth = boardType === 'lastMonth';
+  const isLastMonth = boardType === DATE_TYPE.LAST_MONTH;
   const { data, isLoading } = isLastMonth ? useGetLastMonth() : useGetToday();
   const title = isLastMonth ? '지난 달 주문 요약' : '금일 주문 현황';
 

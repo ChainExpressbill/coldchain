@@ -6,10 +6,9 @@ import shallow from 'zustand/shallow';
 import { subDays } from 'date-fns/esm';
 import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
+import { DATE_TYPE } from 'constants/date';
 
 registerLocale('ko', ko);
-
-type DatePickerButton = 'today' | 'week' | 'month';
 
 function FilterDatePicker() {
   const { startDate, setStartDate, endDate, setEndDate } = useOrderStore(
@@ -34,16 +33,16 @@ function FilterDatePicker() {
     'border-main rounded-lg shadow-basic border-2 w-[98%] p-1',
   );
 
-  const onDatePickerButtonClick = (type: DatePickerButton) => {
+  const onDatePickerButtonClick = (type: keyof typeof DATE_TYPE) => {
     switch (type) {
-      case 'today':
+      case DATE_TYPE.TODAY:
         setStartDate(new Date());
         setEndDate(new Date());
         break;
-      case 'week':
+      case DATE_TYPE.WEEK:
         setStartDate(subDays(endDate, 7));
         break;
-      case 'month':
+      case DATE_TYPE.MONTH:
         setStartDate(subDays(endDate, 30));
         break;
     }
@@ -55,21 +54,21 @@ function FilterDatePicker() {
         <button
           type="button"
           className={datePickerButtonClassnames}
-          onClick={() => onDatePickerButtonClick('today')}
+          onClick={() => onDatePickerButtonClick(DATE_TYPE.TODAY)}
         >
           오늘
         </button>
         <button
           type="button"
           className={datePickerButtonClassnames}
-          onClick={() => onDatePickerButtonClick('week')}
+          onClick={() => onDatePickerButtonClick(DATE_TYPE.WEEK)}
         >
           일주일
         </button>
         <button
           type="button"
           className={datePickerButtonClassnames}
-          onClick={() => onDatePickerButtonClick('month')}
+          onClick={() => onDatePickerButtonClick(DATE_TYPE.MONTH)}
         >
           1개월
         </button>
