@@ -1,0 +1,19 @@
+.pagination {
+  width: 100%;
+  text-align: center;
+
+  & button {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 4px;
+    padding: 0;
+    cursor: pointer;
+
+    &.current-page {
+      @apply text-white bg-main rounded-full;
+    }
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}

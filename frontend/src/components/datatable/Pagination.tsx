@@ -1,4 +1,5 @@
 import React from 'react';
+import './pagination.scss';
 
 type PaginationProps = {
   totalPages: number;
@@ -37,7 +38,7 @@ function Pagination({
   };
 
   return (
-    <div>
+    <div className="pagination">
       <button onClick={() => setPage(1)} disabled={currentPage === 1}>
         &lt;&lt;
       </button>

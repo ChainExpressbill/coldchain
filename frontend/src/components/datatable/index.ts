@@ -1,1 +1,2 @@
-export { default as Datatable } from './Datatable';
+export { default as OrderDatatable } from './OrderDatatable';
+export * from './OrderDatatable';

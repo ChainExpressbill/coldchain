@@ -30,7 +30,7 @@ func FindAllByOrdererAndReceiver(params *OrderSearchParams) []*ent.Order {
 	**/
 	result := database.GetInstance().Order.
 		Query().
-		Offset(params.Page-1).
+		Offset(params.Page-1*params.Size).
 		Limit(params.Size).
 		Order(ent.Desc(order.FieldCreatedAt)).
 		Where(

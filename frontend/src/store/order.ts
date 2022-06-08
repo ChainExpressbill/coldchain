@@ -1,6 +1,6 @@
-import { DEFAULT_DATATABLE_VIEW } from 'constants/pagination';
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { DATATABLE_VIEW_ROWS } from 'constants/pagination';
 
 export interface OrderStoreState {
   startDate: Date;
@@ -16,6 +16,8 @@ export interface OrderStore extends OrderStoreState {
   setEndDate: (date: Date) => void;
   setOrderer: (orderer: string) => void;
   setReceiver: (receiver: string) => void;
+  setPage: (page: number) => void;
+  setSize: (size: number) => void;
   clearFilter: () => void;
 }
 
@@ -25,7 +27,7 @@ const initialState: OrderStoreState = {
   orderer: '',
   receiver: '',
   page: 1,
-  size: DEFAULT_DATATABLE_VIEW,
+  size: DATATABLE_VIEW_ROWS.DEFAULT,
 };
 
 export const useOrderStore = create<OrderStore>(
@@ -47,7 +49,7 @@ export const useOrderStore = create<OrderStore>(
       set(() => ({ page }));
     },
     setSize: (size: number) => {
-      set(() => ({ size }));
+      set(() => ({ size, page: 1 }));
     },
     clearFilter: () => {
       set(() => ({ ...initialState }));

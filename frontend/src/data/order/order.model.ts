@@ -21,12 +21,15 @@ export interface Order {
   updatedAt: string; // UTC string => new Date().toISOString()
 }
 
-export interface GetOrdersResponse {
-  orderList: Order[];
+export interface PagingParams {
   page: number;
   size: number;
   totalPage: number;
   totalCount: number;
+}
+
+export interface GetOrdersResponse extends PagingParams {
+  orderList: Order[];
 }
 
 export interface OrderRequestBody {
