@@ -1,5 +1,6 @@
 import React from 'react';
-import ModalContainer from './ModalContainer';
+import ModalPortal from './ModalPortal';
+import styles from './modal.module.scss';
 
 interface AlertModalProps {
   msg: string;
@@ -8,19 +9,23 @@ interface AlertModalProps {
 }
 
 const AlertModal = ({ msg, type, closeModal }: AlertModalProps) => {
-  const msgStyle = `text-2xl ${
+  const msgStyle = `text-xl ${
     type === 'success' ? 'text-black' : 'text-red-500'
   }`;
   return (
-    <ModalContainer>
-      <div className={msgStyle}>{msg}</div>
-      <button
-        className="w-16 h-12 border border-black rounded-md text-black"
-        onClick={closeModal}
-      >
-        확인
-      </button>
-    </ModalContainer>
+    <ModalPortal>
+      <div className={styles.Modal__Background} onClick={closeModal}>
+        <div
+          className={styles.Modal__Container}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className={msgStyle}>{msg}</div>
+          <button className={styles.Modal__Button} onClick={closeModal}>
+            확인
+          </button>
+        </div>
+      </div>
+    </ModalPortal>
   );
 };
 
