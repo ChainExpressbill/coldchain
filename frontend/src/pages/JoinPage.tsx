@@ -151,7 +151,7 @@ function Join() {
           )}
         </div>
         <button
-          className="mr-auto ml-auto w-full p-2 border border-gray-300 disabled:text-white disabled:bg-red-500 disabled:cursor-not-allowed"
+          className="mr-auto ml-auto w-full p-2 border border-gray-300 text-white bg-red-500 disabled:opacity-60 disabled:cursor-not-allowed"
           type="submit"
           disabled={!isFormValid}
         >

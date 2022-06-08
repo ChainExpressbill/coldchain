@@ -14,7 +14,8 @@ import { useParams } from 'react-router-dom';
 
 function OrderPage() {
   const { id } = useParams();
-  const orderId = parseInt(id ?? '-1'); //  TODO: 처리를 다르게 해야하나?
+  const orderId = Number(id);
+  const isOrderDetailView = !isNaN(orderId);
 
   const {
     register,
@@ -28,7 +29,7 @@ function OrderPage() {
   });
 
   useEffect(() => {
-    if (orderId !== -1) {
+    if (isOrderDetailView) {
       refetch().then((response) => {
         if (response.data !== undefined) {
           const targetOrderData = {
@@ -43,6 +44,15 @@ function OrderPage() {
           };
           reset(targetOrderData);
         }
+      });
+    } else {
+      reset({
+        orderer: '',
+        receiver: '',
+        drugName: '',
+        quantity: 0,
+        drugStandard: '',
+        storageCondition: '',
       });
     }
   }, [orderId]);
@@ -94,7 +104,7 @@ function OrderPage() {
       registerName: 'testman',
     };
     useCreateOrder(data);
-    setConfirmModalIsOpen(() => false);
+    setConfirmModalIsOpen(false);
   };
 
   const confirmUpdateOrder = () => {
@@ -104,29 +114,30 @@ function OrderPage() {
       registerName: 'testman',
     };
     useUpdateOrder(data);
-    setConfirmModalIsOpen(() => false);
+    setConfirmModalIsOpen(false);
   };
 
   const onCreateOrderSubmit = () => {
     setConfirmModalMsg('주문을 등록하시겠습니까?');
-    setConfirmModalIsOpen(() => true);
+    setConfirmModalIsOpen(true);
   };
 
   const onUpdateOrderSubmit = () => {
     setConfirmModalMsg('주문 내용을 수정하시겠습니까?');
-    setConfirmModalIsOpen(() => true);
+    setConfirmModalIsOpen(true);
   };
 
   return (
-    <div className="text-black h-full flex flex-col align-items-center justify-center gap-12">
+    <div className="text-black h-full flex flex-col align-items-center justify-center">
       <form
         onSubmit={
           orderId === -1
             ? handleSubmit(onCreateOrderSubmit)
             : handleSubmit(onUpdateOrderSubmit)
         }
-        className="w-3/4 ml-auto mr-auto grid grid-cols-1 gap-6 Rounded__Shadow__Border p-6"
+        className="w-1/2 mx-auto grid gap-6 Rounded__Shadow__Border p-6"
       >
+        {isOrderDetailView && <div>주문 상세 내역</div>}
         <FormInput
           register={register}
           valueLabel="주문자"
@@ -177,21 +188,21 @@ function OrderPage() {
           validMsg="약품 보관 조건을 확인해주세요"
         />
         <button
-          className="mr-auto ml-auto w-1/4 p-2 border border-gray-300 disabled:text-white disabled:bg-red-500 disabled:cursor-not-allowed"
+          className="mx-auto w-1/4 p-2 border border-gray-300 text-white bg-red-500 disabled:opacity-60 disabled:cursor-not-allowed"
           type="submit"
           disabled={!isFormValid}
         >
-          주문등록
+          {isOrderDetailView ? '주문 수정' : '주문 등록'}
         </button>
       </form>
       {confirmModalIsOpen && (
         <ConfirmModal
           msg={confirmModalMsg}
           confirmAction={
-            orderId === -1 ? confirmCreateOrder : confirmUpdateOrder
+            isOrderDetailView ? confirmUpdateOrder : confirmCreateOrder
           }
           closeModal={() => {
-            setConfirmModalIsOpen(() => false);
+            setConfirmModalIsOpen(false);
           }}
         />
       )}
@@ -200,7 +211,7 @@ function OrderPage() {
           msg={alertModalMsg}
           type="error"
           closeModal={() => {
-            setAlertModalIsOpen(() => false);
+            setAlertModalIsOpen(false);
           }}
         />
       )}
