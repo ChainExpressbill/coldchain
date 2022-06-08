@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { JoinForm } from 'data/account/account.model';
 import { useJoin } from 'data/account/account.hooks';
-import { ModalPortal, AlertModal } from 'components/modal';
+import { AlertModal } from 'components/modal';
 import useModal from 'hooks/useModal';
 import { AxiosError } from 'axios';
 
@@ -158,20 +158,18 @@ function Join() {
           회원가입
         </button>
       </form>
-      <ModalPortal>
-        {isOpen && (
-          <AlertModal
-            msg={modalMsg}
-            type={modalType}
-            closeModal={() => {
-              setIsOpen(() => false);
-              if (modalType === 'success') {
-                navigator('/');
-              }
-            }}
-          />
-        )}
-      </ModalPortal>
+      {isOpen && (
+        <AlertModal
+          msg={modalMsg}
+          type={modalType}
+          closeModal={() => {
+            setIsOpen(() => false);
+            if (modalType === 'success') {
+              navigator('/');
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

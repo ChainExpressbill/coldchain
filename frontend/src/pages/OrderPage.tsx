@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import useModal from 'hooks/useModal';
 import { useForm } from 'react-hook-form';
-import { AlertModal, ConfirmModal, ModalPortal } from 'components/modal';
+import { AlertModal, ConfirmModal } from 'components/modal';
 import { OrderRequestBody } from 'data/order/order.model';
 import {
   useOrderCreate,
@@ -184,28 +184,26 @@ function OrderPage() {
           주문등록
         </button>
       </form>
-      <ModalPortal>
-        {confirmModalIsOpen && (
-          <ConfirmModal
-            msg={confirmModalMsg}
-            confirmAction={
-              orderId === -1 ? confirmCreateOrder : confirmUpdateOrder
-            }
-            closeModal={() => {
-              setConfirmModalIsOpen(() => false);
-            }}
-          />
-        )}
-        {alertModalIsOpen && (
-          <AlertModal
-            msg={alertModalMsg}
-            type="error"
-            closeModal={() => {
-              setAlertModalIsOpen(() => false);
-            }}
-          />
-        )}
-      </ModalPortal>
+      {confirmModalIsOpen && (
+        <ConfirmModal
+          msg={confirmModalMsg}
+          confirmAction={
+            orderId === -1 ? confirmCreateOrder : confirmUpdateOrder
+          }
+          closeModal={() => {
+            setConfirmModalIsOpen(() => false);
+          }}
+        />
+      )}
+      {alertModalIsOpen && (
+        <AlertModal
+          msg={alertModalMsg}
+          type="error"
+          closeModal={() => {
+            setAlertModalIsOpen(() => false);
+          }}
+        />
+      )}
     </div>
   );
 }

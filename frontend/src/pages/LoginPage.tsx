@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useLogin } from 'data/account/account.hooks';
 import { LoginForm } from 'data/account/account.model';
 import useModal from 'hooks/useModal';
-import { ModalPortal } from 'components/modal';
 import AlertModal from 'components/modal/AlertModal';
 import { AxiosError } from 'axios';
 
@@ -101,17 +100,15 @@ function Login() {
           회원가입
         </button>
       </div>
-      <ModalPortal>
-        {isOpen && (
-          <AlertModal
-            msg={modalMsg}
-            type={modalType}
-            closeModal={() => {
-              setIsOpen(() => false);
-            }}
-          />
-        )}
-      </ModalPortal>
+      {isOpen && (
+        <AlertModal
+          msg={modalMsg}
+          type={modalType}
+          closeModal={() => {
+            setIsOpen(() => false);
+          }}
+        />
+      )}
     </div>
   );
 }
