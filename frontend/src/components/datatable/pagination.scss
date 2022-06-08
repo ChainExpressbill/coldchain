@@ -1,19 +1,24 @@
 .pagination {
-  width: 100%;
-  text-align: center;
+  @apply w-full text-center absolute bottom-2;
 
   & button {
+    @apply mx-2 p-0 cursor-pointer;
+  }
+
+  &__page {
     width: 2rem;
     height: 2rem;
-    margin: 0 4px;
-    padding: 0;
-    cursor: pointer;
+  }
 
-    &.current-page {
-      @apply text-white bg-main rounded-full;
-    }
+  &__current__page {
+    @apply text-white bg-main rounded-full;
+  }
+
+  &__chevron {
+    @apply w-[2.5rem] h-[2.5rem] border-[1px] border-gray-400 rounded-full;
+
     &:disabled {
-      cursor: not-allowed;
+      @apply text-gray-400 cursor-not-allowed;
     }
   }
 }

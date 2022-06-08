@@ -115,31 +115,37 @@ function OrderDatatable({ header }: OrderDatatableProps) {
     );
   }
 
-  const tableRows = data?.orderList.map((order: Order) => (
-    <tr
-      key={order.id}
-      className="grid grid-cols-order border-b-[1px] border-b-main pl-2 py-4 hover:bg-gray-200 hover:cursor-pointer"
-    >
-      {header.map((h: OrderDatatableHeader) => {
-        const textAlign = `${h.align ?? 'center'}` as any;
+  const hasOrderList = data && data.orderList.length > 0;
 
-        return (
-          <td
-            key={h.column}
-            style={{ textAlign }}
-            onClick={() => handleClick(order.id)}
-          >
-            {h.column === 'createdAt'
-              ? format(new Date(order[h.column]), 'yyyy-MM-dd')
-              : order[h.column]}
-          </td>
-        );
-      })}
-    </tr>
-  ));
+  function renderTableRows() {
+    if (hasOrderList) {
+      return data.orderList.map((order: Order) => (
+        <tr
+          key={order.id}
+          className="grid grid-cols-order border-b-[1px] border-b-main pl-2 py-4 hover:bg-gray-200 hover:cursor-pointer"
+        >
+          {header.map((h: OrderDatatableHeader) => {
+            const textAlign = `${h.align ?? 'center'}` as any;
+
+            return (
+              <td
+                key={h.column}
+                style={{ textAlign }}
+                onClick={() => handleClick(order.id)}
+              >
+                {h.column === 'createdAt'
+                  ? format(new Date(order[h.column]), 'yyyy-MM-dd')
+                  : order[h.column]}
+              </td>
+            );
+          })}
+        </tr>
+      ));
+    }
+  }
 
   function renderPagination() {
-    if (data) {
+    if (hasOrderList) {
       return (
         <Pagination
           totalPages={data.totalPage}
@@ -152,7 +158,7 @@ function OrderDatatable({ header }: OrderDatatableProps) {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full relative">
       <div className="flex flex-row items-center justify-between mb-2">
         <div>총 개수: {data?.totalCount ?? 0}</div>
         <div>
@@ -165,7 +171,7 @@ function OrderDatatable({ header }: OrderDatatableProps) {
         </div>
       </div>
       <table
-        className="w-full table-fixed border-0 border-collapse"
+        className="w-full table-fixed border-0 border-collapse mb-2"
         cellSpacing="0"
         cellPadding="0"
       >
@@ -174,7 +180,9 @@ function OrderDatatable({ header }: OrderDatatableProps) {
             {tableHeaders}
           </tr>
         </thead>
-        <tbody className="block h-[43rem] overflow-auto">{tableRows}</tbody>
+        <tbody className="block h-[41rem] overflow-auto">
+          {renderTableRows()}
+        </tbody>
       </table>
       {renderPagination()}
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import './pagination.scss';
 
 type PaginationProps = {
@@ -39,10 +40,15 @@ function Pagination({
 
   return (
     <div className="pagination">
-      <button onClick={() => setPage(1)} disabled={currentPage === 1}>
+      <button
+        className="pagination__chevron"
+        onClick={() => setPage(1)}
+        disabled={currentPage === 1}
+      >
         &lt;&lt;
       </button>
       <button
+        className="pagination__chevron"
         onClick={() => setPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -52,18 +58,22 @@ function Pagination({
         <button
           key={page}
           onClick={() => setPage(page)}
-          className={page === currentPage ? 'current-page' : ''}
+          className={classnames('pagination__page', {
+            pagination__current__page: page === currentPage,
+          })}
         >
           {page}
         </button>
       ))}
       <button
+        className="pagination__chevron"
         onClick={() => setPage(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
         &gt;
       </button>
       <button
+        className="pagination__chevron"
         onClick={() => setPage(totalPages)}
         disabled={currentPage === totalPages}
       >
