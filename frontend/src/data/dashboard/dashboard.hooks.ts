@@ -40,11 +40,11 @@ export function useGetToday(
 export function useGetCharts(
   chartType: ChartType,
   options:
-    | UseQueryOptions<ChartsResponse, AxiosError, ChartsResponse>
+    | UseQueryOptions<ChartsResponse[], AxiosError, ChartsResponse[]>
     | undefined = {},
 ) {
-  return useQuery<ChartsResponse, AxiosError, ChartsResponse>(
-    ['/dashboard/summary/charts'],
+  return useQuery<ChartsResponse[], AxiosError, ChartsResponse[]>(
+    ['/dashboard/summary/charts', chartType],
     () => getCharts(chartType),
     {
       retry: 2,

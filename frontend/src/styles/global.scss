@@ -1,7 +1,36 @@
 @import 'tailwind.css';
 @import 'fonts.scss';
 @import 'animations.scss';
+@import 'layout.scss';
 
 body {
   font-family: BaeminJUA, Arial, Helvetica, sans-serif;
+}
+
+.Rounded__Shadow__Border {
+  @apply border-2 border-main rounded-lg shadow-basic;
+}
+
+.Form__Input__Border__Box {
+  @apply border border-gray-300 w-full h-12 p-2;
+}
+
+.Text__Align__Center__Box {
+  @apply flex items-center;
+}
+
+.Order__Form__Container__Box {
+  @apply grid grid-cols-5 gap-2;
+}
+
+.Order__Form__Label__Box {
+  @apply col-span-1 Text__Align__Center__Box justify-end;
+}
+
+.Order__Form__Input__Box {
+  @apply Form__Input__Border__Box col-span-3;
+}
+
+.Order__Form__ValidMsg__Box {
+  @apply col-span-2 Text__Align__Center__Box;
 }

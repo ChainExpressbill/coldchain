@@ -19,7 +19,7 @@ type GetOrdersResponse struct {
 	OrderList  []*ent.Order `json:"orderList"`
 	Page       int          `json:"page"`
 	Size       int          `json:"size"`
-	TotalPage  int          `json:"totalSize"`
+	TotalPage  int          `json:"totalPage"`
 	TotalCount int          `json:"totalCount"`
 }
 
