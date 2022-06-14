@@ -1,6 +1,7 @@
 export interface OrderSearchParams {
   orderer?: string;
   receiver?: string;
+  oid?: string;
   startDate: string;
   endDate: string;
   page: number;

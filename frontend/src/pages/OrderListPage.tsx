@@ -11,19 +11,19 @@ function OrderListPage() {
     },
     {
       column: 'orderer',
-      text: '주문자',
+      text: '주문업체',
     },
     {
       column: 'receiver',
-      text: '수령자',
+      text: '수령업체',
     },
     {
       column: 'drugName',
-      text: '약품명',
+      text: '제품명',
     },
     {
       column: 'quantity',
-      text: '수량',
+      text: '제품수량',
       align: 'right',
     },
     {

@@ -13,8 +13,11 @@ function OrderSearchFilter() {
     setOrderer,
     receiver,
     setReceiver,
+    oid,
+    setOid,
     clearFilter,
     page,
+    setPage,
     size,
   } = useOrderStore(
     (state) => ({
@@ -24,8 +27,11 @@ function OrderSearchFilter() {
       receiver: state.receiver,
       setOrderer: state.setOrderer,
       setReceiver: state.setReceiver,
+      oid: state.oid,
+      setOid: state.setOid,
       clearFilter: state.clearFilter,
       page: state.page,
+      setPage: state.setPage,
       size: state.size,
     }),
     shallow,
@@ -37,6 +43,7 @@ function OrderSearchFilter() {
       endDate: endDate.toISOString(),
       orderer,
       receiver,
+      oid,
       page,
       size,
     },
@@ -44,6 +51,11 @@ function OrderSearchFilter() {
       enabled: false,
     },
   );
+
+  const handleOrderSearch = () => {
+    setPage(1);
+    refetch();
+  };
 
   const btnBaseClassnames = classNames('w-16 rounded-lg shadow-basic p-2');
   const resetBtnClassnames = classNames(btnBaseClassnames, 'border-main mr-2');
@@ -59,8 +71,22 @@ function OrderSearchFilter() {
         <FilterDatePicker />
       </div>
       <div className="mb-2">
+        <label className="block text-xl mb-1" htmlFor="oid">
+          주문 번호
+        </label>
+        <input
+          className="Form__Input__Border__Box"
+          type="text"
+          name="oid"
+          value={oid}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setOid(e.target.value)
+          }
+        />
+      </div>
+      <div className="mb-2">
         <label className="block text-xl mb-1" htmlFor="orderer">
-          주문자명
+          주문 업체
         </label>
         <input
           className="Form__Input__Border__Box"
@@ -74,7 +100,7 @@ function OrderSearchFilter() {
       </div>
       <div className="mb-2">
         <label className="block text-xl mb-1" htmlFor="receiver">
-          수령자명
+          수령 업체
         </label>
         <input
           className="Form__Input__Border__Box"
@@ -97,7 +123,7 @@ function OrderSearchFilter() {
         <button
           type="button"
           className={searchBtnClassnames}
-          onClick={() => refetch()}
+          onClick={handleOrderSearch}
         >
           조회
         </button>
