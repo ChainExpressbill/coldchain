@@ -12,7 +12,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
-	"github.com/google/uuid"
 )
 
 // OrderCreate is the builder for creating a Order entity.
@@ -23,15 +22,15 @@ type OrderCreate struct {
 }
 
 // SetOid sets the "oid" field.
-func (oc *OrderCreate) SetOid(u uuid.UUID) *OrderCreate {
-	oc.mutation.SetOid(u)
+func (oc *OrderCreate) SetOid(s string) *OrderCreate {
+	oc.mutation.SetOid(s)
 	return oc
 }
 
 // SetNillableOid sets the "oid" field if the given value is not nil.
-func (oc *OrderCreate) SetNillableOid(u *uuid.UUID) *OrderCreate {
-	if u != nil {
-		oc.SetOid(*u)
+func (oc *OrderCreate) SetNillableOid(s *string) *OrderCreate {
+	if s != nil {
+		oc.SetOid(*s)
 	}
 	return oc
 }
@@ -75,6 +74,48 @@ func (oc *OrderCreate) SetRegisterName(s string) *OrderCreate {
 // SetStorageCondition sets the "storage_condition" field.
 func (oc *OrderCreate) SetStorageCondition(s string) *OrderCreate {
 	oc.mutation.SetStorageCondition(s)
+	return oc
+}
+
+// SetDeliveryDriverName sets the "delivery_driver_name" field.
+func (oc *OrderCreate) SetDeliveryDriverName(s string) *OrderCreate {
+	oc.mutation.SetDeliveryDriverName(s)
+	return oc
+}
+
+// SetNillableDeliveryDriverName sets the "delivery_driver_name" field if the given value is not nil.
+func (oc *OrderCreate) SetNillableDeliveryDriverName(s *string) *OrderCreate {
+	if s != nil {
+		oc.SetDeliveryDriverName(*s)
+	}
+	return oc
+}
+
+// SetDeliveryDriverTelNo sets the "delivery_driver_tel_no" field.
+func (oc *OrderCreate) SetDeliveryDriverTelNo(s string) *OrderCreate {
+	oc.mutation.SetDeliveryDriverTelNo(s)
+	return oc
+}
+
+// SetNillableDeliveryDriverTelNo sets the "delivery_driver_tel_no" field if the given value is not nil.
+func (oc *OrderCreate) SetNillableDeliveryDriverTelNo(s *string) *OrderCreate {
+	if s != nil {
+		oc.SetDeliveryDriverTelNo(*s)
+	}
+	return oc
+}
+
+// SetMemo sets the "memo" field.
+func (oc *OrderCreate) SetMemo(s string) *OrderCreate {
+	oc.mutation.SetMemo(s)
+	return oc
+}
+
+// SetNillableMemo sets the "memo" field if the given value is not nil.
+func (oc *OrderCreate) SetNillableMemo(s *string) *OrderCreate {
+	if s != nil {
+		oc.SetMemo(*s)
+	}
 	return oc
 }
 
@@ -189,8 +230,16 @@ func (oc *OrderCreate) ExecX(ctx context.Context) {
 // defaults sets the default values of the builder before save.
 func (oc *OrderCreate) defaults() {
 	if _, ok := oc.mutation.Oid(); !ok {
-		v := order.DefaultOid()
+		v := order.DefaultOid
 		oc.mutation.SetOid(v)
+	}
+	if _, ok := oc.mutation.DeliveryDriverName(); !ok {
+		v := order.DefaultDeliveryDriverName
+		oc.mutation.SetDeliveryDriverName(v)
+	}
+	if _, ok := oc.mutation.DeliveryDriverTelNo(); !ok {
+		v := order.DefaultDeliveryDriverTelNo
+		oc.mutation.SetDeliveryDriverTelNo(v)
 	}
 	if _, ok := oc.mutation.CreatedAt(); !ok {
 		v := order.DefaultCreatedAt()
@@ -253,6 +302,22 @@ func (oc *OrderCreate) check() error {
 			return &ValidationError{Name: "storage_condition", err: fmt.Errorf(`ent: validator failed for field "Order.storage_condition": %w`, err)}
 		}
 	}
+	if _, ok := oc.mutation.DeliveryDriverName(); !ok {
+		return &ValidationError{Name: "delivery_driver_name", err: errors.New(`ent: missing required field "Order.delivery_driver_name"`)}
+	}
+	if v, ok := oc.mutation.DeliveryDriverName(); ok {
+		if err := order.DeliveryDriverNameValidator(v); err != nil {
+			return &ValidationError{Name: "delivery_driver_name", err: fmt.Errorf(`ent: validator failed for field "Order.delivery_driver_name": %w`, err)}
+		}
+	}
+	if _, ok := oc.mutation.DeliveryDriverTelNo(); !ok {
+		return &ValidationError{Name: "delivery_driver_tel_no", err: errors.New(`ent: missing required field "Order.delivery_driver_tel_no"`)}
+	}
+	if v, ok := oc.mutation.DeliveryDriverTelNo(); ok {
+		if err := order.DeliveryDriverTelNoValidator(v); err != nil {
+			return &ValidationError{Name: "delivery_driver_tel_no", err: fmt.Errorf(`ent: validator failed for field "Order.delivery_driver_tel_no": %w`, err)}
+		}
+	}
 	if _, ok := oc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "Order.createdAt"`)}
 	}
@@ -291,7 +356,7 @@ func (oc *OrderCreate) createSpec() (*Order, *sqlgraph.CreateSpec) {
 	)
 	if value, ok := oc.mutation.Oid(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeUUID,
+			Type:   field.TypeString,
 			Value:  value,
 			Column: order.FieldOid,
 		})
@@ -352,6 +417,30 @@ func (oc *OrderCreate) createSpec() (*Order, *sqlgraph.CreateSpec) {
 			Column: order.FieldStorageCondition,
 		})
 		_node.StorageCondition = value
+	}
+	if value, ok := oc.mutation.DeliveryDriverName(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: order.FieldDeliveryDriverName,
+		})
+		_node.DeliveryDriverName = value
+	}
+	if value, ok := oc.mutation.DeliveryDriverTelNo(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: order.FieldDeliveryDriverTelNo,
+		})
+		_node.DeliveryDriverTelNo = value
+	}
+	if value, ok := oc.mutation.Memo(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: order.FieldMemo,
+		})
+		_node.Memo = &value
 	}
 	if value, ok := oc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

@@ -14,7 +14,6 @@ import (
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
 	"github.com/ChainExpressbill/coldchain/ent/predicate"
-	"github.com/google/uuid"
 )
 
 // OrderUpdate is the builder for updating Order entities.
@@ -27,20 +26,6 @@ type OrderUpdate struct {
 // Where appends a list predicates to the OrderUpdate builder.
 func (ou *OrderUpdate) Where(ps ...predicate.Order) *OrderUpdate {
 	ou.mutation.Where(ps...)
-	return ou
-}
-
-// SetOid sets the "oid" field.
-func (ou *OrderUpdate) SetOid(u uuid.UUID) *OrderUpdate {
-	ou.mutation.SetOid(u)
-	return ou
-}
-
-// SetNillableOid sets the "oid" field if the given value is not nil.
-func (ou *OrderUpdate) SetNillableOid(u *uuid.UUID) *OrderUpdate {
-	if u != nil {
-		ou.SetOid(*u)
-	}
 	return ou
 }
 
@@ -90,6 +75,54 @@ func (ou *OrderUpdate) SetRegisterName(s string) *OrderUpdate {
 // SetStorageCondition sets the "storage_condition" field.
 func (ou *OrderUpdate) SetStorageCondition(s string) *OrderUpdate {
 	ou.mutation.SetStorageCondition(s)
+	return ou
+}
+
+// SetDeliveryDriverName sets the "delivery_driver_name" field.
+func (ou *OrderUpdate) SetDeliveryDriverName(s string) *OrderUpdate {
+	ou.mutation.SetDeliveryDriverName(s)
+	return ou
+}
+
+// SetNillableDeliveryDriverName sets the "delivery_driver_name" field if the given value is not nil.
+func (ou *OrderUpdate) SetNillableDeliveryDriverName(s *string) *OrderUpdate {
+	if s != nil {
+		ou.SetDeliveryDriverName(*s)
+	}
+	return ou
+}
+
+// SetDeliveryDriverTelNo sets the "delivery_driver_tel_no" field.
+func (ou *OrderUpdate) SetDeliveryDriverTelNo(s string) *OrderUpdate {
+	ou.mutation.SetDeliveryDriverTelNo(s)
+	return ou
+}
+
+// SetNillableDeliveryDriverTelNo sets the "delivery_driver_tel_no" field if the given value is not nil.
+func (ou *OrderUpdate) SetNillableDeliveryDriverTelNo(s *string) *OrderUpdate {
+	if s != nil {
+		ou.SetDeliveryDriverTelNo(*s)
+	}
+	return ou
+}
+
+// SetMemo sets the "memo" field.
+func (ou *OrderUpdate) SetMemo(s string) *OrderUpdate {
+	ou.mutation.SetMemo(s)
+	return ou
+}
+
+// SetNillableMemo sets the "memo" field if the given value is not nil.
+func (ou *OrderUpdate) SetNillableMemo(s *string) *OrderUpdate {
+	if s != nil {
+		ou.SetMemo(*s)
+	}
+	return ou
+}
+
+// ClearMemo clears the value of the "memo" field.
+func (ou *OrderUpdate) ClearMemo() *OrderUpdate {
+	ou.mutation.ClearMemo()
 	return ou
 }
 
@@ -217,6 +250,16 @@ func (ou *OrderUpdate) check() error {
 			return &ValidationError{Name: "storage_condition", err: fmt.Errorf(`ent: validator failed for field "Order.storage_condition": %w`, err)}
 		}
 	}
+	if v, ok := ou.mutation.DeliveryDriverName(); ok {
+		if err := order.DeliveryDriverNameValidator(v); err != nil {
+			return &ValidationError{Name: "delivery_driver_name", err: fmt.Errorf(`ent: validator failed for field "Order.delivery_driver_name": %w`, err)}
+		}
+	}
+	if v, ok := ou.mutation.DeliveryDriverTelNo(); ok {
+		if err := order.DeliveryDriverTelNoValidator(v); err != nil {
+			return &ValidationError{Name: "delivery_driver_tel_no", err: fmt.Errorf(`ent: validator failed for field "Order.delivery_driver_tel_no": %w`, err)}
+		}
+	}
 	if _, ok := ou.mutation.ManagerID(); ou.mutation.ManagerCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Order.manager"`)
 	}
@@ -240,13 +283,6 @@ func (ou *OrderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := ou.mutation.Oid(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUUID,
-			Value:  value,
-			Column: order.FieldOid,
-		})
 	}
 	if value, ok := ou.mutation.Orderer(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -302,6 +338,33 @@ func (ou *OrderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: order.FieldStorageCondition,
+		})
+	}
+	if value, ok := ou.mutation.DeliveryDriverName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: order.FieldDeliveryDriverName,
+		})
+	}
+	if value, ok := ou.mutation.DeliveryDriverTelNo(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: order.FieldDeliveryDriverTelNo,
+		})
+	}
+	if value, ok := ou.mutation.Memo(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: order.FieldMemo,
+		})
+	}
+	if ou.mutation.MemoCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: order.FieldMemo,
 		})
 	}
 	if value, ok := ou.mutation.UpdatedAt(); ok {
@@ -365,20 +428,6 @@ type OrderUpdateOne struct {
 	mutation *OrderMutation
 }
 
-// SetOid sets the "oid" field.
-func (ouo *OrderUpdateOne) SetOid(u uuid.UUID) *OrderUpdateOne {
-	ouo.mutation.SetOid(u)
-	return ouo
-}
-
-// SetNillableOid sets the "oid" field if the given value is not nil.
-func (ouo *OrderUpdateOne) SetNillableOid(u *uuid.UUID) *OrderUpdateOne {
-	if u != nil {
-		ouo.SetOid(*u)
-	}
-	return ouo
-}
-
 // SetOrderer sets the "orderer" field.
 func (ouo *OrderUpdateOne) SetOrderer(s string) *OrderUpdateOne {
 	ouo.mutation.SetOrderer(s)
@@ -425,6 +474,54 @@ func (ouo *OrderUpdateOne) SetRegisterName(s string) *OrderUpdateOne {
 // SetStorageCondition sets the "storage_condition" field.
 func (ouo *OrderUpdateOne) SetStorageCondition(s string) *OrderUpdateOne {
 	ouo.mutation.SetStorageCondition(s)
+	return ouo
+}
+
+// SetDeliveryDriverName sets the "delivery_driver_name" field.
+func (ouo *OrderUpdateOne) SetDeliveryDriverName(s string) *OrderUpdateOne {
+	ouo.mutation.SetDeliveryDriverName(s)
+	return ouo
+}
+
+// SetNillableDeliveryDriverName sets the "delivery_driver_name" field if the given value is not nil.
+func (ouo *OrderUpdateOne) SetNillableDeliveryDriverName(s *string) *OrderUpdateOne {
+	if s != nil {
+		ouo.SetDeliveryDriverName(*s)
+	}
+	return ouo
+}
+
+// SetDeliveryDriverTelNo sets the "delivery_driver_tel_no" field.
+func (ouo *OrderUpdateOne) SetDeliveryDriverTelNo(s string) *OrderUpdateOne {
+	ouo.mutation.SetDeliveryDriverTelNo(s)
+	return ouo
+}
+
+// SetNillableDeliveryDriverTelNo sets the "delivery_driver_tel_no" field if the given value is not nil.
+func (ouo *OrderUpdateOne) SetNillableDeliveryDriverTelNo(s *string) *OrderUpdateOne {
+	if s != nil {
+		ouo.SetDeliveryDriverTelNo(*s)
+	}
+	return ouo
+}
+
+// SetMemo sets the "memo" field.
+func (ouo *OrderUpdateOne) SetMemo(s string) *OrderUpdateOne {
+	ouo.mutation.SetMemo(s)
+	return ouo
+}
+
+// SetNillableMemo sets the "memo" field if the given value is not nil.
+func (ouo *OrderUpdateOne) SetNillableMemo(s *string) *OrderUpdateOne {
+	if s != nil {
+		ouo.SetMemo(*s)
+	}
+	return ouo
+}
+
+// ClearMemo clears the value of the "memo" field.
+func (ouo *OrderUpdateOne) ClearMemo() *OrderUpdateOne {
+	ouo.mutation.ClearMemo()
 	return ouo
 }
 
@@ -559,6 +656,16 @@ func (ouo *OrderUpdateOne) check() error {
 			return &ValidationError{Name: "storage_condition", err: fmt.Errorf(`ent: validator failed for field "Order.storage_condition": %w`, err)}
 		}
 	}
+	if v, ok := ouo.mutation.DeliveryDriverName(); ok {
+		if err := order.DeliveryDriverNameValidator(v); err != nil {
+			return &ValidationError{Name: "delivery_driver_name", err: fmt.Errorf(`ent: validator failed for field "Order.delivery_driver_name": %w`, err)}
+		}
+	}
+	if v, ok := ouo.mutation.DeliveryDriverTelNo(); ok {
+		if err := order.DeliveryDriverTelNoValidator(v); err != nil {
+			return &ValidationError{Name: "delivery_driver_tel_no", err: fmt.Errorf(`ent: validator failed for field "Order.delivery_driver_tel_no": %w`, err)}
+		}
+	}
 	if _, ok := ouo.mutation.ManagerID(); ouo.mutation.ManagerCleared() && !ok {
 		return errors.New(`ent: clearing a required unique edge "Order.manager"`)
 	}
@@ -599,13 +706,6 @@ func (ouo *OrderUpdateOne) sqlSave(ctx context.Context) (_node *Order, err error
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := ouo.mutation.Oid(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUUID,
-			Value:  value,
-			Column: order.FieldOid,
-		})
 	}
 	if value, ok := ouo.mutation.Orderer(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -661,6 +761,33 @@ func (ouo *OrderUpdateOne) sqlSave(ctx context.Context) (_node *Order, err error
 			Type:   field.TypeString,
 			Value:  value,
 			Column: order.FieldStorageCondition,
+		})
+	}
+	if value, ok := ouo.mutation.DeliveryDriverName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: order.FieldDeliveryDriverName,
+		})
+	}
+	if value, ok := ouo.mutation.DeliveryDriverTelNo(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: order.FieldDeliveryDriverTelNo,
+		})
+	}
+	if value, ok := ouo.mutation.Memo(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: order.FieldMemo,
+		})
+	}
+	if ouo.mutation.MemoCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: order.FieldMemo,
 		})
 	}
 	if value, ok := ouo.mutation.UpdatedAt(); ok {

@@ -1,7 +1,6 @@
 package orders
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -24,7 +23,6 @@ func Orders(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	fmt.Printf("%#v\n", params)
 	orders := OrdersService(params)
 	return c.Status(fiber.StatusOK).JSON(orders)
 }
@@ -54,7 +52,6 @@ func OrderDetail(c *fiber.Ctx) error {
 	}
 
 	order := OrderDetailService(id)
-	fmt.Printf("%#v\n", order)
 	return c.Status(fiber.StatusOK).JSON(order)
 }
 
@@ -63,7 +60,7 @@ func OrderDetail(c *fiber.Ctx) error {
 // @Tags 				Order
 // @Accept 			application/json;charset=UTF-8
 // @Produce 		application/json;charset=UTF-8
-// @Param 			OrderRequestBody body OrderRequestBody true "주문 수정에 대한 form 데이터. id, oid 필요 없음"
+// @Param 			OrderRequestBody body OrderRequestBody true "주문 등록에 대한 form 데이터. id, oid 필요 없음"
 // @Success 		200 {object} string
 // @Failure 		400 {object} map[string]string
 // @Failure 		500 {object} map[string]string
@@ -75,7 +72,6 @@ func OrderCreate(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	fmt.Printf("%#v\n", body)
 	OrderCreateService(body)
 	return c.SendStatus(fiber.StatusOK)
 }
@@ -97,7 +93,6 @@ func OrderUpdate(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	fmt.Printf("%#v\n", body)
 	OrderUpdateService(body)
 	return c.SendStatus(fiber.StatusOK)
 }

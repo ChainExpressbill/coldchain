@@ -293,7 +293,7 @@ func (oq *OrderQuery) WithManager(opts ...func(*AccountQuery)) *OrderQuery {
 // Example:
 //
 //	var v []struct {
-//		Oid uuid.UUID `json:"oid,omitempty"`
+//		Oid string `json:"oid,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -320,7 +320,7 @@ func (oq *OrderQuery) GroupBy(field string, fields ...string) *OrderGroupBy {
 // Example:
 //
 //	var v []struct {
-//		Oid uuid.UUID `json:"oid,omitempty"`
+//		Oid string `json:"oid,omitempty"`
 //	}
 //
 //	client.Order.Query().

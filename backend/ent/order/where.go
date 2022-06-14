@@ -8,7 +8,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/ChainExpressbill/coldchain/ent/predicate"
-	"github.com/google/uuid"
 )
 
 // ID filters vertices based on their ID field.
@@ -95,7 +94,7 @@ func IDLTE(id int) predicate.Order {
 }
 
 // Oid applies equality check predicate on the "oid" field. It's identical to OidEQ.
-func Oid(v uuid.UUID) predicate.Order {
+func Oid(v string) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOid), v))
 	})
@@ -150,6 +149,27 @@ func StorageCondition(v string) predicate.Order {
 	})
 }
 
+// DeliveryDriverName applies equality check predicate on the "delivery_driver_name" field. It's identical to DeliveryDriverNameEQ.
+func DeliveryDriverName(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverTelNo applies equality check predicate on the "delivery_driver_tel_no" field. It's identical to DeliveryDriverTelNoEQ.
+func DeliveryDriverTelNo(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// Memo applies equality check predicate on the "memo" field. It's identical to MemoEQ.
+func Memo(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMemo), v))
+	})
+}
+
 // CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
@@ -165,21 +185,21 @@ func UpdatedAt(v time.Time) predicate.Order {
 }
 
 // OidEQ applies the EQ predicate on the "oid" field.
-func OidEQ(v uuid.UUID) predicate.Order {
+func OidEQ(v string) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOid), v))
 	})
 }
 
 // OidNEQ applies the NEQ predicate on the "oid" field.
-func OidNEQ(v uuid.UUID) predicate.Order {
+func OidNEQ(v string) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldOid), v))
 	})
 }
 
 // OidIn applies the In predicate on the "oid" field.
-func OidIn(vs ...uuid.UUID) predicate.Order {
+func OidIn(vs ...string) predicate.Order {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -196,7 +216,7 @@ func OidIn(vs ...uuid.UUID) predicate.Order {
 }
 
 // OidNotIn applies the NotIn predicate on the "oid" field.
-func OidNotIn(vs ...uuid.UUID) predicate.Order {
+func OidNotIn(vs ...string) predicate.Order {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -213,30 +233,65 @@ func OidNotIn(vs ...uuid.UUID) predicate.Order {
 }
 
 // OidGT applies the GT predicate on the "oid" field.
-func OidGT(v uuid.UUID) predicate.Order {
+func OidGT(v string) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldOid), v))
 	})
 }
 
 // OidGTE applies the GTE predicate on the "oid" field.
-func OidGTE(v uuid.UUID) predicate.Order {
+func OidGTE(v string) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldOid), v))
 	})
 }
 
 // OidLT applies the LT predicate on the "oid" field.
-func OidLT(v uuid.UUID) predicate.Order {
+func OidLT(v string) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldOid), v))
 	})
 }
 
 // OidLTE applies the LTE predicate on the "oid" field.
-func OidLTE(v uuid.UUID) predicate.Order {
+func OidLTE(v string) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldOid), v))
+	})
+}
+
+// OidContains applies the Contains predicate on the "oid" field.
+func OidContains(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldOid), v))
+	})
+}
+
+// OidHasPrefix applies the HasPrefix predicate on the "oid" field.
+func OidHasPrefix(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldOid), v))
+	})
+}
+
+// OidHasSuffix applies the HasSuffix predicate on the "oid" field.
+func OidHasSuffix(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldOid), v))
+	})
+}
+
+// OidEqualFold applies the EqualFold predicate on the "oid" field.
+func OidEqualFold(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldOid), v))
+	})
+}
+
+// OidContainsFold applies the ContainsFold predicate on the "oid" field.
+func OidContainsFold(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldOid), v))
 	})
 }
 
@@ -979,6 +1034,353 @@ func StorageConditionEqualFold(v string) predicate.Order {
 func StorageConditionContainsFold(v string) predicate.Order {
 	return predicate.Order(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldStorageCondition), v))
+	})
+}
+
+// DeliveryDriverNameEQ applies the EQ predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameEQ(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameNEQ applies the NEQ predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameNEQ(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameIn applies the In predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameIn(vs ...string) predicate.Order {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Order(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldDeliveryDriverName), v...))
+	})
+}
+
+// DeliveryDriverNameNotIn applies the NotIn predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameNotIn(vs ...string) predicate.Order {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Order(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldDeliveryDriverName), v...))
+	})
+}
+
+// DeliveryDriverNameGT applies the GT predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameGT(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameGTE applies the GTE predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameGTE(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameLT applies the LT predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameLT(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameLTE applies the LTE predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameLTE(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameContains applies the Contains predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameContains(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameHasPrefix applies the HasPrefix predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameHasPrefix(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameHasSuffix applies the HasSuffix predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameHasSuffix(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameEqualFold applies the EqualFold predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameEqualFold(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverNameContainsFold applies the ContainsFold predicate on the "delivery_driver_name" field.
+func DeliveryDriverNameContainsFold(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldDeliveryDriverName), v))
+	})
+}
+
+// DeliveryDriverTelNoEQ applies the EQ predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoEQ(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoNEQ applies the NEQ predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoNEQ(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoIn applies the In predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoIn(vs ...string) predicate.Order {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Order(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldDeliveryDriverTelNo), v...))
+	})
+}
+
+// DeliveryDriverTelNoNotIn applies the NotIn predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoNotIn(vs ...string) predicate.Order {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Order(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldDeliveryDriverTelNo), v...))
+	})
+}
+
+// DeliveryDriverTelNoGT applies the GT predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoGT(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoGTE applies the GTE predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoGTE(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoLT applies the LT predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoLT(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoLTE applies the LTE predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoLTE(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoContains applies the Contains predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoContains(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoHasPrefix applies the HasPrefix predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoHasPrefix(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoHasSuffix applies the HasSuffix predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoHasSuffix(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoEqualFold applies the EqualFold predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoEqualFold(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// DeliveryDriverTelNoContainsFold applies the ContainsFold predicate on the "delivery_driver_tel_no" field.
+func DeliveryDriverTelNoContainsFold(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldDeliveryDriverTelNo), v))
+	})
+}
+
+// MemoEQ applies the EQ predicate on the "memo" field.
+func MemoEQ(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMemo), v))
+	})
+}
+
+// MemoNEQ applies the NEQ predicate on the "memo" field.
+func MemoNEQ(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldMemo), v))
+	})
+}
+
+// MemoIn applies the In predicate on the "memo" field.
+func MemoIn(vs ...string) predicate.Order {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Order(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldMemo), v...))
+	})
+}
+
+// MemoNotIn applies the NotIn predicate on the "memo" field.
+func MemoNotIn(vs ...string) predicate.Order {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Order(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldMemo), v...))
+	})
+}
+
+// MemoGT applies the GT predicate on the "memo" field.
+func MemoGT(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldMemo), v))
+	})
+}
+
+// MemoGTE applies the GTE predicate on the "memo" field.
+func MemoGTE(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldMemo), v))
+	})
+}
+
+// MemoLT applies the LT predicate on the "memo" field.
+func MemoLT(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldMemo), v))
+	})
+}
+
+// MemoLTE applies the LTE predicate on the "memo" field.
+func MemoLTE(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldMemo), v))
+	})
+}
+
+// MemoContains applies the Contains predicate on the "memo" field.
+func MemoContains(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldMemo), v))
+	})
+}
+
+// MemoHasPrefix applies the HasPrefix predicate on the "memo" field.
+func MemoHasPrefix(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldMemo), v))
+	})
+}
+
+// MemoHasSuffix applies the HasSuffix predicate on the "memo" field.
+func MemoHasSuffix(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldMemo), v))
+	})
+}
+
+// MemoIsNil applies the IsNil predicate on the "memo" field.
+func MemoIsNil() predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldMemo)))
+	})
+}
+
+// MemoNotNil applies the NotNil predicate on the "memo" field.
+func MemoNotNil() predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldMemo)))
+	})
+}
+
+// MemoEqualFold applies the EqualFold predicate on the "memo" field.
+func MemoEqualFold(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldMemo), v))
+	})
+}
+
+// MemoContainsFold applies the ContainsFold predicate on the "memo" field.
+func MemoContainsFold(v string) predicate.Order {
+	return predicate.Order(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldMemo), v))
 	})
 }
 

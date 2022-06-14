@@ -29,6 +29,7 @@ export function useGetOrders(
     () => getOrders(params),
     {
       retry: 2,
+      refetchOnWindowFocus: true,
       ...options,
     },
   );

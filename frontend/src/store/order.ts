@@ -7,6 +7,7 @@ export interface OrderStoreState {
   endDate: Date;
   orderer: string;
   receiver: string;
+  oid: string;
   page: number;
   size: number;
 }
@@ -16,6 +17,7 @@ export interface OrderStore extends OrderStoreState {
   setEndDate: (date: Date) => void;
   setOrderer: (orderer: string) => void;
   setReceiver: (receiver: string) => void;
+  setOid: (oid: string) => void;
   setPage: (page: number) => void;
   setSize: (size: number) => void;
   clearFilter: () => void;
@@ -26,6 +28,7 @@ const initialState: OrderStoreState = {
   endDate: new Date(),
   orderer: '',
   receiver: '',
+  oid: '',
   page: 1,
   size: DATATABLE_VIEW_ROWS.DEFAULT,
 };
@@ -44,6 +47,9 @@ export const useOrderStore = create<OrderStore>(
     },
     setReceiver: (receiver: string) => {
       set(() => ({ receiver }));
+    },
+    setOid: (oid: string) => {
+      set(() => ({ oid }));
     },
     setPage: (page: number) => {
       set(() => ({ page }));

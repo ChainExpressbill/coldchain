@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Pagination from './Pagination';
 import { DATATABLE_VIEW_ROWS } from 'constants/pagination';
 import Select from 'react-select';
+import numberWithCommas from 'utils/numberWithCommas';
 
 export type OrderKeys = keyof Order;
 export interface OrderDatatableHeader<T = OrderKeys> {
@@ -31,6 +32,7 @@ function OrderDatatable({ header }: OrderDatatableProps) {
     receiver,
     page,
     size,
+    oid,
     setPage,
     setSize,
   } = useOrderStore(
@@ -39,6 +41,7 @@ function OrderDatatable({ header }: OrderDatatableProps) {
       endDate: state.endDate,
       orderer: state.orderer,
       receiver: state.receiver,
+      oid: state.oid,
       page: state.page,
       size: state.size,
       setPage: state.setPage,
@@ -52,6 +55,7 @@ function OrderDatatable({ header }: OrderDatatableProps) {
       endDate: endDate.toISOString(),
       orderer,
       receiver,
+      oid,
       page,
       size,
     },
@@ -126,6 +130,12 @@ function OrderDatatable({ header }: OrderDatatableProps) {
         >
           {header.map((h: OrderDatatableHeader) => {
             const textAlign = `${h.align ?? 'center'}` as any;
+            const formattedFieldValue =
+              h.column === 'createdAt'
+                ? format(new Date(order[h.column]), 'yyyy-MM-dd')
+                : h.column === 'quantity'
+                ? numberWithCommas(order[h.column])
+                : order[h.column];
 
             return (
               <td
@@ -133,9 +143,7 @@ function OrderDatatable({ header }: OrderDatatableProps) {
                 style={{ textAlign }}
                 onClick={() => handleClick(order.id)}
               >
-                {h.column === 'createdAt'
-                  ? format(new Date(order[h.column]), 'yyyy-MM-dd')
-                  : order[h.column]}
+                {formattedFieldValue}
               </td>
             );
           })}
