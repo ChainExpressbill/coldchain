@@ -9,6 +9,7 @@ import (
 type OrderSearchParams struct {
 	Orderer   string    `json:"orderer,omitempty"`
 	Receiver  string    `json:"receiver,omitempty"`
+	Oid       string    `json:"oid,omitempty"`
 	StartDate time.Time `json:"startDate"`
 	EndDate   time.Time `json:"endDate"`
 	Page      int       `json:"page"`
@@ -25,14 +26,17 @@ type GetOrdersResponse struct {
 
 type OrderRequestBody struct {
 	// jwt 적용 전 임시로 id를 받아서 처리
-	AccountId        string `json:"accountId,omitempty"`
-	Id               int    `json:"id,omitempty"`
-	Oid              string `json:"oid,omitempty"`
-	Orderer          string `json:"orderer,omitempty"`
-	Receiver         string `json:"receiver,omitempty"`
-	DrugName         string `json:"drugName,omitempty"`
-	DrugStandard     string `json:"drugStandard,omitempty"`
-	Quantity         int    `json:"quantity,omitempty"`
-	RegisterName     string `json:"registerName,omitempty"`
-	StorageCondition string `json:"storageCondition,omitempty"`
+	AccountId           string `json:"accountId,omitempty"`
+	Id                  int    `json:"id,omitempty"`
+	Oid                 string `json:"oid,omitempty"`
+	Orderer             string `json:"orderer"`
+	Receiver            string `json:"receiver"`
+	DrugName            string `json:"drugName"`
+	DrugStandard        string `json:"drugStandard"`
+	Quantity            int    `json:"quantity"`
+	RegisterName        string `json:"registerName,omitempty"`
+	StorageCondition    string `json:"storageCondition"`
+	Memo                string `json:"memo,omitempty"`
+	DeliveryDriverName  string `json:"deliveryDriverName"`
+	DeliveryDriverTelNo string `json:"deliveryDriverTelNo"`
 }

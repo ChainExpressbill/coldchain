@@ -4,8 +4,6 @@ package order
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 const (
@@ -29,6 +27,12 @@ const (
 	FieldRegisterName = "register_name"
 	// FieldStorageCondition holds the string denoting the storage_condition field in the database.
 	FieldStorageCondition = "storage_condition"
+	// FieldDeliveryDriverName holds the string denoting the delivery_driver_name field in the database.
+	FieldDeliveryDriverName = "delivery_driver_name"
+	// FieldDeliveryDriverTelNo holds the string denoting the delivery_driver_tel_no field in the database.
+	FieldDeliveryDriverTelNo = "delivery_driver_tel_no"
+	// FieldMemo holds the string denoting the memo field in the database.
+	FieldMemo = "memo"
 	// FieldCreatedAt holds the string denoting the createdat field in the database.
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
@@ -57,6 +61,9 @@ var Columns = []string{
 	FieldQuantity,
 	FieldRegisterName,
 	FieldStorageCondition,
+	FieldDeliveryDriverName,
+	FieldDeliveryDriverTelNo,
+	FieldMemo,
 	FieldCreatedAt,
 	FieldUpdatedAt,
 }
@@ -84,7 +91,7 @@ func ValidColumn(column string) bool {
 
 var (
 	// DefaultOid holds the default value on creation for the "oid" field.
-	DefaultOid func() uuid.UUID
+	DefaultOid string
 	// OrdererValidator is a validator for the "orderer" field. It is called by the builders before save.
 	OrdererValidator func(string) error
 	// ReceiverValidator is a validator for the "receiver" field. It is called by the builders before save.
@@ -95,6 +102,14 @@ var (
 	DrugStandardValidator func(string) error
 	// StorageConditionValidator is a validator for the "storage_condition" field. It is called by the builders before save.
 	StorageConditionValidator func(string) error
+	// DefaultDeliveryDriverName holds the default value on creation for the "delivery_driver_name" field.
+	DefaultDeliveryDriverName string
+	// DeliveryDriverNameValidator is a validator for the "delivery_driver_name" field. It is called by the builders before save.
+	DeliveryDriverNameValidator func(string) error
+	// DefaultDeliveryDriverTelNo holds the default value on creation for the "delivery_driver_tel_no" field.
+	DefaultDeliveryDriverTelNo string
+	// DeliveryDriverTelNoValidator is a validator for the "delivery_driver_tel_no" field. It is called by the builders before save.
+	DeliveryDriverTelNoValidator func(string) error
 	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.

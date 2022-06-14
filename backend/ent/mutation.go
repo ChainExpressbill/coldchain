@@ -12,7 +12,6 @@ import (
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
 	"github.com/ChainExpressbill/coldchain/ent/predicate"
-	"github.com/google/uuid"
 
 	"entgo.io/ent"
 )
@@ -659,26 +658,29 @@ func (m *AccountMutation) ResetEdge(name string) error {
 // OrderMutation represents an operation that mutates the Order nodes in the graph.
 type OrderMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *int
-	oid               *uuid.UUID
-	orderer           *string
-	receiver          *string
-	drug_name         *string
-	drug_standard     *string
-	quantity          *int
-	addquantity       *int
-	register_name     *string
-	storage_condition *string
-	createdAt         *time.Time
-	updatedAt         *time.Time
-	clearedFields     map[string]struct{}
-	manager           *string
-	clearedmanager    bool
-	done              bool
-	oldValue          func(context.Context) (*Order, error)
-	predicates        []predicate.Order
+	op                     Op
+	typ                    string
+	id                     *int
+	oid                    *string
+	orderer                *string
+	receiver               *string
+	drug_name              *string
+	drug_standard          *string
+	quantity               *int
+	addquantity            *int
+	register_name          *string
+	storage_condition      *string
+	delivery_driver_name   *string
+	delivery_driver_tel_no *string
+	memo                   *string
+	createdAt              *time.Time
+	updatedAt              *time.Time
+	clearedFields          map[string]struct{}
+	manager                *string
+	clearedmanager         bool
+	done                   bool
+	oldValue               func(context.Context) (*Order, error)
+	predicates             []predicate.Order
 }
 
 var _ ent.Mutation = (*OrderMutation)(nil)
@@ -780,12 +782,12 @@ func (m *OrderMutation) IDs(ctx context.Context) ([]int, error) {
 }
 
 // SetOid sets the "oid" field.
-func (m *OrderMutation) SetOid(u uuid.UUID) {
-	m.oid = &u
+func (m *OrderMutation) SetOid(s string) {
+	m.oid = &s
 }
 
 // Oid returns the value of the "oid" field in the mutation.
-func (m *OrderMutation) Oid() (r uuid.UUID, exists bool) {
+func (m *OrderMutation) Oid() (r string, exists bool) {
 	v := m.oid
 	if v == nil {
 		return
@@ -796,7 +798,7 @@ func (m *OrderMutation) Oid() (r uuid.UUID, exists bool) {
 // OldOid returns the old "oid" field's value of the Order entity.
 // If the Order object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderMutation) OldOid(ctx context.Context) (v uuid.UUID, err error) {
+func (m *OrderMutation) OldOid(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldOid is only allowed on UpdateOne operations")
 	}
@@ -1087,6 +1089,127 @@ func (m *OrderMutation) ResetStorageCondition() {
 	m.storage_condition = nil
 }
 
+// SetDeliveryDriverName sets the "delivery_driver_name" field.
+func (m *OrderMutation) SetDeliveryDriverName(s string) {
+	m.delivery_driver_name = &s
+}
+
+// DeliveryDriverName returns the value of the "delivery_driver_name" field in the mutation.
+func (m *OrderMutation) DeliveryDriverName() (r string, exists bool) {
+	v := m.delivery_driver_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeliveryDriverName returns the old "delivery_driver_name" field's value of the Order entity.
+// If the Order object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderMutation) OldDeliveryDriverName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeliveryDriverName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeliveryDriverName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeliveryDriverName: %w", err)
+	}
+	return oldValue.DeliveryDriverName, nil
+}
+
+// ResetDeliveryDriverName resets all changes to the "delivery_driver_name" field.
+func (m *OrderMutation) ResetDeliveryDriverName() {
+	m.delivery_driver_name = nil
+}
+
+// SetDeliveryDriverTelNo sets the "delivery_driver_tel_no" field.
+func (m *OrderMutation) SetDeliveryDriverTelNo(s string) {
+	m.delivery_driver_tel_no = &s
+}
+
+// DeliveryDriverTelNo returns the value of the "delivery_driver_tel_no" field in the mutation.
+func (m *OrderMutation) DeliveryDriverTelNo() (r string, exists bool) {
+	v := m.delivery_driver_tel_no
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeliveryDriverTelNo returns the old "delivery_driver_tel_no" field's value of the Order entity.
+// If the Order object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderMutation) OldDeliveryDriverTelNo(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeliveryDriverTelNo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeliveryDriverTelNo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeliveryDriverTelNo: %w", err)
+	}
+	return oldValue.DeliveryDriverTelNo, nil
+}
+
+// ResetDeliveryDriverTelNo resets all changes to the "delivery_driver_tel_no" field.
+func (m *OrderMutation) ResetDeliveryDriverTelNo() {
+	m.delivery_driver_tel_no = nil
+}
+
+// SetMemo sets the "memo" field.
+func (m *OrderMutation) SetMemo(s string) {
+	m.memo = &s
+}
+
+// Memo returns the value of the "memo" field in the mutation.
+func (m *OrderMutation) Memo() (r string, exists bool) {
+	v := m.memo
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMemo returns the old "memo" field's value of the Order entity.
+// If the Order object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *OrderMutation) OldMemo(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMemo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMemo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMemo: %w", err)
+	}
+	return oldValue.Memo, nil
+}
+
+// ClearMemo clears the value of the "memo" field.
+func (m *OrderMutation) ClearMemo() {
+	m.memo = nil
+	m.clearedFields[order.FieldMemo] = struct{}{}
+}
+
+// MemoCleared returns if the "memo" field was cleared in this mutation.
+func (m *OrderMutation) MemoCleared() bool {
+	_, ok := m.clearedFields[order.FieldMemo]
+	return ok
+}
+
+// ResetMemo resets all changes to the "memo" field.
+func (m *OrderMutation) ResetMemo() {
+	m.memo = nil
+	delete(m.clearedFields, order.FieldMemo)
+}
+
 // SetCreatedAt sets the "createdAt" field.
 func (m *OrderMutation) SetCreatedAt(t time.Time) {
 	m.createdAt = &t
@@ -1217,7 +1340,7 @@ func (m *OrderMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *OrderMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 13)
 	if m.oid != nil {
 		fields = append(fields, order.FieldOid)
 	}
@@ -1241,6 +1364,15 @@ func (m *OrderMutation) Fields() []string {
 	}
 	if m.storage_condition != nil {
 		fields = append(fields, order.FieldStorageCondition)
+	}
+	if m.delivery_driver_name != nil {
+		fields = append(fields, order.FieldDeliveryDriverName)
+	}
+	if m.delivery_driver_tel_no != nil {
+		fields = append(fields, order.FieldDeliveryDriverTelNo)
+	}
+	if m.memo != nil {
+		fields = append(fields, order.FieldMemo)
 	}
 	if m.createdAt != nil {
 		fields = append(fields, order.FieldCreatedAt)
@@ -1272,6 +1404,12 @@ func (m *OrderMutation) Field(name string) (ent.Value, bool) {
 		return m.RegisterName()
 	case order.FieldStorageCondition:
 		return m.StorageCondition()
+	case order.FieldDeliveryDriverName:
+		return m.DeliveryDriverName()
+	case order.FieldDeliveryDriverTelNo:
+		return m.DeliveryDriverTelNo()
+	case order.FieldMemo:
+		return m.Memo()
 	case order.FieldCreatedAt:
 		return m.CreatedAt()
 	case order.FieldUpdatedAt:
@@ -1301,6 +1439,12 @@ func (m *OrderMutation) OldField(ctx context.Context, name string) (ent.Value, e
 		return m.OldRegisterName(ctx)
 	case order.FieldStorageCondition:
 		return m.OldStorageCondition(ctx)
+	case order.FieldDeliveryDriverName:
+		return m.OldDeliveryDriverName(ctx)
+	case order.FieldDeliveryDriverTelNo:
+		return m.OldDeliveryDriverTelNo(ctx)
+	case order.FieldMemo:
+		return m.OldMemo(ctx)
 	case order.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
 	case order.FieldUpdatedAt:
@@ -1315,7 +1459,7 @@ func (m *OrderMutation) OldField(ctx context.Context, name string) (ent.Value, e
 func (m *OrderMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case order.FieldOid:
-		v, ok := value.(uuid.UUID)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1369,6 +1513,27 @@ func (m *OrderMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStorageCondition(v)
+		return nil
+	case order.FieldDeliveryDriverName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeliveryDriverName(v)
+		return nil
+	case order.FieldDeliveryDriverTelNo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeliveryDriverTelNo(v)
+		return nil
+	case order.FieldMemo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMemo(v)
 		return nil
 	case order.FieldCreatedAt:
 		v, ok := value.(time.Time)
@@ -1428,7 +1593,11 @@ func (m *OrderMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *OrderMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(order.FieldMemo) {
+		fields = append(fields, order.FieldMemo)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -1441,6 +1610,11 @@ func (m *OrderMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *OrderMutation) ClearField(name string) error {
+	switch name {
+	case order.FieldMemo:
+		m.ClearMemo()
+		return nil
+	}
 	return fmt.Errorf("unknown Order nullable field %s", name)
 }
 
@@ -1471,6 +1645,15 @@ func (m *OrderMutation) ResetField(name string) error {
 		return nil
 	case order.FieldStorageCondition:
 		m.ResetStorageCondition()
+		return nil
+	case order.FieldDeliveryDriverName:
+		m.ResetDeliveryDriverName()
+		return nil
+	case order.FieldDeliveryDriverTelNo:
+		m.ResetDeliveryDriverTelNo()
+		return nil
+	case order.FieldMemo:
+		m.ResetMemo()
 		return nil
 	case order.FieldCreatedAt:
 		m.ResetCreatedAt()

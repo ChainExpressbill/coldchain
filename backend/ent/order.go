@@ -10,7 +10,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
-	"github.com/google/uuid"
 )
 
 // Order is the model entity for the Order schema.
@@ -20,21 +19,21 @@ type Order struct {
 	ID int `json:"id,omitempty"`
 	// Oid holds the value of the "oid" field.
 	// 주문 ID
-	Oid uuid.UUID `json:"oid,omitempty"`
+	Oid string `json:"oid,omitempty"`
 	// Orderer holds the value of the "orderer" field.
-	// 주문자(제약업체. 위탁배송을 요청한 업체)
+	// 주문 업체(제약업체. 위탁배송을 요청한 업체)
 	Orderer string `json:"orderer,omitempty"`
 	// Receiver holds the value of the "receiver" field.
-	// 수령자 (주문 요청 업체(약국, 병원 등))
+	// 수령 업체 (주문 요청 업체(약국, 병원 등))
 	Receiver string `json:"receiver,omitempty"`
 	// DrugName holds the value of the "drug_name" field.
-	// 약품명
+	// 제품명
 	DrugName string `json:"drugName,omitempty"`
 	// DrugStandard holds the value of the "drug_standard" field.
-	// 규격
+	// 제품 규격
 	DrugStandard string `json:"drugStandard,omitempty"`
 	// Quantity holds the value of the "quantity" field.
-	// 수량
+	// 제품 수량
 	Quantity int `json:"quantity,omitempty"`
 	// RegisterName holds the value of the "register_name" field.
 	// 주문 등록자
@@ -42,6 +41,15 @@ type Order struct {
 	// StorageCondition holds the value of the "storage_condition" field.
 	// 보관조건
 	StorageCondition string `json:"storageCondition,omitempty"`
+	// DeliveryDriverName holds the value of the "delivery_driver_name" field.
+	// 배송 기사 이름
+	DeliveryDriverName string `json:"deliveryDriverName,omitempty"`
+	// DeliveryDriverTelNo holds the value of the "delivery_driver_tel_no" field.
+	// 배송 기사 연락처
+	DeliveryDriverTelNo string `json:"deliveryDriverTelNo,omitempty"`
+	// Memo holds the value of the "memo" field.
+	// 메모
+	Memo *string `json:"memo,omitempty"`
 	// CreatedAt holds the value of the "createdAt" field.
 	// 생성 시간
 	CreatedAt time.Time `json:"createdAt,omitempty"`
@@ -84,12 +92,10 @@ func (*Order) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case order.FieldID, order.FieldQuantity:
 			values[i] = new(sql.NullInt64)
-		case order.FieldOrderer, order.FieldReceiver, order.FieldDrugName, order.FieldDrugStandard, order.FieldRegisterName, order.FieldStorageCondition:
+		case order.FieldOid, order.FieldOrderer, order.FieldReceiver, order.FieldDrugName, order.FieldDrugStandard, order.FieldRegisterName, order.FieldStorageCondition, order.FieldDeliveryDriverName, order.FieldDeliveryDriverTelNo, order.FieldMemo:
 			values[i] = new(sql.NullString)
 		case order.FieldCreatedAt, order.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
-		case order.FieldOid:
-			values[i] = new(uuid.UUID)
 		case order.ForeignKeys[0]: // account_orders
 			values[i] = new(sql.NullString)
 		default:
@@ -114,10 +120,10 @@ func (o *Order) assignValues(columns []string, values []interface{}) error {
 			}
 			o.ID = int(value.Int64)
 		case order.FieldOid:
-			if value, ok := values[i].(*uuid.UUID); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field oid", values[i])
-			} else if value != nil {
-				o.Oid = *value
+			} else if value.Valid {
+				o.Oid = value.String
 			}
 		case order.FieldOrderer:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -160,6 +166,25 @@ func (o *Order) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field storage_condition", values[i])
 			} else if value.Valid {
 				o.StorageCondition = value.String
+			}
+		case order.FieldDeliveryDriverName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field delivery_driver_name", values[i])
+			} else if value.Valid {
+				o.DeliveryDriverName = value.String
+			}
+		case order.FieldDeliveryDriverTelNo:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field delivery_driver_tel_no", values[i])
+			} else if value.Valid {
+				o.DeliveryDriverTelNo = value.String
+			}
+		case order.FieldMemo:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field memo", values[i])
+			} else if value.Valid {
+				o.Memo = new(string)
+				*o.Memo = value.String
 			}
 		case order.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -214,7 +239,7 @@ func (o *Order) String() string {
 	builder.WriteString("Order(")
 	builder.WriteString(fmt.Sprintf("id=%v", o.ID))
 	builder.WriteString(", oid=")
-	builder.WriteString(fmt.Sprintf("%v", o.Oid))
+	builder.WriteString(o.Oid)
 	builder.WriteString(", orderer=")
 	builder.WriteString(o.Orderer)
 	builder.WriteString(", receiver=")
@@ -229,6 +254,14 @@ func (o *Order) String() string {
 	builder.WriteString(o.RegisterName)
 	builder.WriteString(", storage_condition=")
 	builder.WriteString(o.StorageCondition)
+	builder.WriteString(", delivery_driver_name=")
+	builder.WriteString(o.DeliveryDriverName)
+	builder.WriteString(", delivery_driver_tel_no=")
+	builder.WriteString(o.DeliveryDriverTelNo)
+	if v := o.Memo; v != nil {
+		builder.WriteString(", memo=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", createdAt=")
 	builder.WriteString(o.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", updatedAt=")

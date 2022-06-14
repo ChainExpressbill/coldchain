@@ -8,7 +8,6 @@ import (
 	"github.com/ChainExpressbill/coldchain/ent/account"
 	"github.com/ChainExpressbill/coldchain/ent/order"
 	"github.com/ChainExpressbill/coldchain/ent/schema"
-	"github.com/google/uuid"
 )
 
 // The init function reads all schema descriptors with runtime code
@@ -44,7 +43,7 @@ func init() {
 	// orderDescOid is the schema descriptor for oid field.
 	orderDescOid := orderFields[0].Descriptor()
 	// order.DefaultOid holds the default value on creation for the oid field.
-	order.DefaultOid = orderDescOid.Default.(func() uuid.UUID)
+	order.DefaultOid = orderDescOid.Default.(string)
 	// orderDescOrderer is the schema descriptor for orderer field.
 	orderDescOrderer := orderFields[1].Descriptor()
 	// order.OrdererValidator is a validator for the "orderer" field. It is called by the builders before save.
@@ -65,12 +64,24 @@ func init() {
 	orderDescStorageCondition := orderFields[7].Descriptor()
 	// order.StorageConditionValidator is a validator for the "storage_condition" field. It is called by the builders before save.
 	order.StorageConditionValidator = orderDescStorageCondition.Validators[0].(func(string) error)
+	// orderDescDeliveryDriverName is the schema descriptor for delivery_driver_name field.
+	orderDescDeliveryDriverName := orderFields[8].Descriptor()
+	// order.DefaultDeliveryDriverName holds the default value on creation for the delivery_driver_name field.
+	order.DefaultDeliveryDriverName = orderDescDeliveryDriverName.Default.(string)
+	// order.DeliveryDriverNameValidator is a validator for the "delivery_driver_name" field. It is called by the builders before save.
+	order.DeliveryDriverNameValidator = orderDescDeliveryDriverName.Validators[0].(func(string) error)
+	// orderDescDeliveryDriverTelNo is the schema descriptor for delivery_driver_tel_no field.
+	orderDescDeliveryDriverTelNo := orderFields[9].Descriptor()
+	// order.DefaultDeliveryDriverTelNo holds the default value on creation for the delivery_driver_tel_no field.
+	order.DefaultDeliveryDriverTelNo = orderDescDeliveryDriverTelNo.Default.(string)
+	// order.DeliveryDriverTelNoValidator is a validator for the "delivery_driver_tel_no" field. It is called by the builders before save.
+	order.DeliveryDriverTelNoValidator = orderDescDeliveryDriverTelNo.Validators[0].(func(string) error)
 	// orderDescCreatedAt is the schema descriptor for createdAt field.
-	orderDescCreatedAt := orderFields[8].Descriptor()
+	orderDescCreatedAt := orderFields[11].Descriptor()
 	// order.DefaultCreatedAt holds the default value on creation for the createdAt field.
 	order.DefaultCreatedAt = orderDescCreatedAt.Default.(func() time.Time)
 	// orderDescUpdatedAt is the schema descriptor for updatedAt field.
-	orderDescUpdatedAt := orderFields[9].Descriptor()
+	orderDescUpdatedAt := orderFields[12].Descriptor()
 	// order.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
 	order.DefaultUpdatedAt = orderDescUpdatedAt.Default.(func() time.Time)
 	// order.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.

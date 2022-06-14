@@ -16,6 +16,7 @@ func OrderCountByOrdererAndReceiver(params *OrderSearchParams) int {
 		Where(
 			order.OrdererContains(params.Orderer),
 			order.ReceiverContains(params.Receiver),
+			order.OidContains(params.Oid),
 			order.CreatedAtGTE(params.StartDate),
 			order.CreatedAtLTE(params.EndDate),
 		).
@@ -25,9 +26,6 @@ func OrderCountByOrdererAndReceiver(params *OrderSearchParams) int {
 }
 
 func FindAllByOrdererAndReceiver(params *OrderSearchParams) []*ent.Order {
-	/**
-	** @see https://entgo.io/docs/crud#field-selection
-	**/
 	result := database.GetInstance().Order.
 		Query().
 		Offset((params.Page-1)*params.Size).
@@ -36,6 +34,7 @@ func FindAllByOrdererAndReceiver(params *OrderSearchParams) []*ent.Order {
 		Where(
 			order.OrdererContains(params.Orderer),
 			order.ReceiverContains(params.Receiver),
+			order.OidContains(params.Oid),
 			order.CreatedAtGTE(params.StartDate),
 			order.CreatedAtLTE(params.EndDate),
 		).
@@ -64,6 +63,9 @@ func CreateOrder(body *OrderRequestBody) {
 		SetRegisterName(body.RegisterName).
 		SetStorageCondition(body.StorageCondition).
 		SetManagerID(body.AccountId).
+		SetNillableMemo(&body.Memo).
+		SetDeliveryDriverName(body.DeliveryDriverName).
+		SetDeliveryDriverTelNo(body.DeliveryDriverTelNo).
 		SaveX(ctx)
 }
 
@@ -77,5 +79,8 @@ func UpdateOrder(body *OrderRequestBody) {
 		SetQuantity(body.Quantity).
 		SetRegisterName(body.RegisterName).
 		SetStorageCondition(body.StorageCondition).
+		SetNillableMemo(&body.Memo).
+		SetDeliveryDriverName(body.DeliveryDriverName).
+		SetDeliveryDriverTelNo(body.DeliveryDriverTelNo).
 		SaveX(ctx)
 }
