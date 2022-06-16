@@ -45,4 +45,7 @@ export interface OrderRequestBody {
   quantity: number;
   registerName: string;
   storageCondition: string;
+  memo: string;
+  deliveryDriverName: string;
+  deliveryDriverTelNo: string;
 }

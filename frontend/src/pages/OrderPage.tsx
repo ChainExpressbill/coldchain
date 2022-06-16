@@ -31,7 +31,7 @@ function OrderPage() {
   useEffect(() => {
     if (isOrderDetailView) {
       refetch().then((response) => {
-        if (response.data !== undefined) {
+        if (response.data) {
           const targetOrderData = {
             orderer: response.data.orderer,
             receiver: response.data.receiver,
@@ -131,7 +131,7 @@ function OrderPage() {
     <div className="text-black h-full flex flex-col align-items-center justify-center">
       <form
         onSubmit={
-          orderId === -1
+          !isOrderDetailView
             ? handleSubmit(onCreateOrderSubmit)
             : handleSubmit(onUpdateOrderSubmit)
         }
@@ -140,52 +140,76 @@ function OrderPage() {
         {isOrderDetailView && <div>주문 상세 내역</div>}
         <FormInput
           register={register}
-          valueLabel="주문자"
+          valueLabel="주문 업체"
           valueName={'orderer'}
           formError={formErrors.orderer}
-          placeholder="주문하시는 분의 이름을 입력해주세요"
-          validMsg="주문하시는 분의 이름을 확인해주세요"
+          placeholder="주문 업체의 이름을 입력해주세요"
+          validMsg="주문 업체의 분의 이름을 확인해주세요"
         />
         <FormInput
           register={register}
-          valueLabel="수령인"
+          valueLabel="수령 업체"
           valueName={'receiver'}
           formError={formErrors.receiver}
-          placeholder="수령하시는 분의 이름을 입력해주세요"
-          validMsg="수령하시는 분의 이름을 확인해주세요"
+          placeholder="수령 업체의 이름을 입력해주세요"
+          validMsg="수령 업체의 이름을 확인해주세요"
         />
         <FormInput
           register={register}
-          valueLabel="약품명"
+          valueLabel="제품명"
           valueName={'drugName'}
           formError={formErrors.drugName}
-          placeholder="약품명을 입력해주세요"
-          validMsg="약품명을 확인해주세요"
+          placeholder="제품명을 입력해주세요"
+          validMsg="제품명을 확인해주세요"
         />
         <FormInput
           register={register}
-          valueLabel="약품 수량"
+          valueLabel="제품 수량"
           valueName={'quantity'}
           formError={formErrors.quantity}
-          placeholder="약품 수량을 입력해주세요"
-          validMsg="약품 수량을 확인해주세요"
+          placeholder="제품 수량을 입력해주세요"
+          validMsg="제품 수량을 확인해주세요"
           type="number"
         />
         <FormInput
           register={register}
-          valueLabel="약품 규격"
+          valueLabel="제품 규격"
           valueName={'drugStandard'}
           formError={formErrors.drugStandard}
-          placeholder="약품 규격을 입력해주세요"
-          validMsg="약품 규격을 확인해주세요"
+          placeholder="제품 규격을 입력해주세요"
+          validMsg="제품 규격을 확인해주세요"
         />
         <FormInput
           register={register}
-          valueLabel="약품 보관 조건"
+          valueLabel="보관 조건"
           valueName={'storageCondition'}
           formError={formErrors.storageCondition}
-          placeholder="약품 보관 조건을 입력해주세요"
-          validMsg="약품 보관 조건을 확인해주세요"
+          placeholder="보관 조건을 입력해주세요"
+          validMsg="보관 조건을 확인해주세요"
+        />
+        <FormInput
+          register={register}
+          valueLabel="배송 기사 이름"
+          valueName={'deliveryDriverName'}
+          formError={formErrors.deliveryDriverName}
+          placeholder="배송 기사 이름을 입력해주세요"
+          validMsg="배송 기사 이름을 확인해주세요"
+        />
+        <FormInput
+          register={register}
+          valueLabel="배송 기사 연락처"
+          valueName={'deliveryDriverTelNo'}
+          formError={formErrors.deliveryDriverTelNo}
+          placeholder="배송 기사 연락처를 입력해주세요"
+          validMsg="배송 기사 연락처를 확인해주세요"
+        />
+        <FormInput
+          register={register}
+          valueLabel="메모"
+          valueName={'memo'}
+          formError={formErrors.memo}
+          placeholder="메모를 입력해주세요"
+          validMsg="메모를 확인해주세요"
         />
         <button
           className="mx-auto w-1/4 p-2 border border-gray-300 text-white bg-red-500 disabled:opacity-60 disabled:cursor-not-allowed"
